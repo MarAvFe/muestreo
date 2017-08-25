@@ -47,6 +47,9 @@ export const UtilStyles = StyleSheet.create({
   spaceVertical: {
     marginVertical: 8
   },
+  spaceFromForm: {
+    marginTop: 20
+  },
   description: {
     paddingRight: 10,
     paddingLeft: 20,
