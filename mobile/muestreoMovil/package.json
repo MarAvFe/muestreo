@@ -22,8 +22,6 @@
     "expo": "^20.0.0",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.47.0",
-    "react-native-fit-image": "^1.5.2",
-    "react-native-ui-kitten": "^2.0.1",
-    "react-navigation": "^1.0.0-beta.11"
+    "react-native-ui-kitten": "^2.0.1"
   }
 }
