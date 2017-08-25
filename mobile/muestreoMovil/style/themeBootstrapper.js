@@ -1,8 +1,8 @@
 import {RkTheme} from 'react-native-ui-kitten';
 import {AvatarTypes} from '../components/avatarTypes';
 
-let robotoLight = 'Roboto-Light';
-let robotoMed = 'Roboto-Medium';
+//let robotoLight = 'Roboto Light';
+//let robotoMed = 'Roboto Light';
 
 export let bootstrap = () => {
 
@@ -11,24 +11,24 @@ export let bootstrap = () => {
 
   RkTheme.setType('RkText', 'basic', {
     text: {
-      fontFamily: robotoLight,
+      //fontFamily: robotoLight,
     }
   });
 
   RkTheme.setType('RkText', 'bold', {
     text: {
-      fontFamily: robotoMed,
+      //fontFamily: robotoMed,
     }
   });
 
   RkTheme.setType('RkText', 'header', {
     text: {
-      fontFamily: robotoMed
+      //fontFamily: robotoMed
     }
   });
   RkTheme.setType('RkButton', 'basic', {
     content: {
-      fontFamily: robotoMed
+      //fontFamily: robotoMed
     }
   });
 
@@ -89,7 +89,7 @@ export let bootstrap = () => {
   RkTheme.setType('RkButton', 'action', {
     color: theme => theme.colors.warning,
     content: {
-      fontFamily: robotoMed,
+      //fontFamily: robotoMed,
     }
   });
 
@@ -104,7 +104,7 @@ export let bootstrap = () => {
 
   RkTheme.setType('RkTab', 'basic', {
     inner: {
-      fontFamily: robotoMed
+      //fontFamily: robotoMed
     }
   });
 
