@@ -25,6 +25,7 @@ export const routes: Routes = [
       { path: 'admin/delete', loadChildren: './delete/delete.module#DeleteModule' },
       { path: 'admin/consult', loadChildren: './consult/consult.module#ConsultModule' },
       { path: 'analyze', loadChildren: './analyze/analyze.module#AnalyzeModule' },
+      { path: 'about', loadChildren: './about/about.module#AboutModule' },
       { path: 'editors', loadChildren: './editors/editors.module#EditorsModule' },
       { path: 'components', loadChildren: './components/components.module#ComponentsModule' },
       { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },

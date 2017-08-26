@@ -24,7 +24,9 @@
             "delete": "Delete",
             "consult": "Consult",
             "analyze": "Analyze",
-            
+            "userManual": "User Manual",
+            "about": "About",
+
             "dashboard": "Dashboard",
             "editors": "Editors",
             "ck_editor": "CKEditor",

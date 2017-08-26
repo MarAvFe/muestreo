@@ -72,6 +72,30 @@ export const PAGES_MENU = [
           }
         }
     },
+    {
+      path: '',
+      data: {
+        menu: {
+          title: 'general.menu.userManual',
+          url: 'https://github.com/MarAvFe/muestreo',
+          icon: 'ion-android-exit',
+          order: 800,
+          target: '_blank'
+        }
+      }
+  },
+  {
+    path: 'about',
+    data: {
+      menu: {
+        title: 'general.menu.about',
+        icon: 'ion-android-home',
+        selected: false,
+        expanded: false,
+        order: 0
+      }
+    }
+},
       {
         path: 'components',
         data: {
