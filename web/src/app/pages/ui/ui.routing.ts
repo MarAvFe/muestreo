@@ -20,7 +20,7 @@ const routes: Routes = [
       { path: 'typography', component: Typography },
       { path: 'modals', component: Modals },
       { path: 'slim', component: SlimComponent },
-    ]
+  ]
   }
 ];
 

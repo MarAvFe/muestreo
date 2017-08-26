@@ -8,6 +8,10 @@ export const routes: Routes = [
   {
     path: '',
     component: Login
+},
+  {
+    path: 'pages/analyze',
+    component: Login
   }
 ];
 

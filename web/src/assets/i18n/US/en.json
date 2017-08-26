@@ -1,18 +1,35 @@
 {
+    "pagetop": {
+        "leftTitle" : "Work",
+        "rightTitle": " Sampling",
+        "profile": "Profile",
+        "settings": "Settings",
+        "signOut": "Sign out"
+    },
     "login": {
-        "title": "Sign in to ng2-admin",
-        "signup_link": "New to ng2-admin? Sign up!",
+        "identification" : "Identification",
+        "title": "Sign in to Work Sampling",
+        "signup_link": "New to Work Sampling? Sign up!",
         "email": "Email",
         "password": "Password",
         "sign_in": "Sign in",
-        "forgot_password": "Forgot password?",
-        "sign_from_app_text": "or Sign in with one click",
-        "share_on_facebook": "Share on Facebook",
-        "share_on_twitter": "Share on Twitter",
-        "share_on_google_plus": "Share on Google Plus"
+        "forgot_password": "Forgot password?"
+    },
+    "register": {
+        "title": "Sign up to Work Sampling",
+        "signin_link": "Already have an Work Sampling account? Sign in!",
+        "name": "Name",
+        "lastname": "Lastname",
+        "password": "Password",
+        "repeat": "Repeat",
+        "identification" : "Identification",
+        "phone": "Phone",
+        "email": "Email",
+        "sign_up": "Sign up",
+        "difPwd": "Passwords don't match."
     },
     "general": {
-        "akveo": "Akveo",
+        "akveo": "Sampling",
         "home": "Home",
         "forms": {
             "option1": "Option 1"
@@ -61,6 +78,12 @@
             "external_link": "External Link"
         },
         "created_with": "Created with"
+    },
+    "analyze": {
+        "productivity" : "Productivity",
+        "improductivities": "Improductive Activities",
+        "observations": "Observations",
+        "details": "Details"
     },
     "dashboard": {
         "acquisition_channels": "Acquisition Channels",

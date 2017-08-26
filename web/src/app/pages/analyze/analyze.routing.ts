@@ -5,7 +5,7 @@ import { AnalyzeComponent } from './analyze.component';
 const routes: Routes = [
   {
     path: '',
-    component: AnalyzeComponent,
+    component: AnalyzeComponent
 },
 ];
 
