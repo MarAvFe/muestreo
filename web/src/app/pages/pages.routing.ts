@@ -15,11 +15,15 @@ export const routes: Routes = [
     loadChildren: 'app/pages/register/register.module#RegisterModule'
   },
   {
+    path: 'resetPassword',
+    loadChildren: 'app/pages/resetpassword/resetpassword.module#ResetPasswordModule'
+  },
+  {
     path: 'pages',
     component: Pages,
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      
+
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
       { path: 'admin/create', loadChildren: './create/create.module#CreateModule' },
       { path: 'admin/edit', loadChildren: './edit/edit.module#EditModule' },

@@ -1,0 +1,36 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'start' ]
+2 info using npm@5.3.0
+3 info using node@v8.4.0
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info lifecycle ng2-admin@1.0.0~prestart: ng2-admin@1.0.0
+6 info lifecycle ng2-admin@1.0.0~start: ng2-admin@1.0.0
+7 verbose lifecycle ng2-admin@1.0.0~start: unsafe-perm in lifecycle true
+8 verbose lifecycle ng2-admin@1.0.0~start: PATH: /usr/lib/node_modules/npm/bin/node-gyp-bin:/home/nroman/Documents/muestreo/web/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
+9 verbose lifecycle ng2-admin@1.0.0~start: CWD: /home/nroman/Documents/muestreo/web
+10 silly lifecycle ng2-admin@1.0.0~start: Args: [ '-c', 'ng serve' ]
+11 silly lifecycle ng2-admin@1.0.0~start: Returned: code: 1  signal: null
+12 info lifecycle ng2-admin@1.0.0~start: Failed to exec start script
+13 verbose stack Error: ng2-admin@1.0.0 start: `ng serve`
+13 verbose stack Exit status 1
+13 verbose stack     at EventEmitter.<anonymous> (/usr/lib/node_modules/npm/lib/utils/lifecycle.js:289:16)
+13 verbose stack     at emitTwo (events.js:125:13)
+13 verbose stack     at EventEmitter.emit (events.js:213:7)
+13 verbose stack     at ChildProcess.<anonymous> (/usr/lib/node_modules/npm/lib/utils/spawn.js:40:14)
+13 verbose stack     at emitTwo (events.js:125:13)
+13 verbose stack     at ChildProcess.emit (events.js:213:7)
+13 verbose stack     at maybeClose (internal/child_process.js:927:16)
+13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+14 verbose pkgid ng2-admin@1.0.0
+15 verbose cwd /home/nroman/Documents/muestreo/web
+16 verbose Linux 3.16.0-30-generic
+17 verbose argv "/usr/bin/nodejs" "/usr/bin/npm" "start"
+18 verbose node v8.4.0
+19 verbose npm  v5.3.0
+20 error code ELIFECYCLE
+21 error errno 1
+22 error ng2-admin@1.0.0 start: `ng serve`
+22 error Exit status 1
+23 error Failed at the ng2-admin@1.0.0 start script.
+23 error This is probably not a problem with npm. There is likely additional logging output above.
+24 verbose exit [ 1, true ]
