@@ -20,6 +20,11 @@ export const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
+      { path: 'admin/create', loadChildren: './create/create.module#CreateModule' },
+      { path: 'admin/edit', loadChildren: './edit/edit.module#EditModule' },
+      { path: 'admin/delete', loadChildren: './delete/delete.module#DeleteModule' },
+      { path: 'admin/consult', loadChildren: './consult/consult.module#ConsultModule' },
+      { path: 'analyze', loadChildren: './analyze/analyze.module#AnalyzeModule' },
       { path: 'editors', loadChildren: './editors/editors.module#EditorsModule' },
       { path: 'components', loadChildren: './components/components.module#ComponentsModule' },
       { path: 'charts', loadChildren: './charts/charts.module#ChartsModule' },
