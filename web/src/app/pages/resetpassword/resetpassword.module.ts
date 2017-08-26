@@ -1,6 +1,8 @@
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { AppTranslationModule } from '../../app.translation.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgaModule } from '../../theme/nga.module';
 
 import { ResetPassword } from './resetpassword.component';
 import { routing } from './resetpassword.routing';
@@ -9,6 +11,9 @@ import { routing } from './resetpassword.routing';
   imports: [
     CommonModule,
     FormsModule,
+    NgaModule,
+    AppTranslationModule,
+    ReactiveFormsModule,
     routing
   ],
   declarations: [

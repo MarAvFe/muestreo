@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
-
 import { ResetPassword } from './resetpassword.component';
+import { ModuleWithProviders } from '@angular/core';
 
 const routes: Routes = [
   {
@@ -9,4 +9,4 @@ const routes: Routes = [
 },
 ];
 
-export const routing = RouterModule.forChild(routes);
+export const routing: ModuleWithProviders = RouterModule.forChild(routes);
