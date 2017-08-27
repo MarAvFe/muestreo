@@ -7,7 +7,7 @@ export const PAGES_MENU = [
                 data: {
                     menu: {
                         title: 'general.menu.adminData',
-                        icon: 'ion-edit',
+                        icon: 'ion-android-apps',
                         selected: false,
                         expanded: false,
                         order: 100,
@@ -19,6 +19,7 @@ export const PAGES_MENU = [
                         data: {
                             menu: {
                                 title: 'general.menu.create',
+                                icon: 'ion-plus-circled'
                             }
                         }
                     },
@@ -27,6 +28,7 @@ export const PAGES_MENU = [
                         data: {
                             menu: {
                                 title: 'general.menu.edit',
+                                   icon: 'ion-android-create'
                             }
                         }
                     },
@@ -35,6 +37,7 @@ export const PAGES_MENU = [
                         data: {
                             menu: {
                                 title: 'general.menu.delete',
+                                icon: 'ion-trash-b'
                             }
                         }
                     },
@@ -43,6 +46,7 @@ export const PAGES_MENU = [
                         data: {
                             menu: {
                                 title: 'general.menu.consult',
+                                   icon: 'ion-ios-eye'
                             }
                         }
                     },
@@ -53,7 +57,7 @@ export const PAGES_MENU = [
                 data: {
                     menu: {
                         title: 'general.menu.analyze',
-                        icon: 'ion-android-home',
+                        icon: 'ion-ios-pie',
                         selected: false,
                         expanded: false,
                         order: 0
@@ -66,7 +70,7 @@ export const PAGES_MENU = [
                     menu: {
                         title: 'general.menu.userManual',
                         url: 'https://github.com/MarAvFe/muestreo',
-                        icon: 'ion-android-exit',
+                        icon: 'ion-ios-book',
                         order: 800,
                         target: '_blank'
                     }
@@ -77,7 +81,7 @@ export const PAGES_MENU = [
                 data: {
                     menu: {
                         title: 'general.menu.about',
-                        icon: 'ion-android-home',
+                        icon: 'ion-information-circled',
                         selected: false,
                         expanded: false,
                         order: 0
