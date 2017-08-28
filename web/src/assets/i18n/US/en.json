@@ -84,7 +84,8 @@
         "productivity" : "Productivity",
         "improductivities": "Improductive Activities",
         "observations": "Observations",
-        "details": "Details"
+        "details": "Details",
+        "selectSampling": "Select Sampling"
     },
     "dashboard": {
         "acquisition_channels": "Acquisition Channels",

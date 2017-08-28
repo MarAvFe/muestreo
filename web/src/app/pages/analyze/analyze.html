@@ -1,35 +1,36 @@
 <section class="analyze">
+    <div class="form-group">
+      <h2 translate>{{'analyze.selectSampling'}}</h2>
+      <select class="form-control">
+        <option>MT037</option>
+        <option>CB023</option>
+        <option>MNR132</option>
+      </select>
+    </div>
     <div class="row">
-        <div class="col-md-6 ">
-            <h5 translate>{{'analyze.productivity'}}</h5>
-            <ba-chartist-chart baChartistChartClass="ct-chart"
-                baChartistChartType="Line"
-                [baChartistChartData]="data['productivityData']"
-                [baChartistChartOptions]="data['productivityOptions']">
-            </ba-chartist-chart>
-        </div>
-        <div class="col-md-6 ">
-            <h5 translate>{{'analyze.improductivities'}}</h5>
-            <ba-chartist-chart baChartistChartClass="ct-chart stacked-bar"
-                               baChartistChartType="Pie"
-                               [baChartistChartData]="data['improductivitiesData']"
-                               [baChartistChartOptions]="data['improductivitiesOptions']"
-                               [baChartistChartResponsive]="getResponsive(5, 40)">
-            </ba-chartist-chart>
+        <div class="col-md-12 ">
+        <ba-card translate cardTitle="{{'analyze.productivity'}}" baCardClass="with-scroll">
+            <line-chart></line-chart>
+        </ba-card>
         </div>
     </div>
     <br>
     <div class="row">
-        <div class="col-md-8 ">
-            <h5 translate>{{'analyze.observations'}}</h5>
+        <div class="col-md-12 ">
+            <ba-card translate cardTitle="{{'analyze.improductivities'}}" baCardClass="with-scroll">
+                <traffic-chart></traffic-chart>
+            </ba-card>
+            <ba-card translate cardTitle="{{'analyze.details'}}" baCardClass="with-scroll">
+                Detalles...
+            </ba-card>
+        </div>
+        <div class="col-md-12 ">
+            <ba-card translate cardTitle="{{'analyze.observations'}}" baCardClass="with-scroll">
             <ng2-smart-table [settings]="settings"
                 [source]="source"
                 (deleteConfirm)="onDeleteConfirm($event)">
             </ng2-smart-table>
-        </div>
-        <div class="col-md-4 ">
-            <h5 translate>{{'analyze.details'}}</h5>
-
+        </ba-card>
         </div>
     </div>
 </section>

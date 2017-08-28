@@ -4,9 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { AppTranslationModule } from '../../app.translation.module';
+import { LineChart } from './lineChart';
+import { TrafficChart } from './trafficChart';
 
 import { AnalyzeComponent } from './analyze.component';
 import { AnalyzeService } from './analyze.service';
+import { LineChartService } from './lineChart/lineChart.service';
+import { TrafficChartService } from './trafficChart/trafficChart.service';
 import { routing } from './analyze.routing';
 
 @NgModule({
@@ -19,10 +23,14 @@ import { routing } from './analyze.routing';
         Ng2SmartTableModule
     ],
     declarations: [
-        AnalyzeComponent
+        AnalyzeComponent,
+        LineChart,
+        TrafficChart
     ],
     providers: [
-        AnalyzeService
+        AnalyzeService,
+        LineChartService,
+        TrafficChartService
     ]
 })
 export class AnalyzeModule {}
