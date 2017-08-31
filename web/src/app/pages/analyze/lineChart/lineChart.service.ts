@@ -21,8 +21,8 @@ export class LineChartService {
                 'enabled': false
             },
             dataProvider: [
-                { date: new Date(2012, 4), value: 2.3 },
-                { date: new Date(2012, 6), value: 90.5 },
+                { date: new Date(2012, 4), value: 2.3},
+                { date: new Date(2012, 6), value: 90.5, comment: 'Se paga bonificación' },
                 { date: new Date(2012, 8), value: 46.67 },
                 { date: new Date(2012, 10), value: 39.1 },
                 { date: new Date(2012, 11), value: 36.4 },
@@ -95,7 +95,8 @@ export class LineChartService {
                     type: 'smoothedLine',
                     valueField: 'value',
                     fillAlphas: 0,
-                    fillColorsField: 'lineColor'
+                    fillColorsField: 'lineColor',
+			        balloonText: '[[comment]]'
                 }
             ],
             chartCursor: {
@@ -118,7 +119,7 @@ export class LineChartService {
             zoomOutButton: {
                 backgroundColor: '#fff',
                 backgroundAlpha: 0.5,
-                color: "#000000",
+                color: '#000000',
             },
             zoomOutText: 'Ver todo',
             pathToImages: layoutPaths.images.amChart

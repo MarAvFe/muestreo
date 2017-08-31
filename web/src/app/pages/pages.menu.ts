@@ -3,6 +3,18 @@ export const PAGES_MENU = [
         path: 'pages',
         children: [
             {
+                path: 'mySamplings',
+                data: {
+                    menu: {
+                        title: 'general.menu.mySamplings',
+                        icon: 'ion-ios-list-outline',
+                        selected: false,
+                        expanded: false,
+                        order: 0
+                    }
+                }
+            },
+            {
                 path: 'admin',
                 data: {
                     menu: {

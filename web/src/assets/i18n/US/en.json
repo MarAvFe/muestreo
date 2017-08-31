@@ -1,19 +1,19 @@
 {
     "pagetop": {
-        "leftTitle" : "Work",
-        "rightTitle": " Sampling",
-        "profile": "Profile",
-        "settings": "Settings",
-        "signOut": "Sign out"
+        "leftTitle" : "Muestreo",
+        "rightTitle": " del Trabajo",
+        "profile": "Perfil",
+        "settings": "Configuración",
+        "signOut": "Cerrar sesión"
     },
     "login": {
-        "identification" : "Identification",
-        "title": "Sign in to Work Sampling",
-        "signup_link": "New to Work Sampling? Sign up!",
-        "email": "Email",
-        "password": "Password",
-        "sign_in": "Sign in",
-        "forgot_password": "Forgot password?"
+        "identification" : "Identificación",
+        "title": "Iniciar sesión en Muestreo del Trabajo",
+        "signup_link": "Nuevo en Muestreo del Trabajo? Regístrese!",
+        "email": "Correo electrónico",
+        "password": "Contraseña",
+        "sign_in": "Iniciar Sesión",
+        "forgot_password": "Olvidó su contraseña?"
     },
     "register": {
         "title": "Sign up to Work Sampling",
@@ -29,20 +29,21 @@
         "difPwd": "Passwords don't match."
     },
     "general": {
-        "akveo": "Sampling",
-        "home": "Home",
+        "appName": "Muestreo del Trabajo",
+        "home": "Inicio",
         "forms": {
             "option1": "Option 1"
         },
         "menu": {
-            "adminData": "Manage Data",
-            "create": "Create",
-            "edit": "Edit",
-            "delete": "Delete",
-            "consult": "Consult",
-            "analyze": "Analyze",
-            "userManual": "User Manual",
-            "about": "About",
+            "mySamplings":"Mis Muestreos",
+            "adminData": "Administrar datos",
+            "create": "Crear",
+            "edit": "Editar",
+            "delete": "Borrar",
+            "consult": "Consultar",
+            "analyze": "Analizar",
+            "userManual": "Manual de Usuario",
+            "about": "Acerca De",
             "akveoExamples": "Devs Examples",
 
             "dashboard": "Dashboard",
@@ -78,14 +79,14 @@
             "menu_level_1_2_1": "Menu Level 1.2.1",
             "external_link": "External Link"
         },
-        "created_with": "Created with"
+        "created_with": "Creado con"
     },
     "analyze": {
-        "productivity" : "Productivity",
-        "improductivities": "Improductive Activities",
-        "observations": "Observations",
-        "details": "Details",
-        "selectSampling": "Select Sampling"
+        "productivity" : "Productividad",
+        "improductivities": "Actividades Improductivas",
+        "observations": "Observaciones",
+        "details": "Detalles",
+        "selectSampling": "Seleccionar Muestreo"
     },
     "dashboard": {
         "acquisition_channels": "Acquisition Channels",

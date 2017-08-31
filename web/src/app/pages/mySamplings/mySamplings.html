@@ -1,0 +1,56 @@
+<div class="widgets">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <h3>Seleccione un muestreo:</h3>
+                <select class="form-control">
+                    <option>Segundo piso, edificio de mecatrónica</option>
+                    <option>Uso de aulas D3 los miercoles en la tarde</option>
+                    <option>Linea de manufactura textil, cierre fiscal</option>
+                </select>
+            </div>
+            <ba-card cardTitle="Colaboradores" baCardClass="with-scroll">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="table-id">#</th>
+                            <th>Identificación</th>
+                            <th>Nombre</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td><a href="#">x-xxxx-xxxx</a></td>
+                            <td>Yo</td>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td><a href="#">2-3374-3475</a></td>
+                            <td>Andrea Fernandez Vargas</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><a href="#">1-0639-3096</a></td>
+                            <td>Carmen Rojas Suárez</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><a href="#">1-1209-1250</a></td>
+                            <td>Alvaro Ramírez Duarte</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </ba-card>
+            <ba-card cardTitle="Asignar colaboradores" baCardClass="with-scroll">
+                <ng2-smart-table [settings]="settings"
+                    [source]="source"
+                    (deleteConfirm)="onDeleteConfirm($event)">
+                </ng2-smart-table>
+            </ba-card>
+        </div>
+    </div>
+
+</div>

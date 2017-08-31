@@ -16,7 +16,7 @@ export class LineChart {
   }
 
   initChart(chart:any) {
-    let zoomChart = () => {
+    /*let zoomChart = () => {
       chart.zoomToDates(new Date(2013, 3), new Date(2014, 0));
     };
 
@@ -25,6 +25,6 @@ export class LineChart {
 
     if (chart.zoomChart) {
       chart.zoomChart();
-    }
+  }*/
   }
 }
