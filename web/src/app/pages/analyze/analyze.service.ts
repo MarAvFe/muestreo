@@ -4,7 +4,6 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { BaThemeConfigProvider } from '../../theme';
-import { TITLES } from './mock-titles';
 
 import { Titles } from './Titles';
 
