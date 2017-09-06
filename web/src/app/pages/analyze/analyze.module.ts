@@ -1,5 +1,5 @@
-import { NgModule }      from '@angular/core';
-import { CommonModule }  from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -20,17 +20,17 @@ import { routing } from './analyze.routing';
         NgaModule,
         routing,
         AppTranslationModule,
-        Ng2SmartTableModule
+        Ng2SmartTableModule,
     ],
     declarations: [
         AnalyzeComponent,
         LineChart,
-        TrafficChart
+        TrafficChart,
     ],
     providers: [
         AnalyzeService,
         LineChartService,
-        TrafficChartService
-    ]
+        TrafficChartService,
+    ],
 })
 export class AnalyzeModule {}

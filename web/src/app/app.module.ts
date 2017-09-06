@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateService } from '@ngx-translate/core';
+
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -21,13 +22,14 @@ import { PagesModule } from './pages/pages.module';
 // Application wide providers
 const APP_PROVIDERS = [
   AppState,
-  GlobalState
+  GlobalState,
 ];
+
 
 export type StoreType = {
   state: InternalStateType,
   restoreInputValues: () => void,
-  disposeOldHosts: () => void
+  disposeOldHosts: () => void,
 };
 
 /**
@@ -36,7 +38,7 @@ export type StoreType = {
 @NgModule({
   bootstrap: [App],
   declarations: [
-    App
+    App,
   ],
   imports: [ // import Angular's modules
     BrowserModule,
@@ -47,11 +49,11 @@ export type StoreType = {
     NgaModule.forRoot(),
     NgbModule.forRoot(),
     PagesModule,
-    routing
+    routing,
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
-    APP_PROVIDERS
-  ]
+    APP_PROVIDERS,
+],
 })
 
 export class AppModule {

@@ -1,16 +1,38 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import {BaThemeConfigProvider} from '../../theme';
+import { Headers, Http } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+
+import { BaThemeConfigProvider } from '../../theme';
+import { TITLES } from './mock-titles';
+
+import { Titles } from './Titles';
 
 @Injectable()
 export class AnalyzeService {
 
+    private titlesUrl = 'assets/titles.json';
+
+    getTitles(): Promise<Titles[]> {
+        return this.http.get(this.titlesUrl)
+                   .toPromise()
+                   .then(response => response.json().data as Titles[])
+                   .catch(this.handleError);
+    }
+
+    private handleError(error: any): Promise<any> {
+      console.error('An error occurred', error); // for demo purposes only
+      return Promise.reject(error.message || error);
+    }
+
     private _data = {
 
         productivityData: {
-            labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+            labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+                19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+                37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
             series: [
-                [5, 67.4, 36.5, 44.2, 55.5, 47.4, 55.166666666666664, 50.857142857142854, 
+                [5, 67.4, 36.5, 44.2, 55.5, 47.4, 55.166666666666664, 50.857142857142854,
                     52.375, 54.111111111111114, 58.3, 53.72727272727273, 51.916666666666664,
                     53.46153846153846, 49.785714285714285, 48.333333333333336, 45.75,
                     44.76470588235294, 46.22222222222222, 46.526315789473685, 47.25,
@@ -22,20 +44,20 @@ export class AnalyzeService {
                     45.205128205128204, 44.525, 44.63414634146341, 43.904761904761905,
                     43.53488372093023, 43.38636363636363, 43.022222222222226,
                     42.130434782608695, 41.851063829787236, 41.791666666666664,
-                    42.673469387755105]
-            ]
+                    42.673469387755105],
+            ],
         },
         productivityOptions: {
             color: this._baConfig.get().colors.defaultText,
             fullWidth: true,
             height: '300px',
             chartPadding: {
-                right: 40
-            }
+                right: 40,
+            },
         },
         improductivitiesData: {
-            labels: ["Esperando","WC","Comiendo","Caminando","Otros"],
-            series: [12, 8, 6, 15, 9]
+            labels: ['Esperando', 'WC', 'Comiendo', 'Caminando', 'Otros'],
+            series: [12, 8, 6, 15, 9],
         },
         improductivitiesOptions: {
             fullWidth: true,
@@ -43,9 +65,9 @@ export class AnalyzeService {
             height: '300px',
             weight: '300px',
             labelDirection: 'explode',
-            labelInterpolationFnc: function (value) {
+            labelInterpolationFnc(value) {
                 return value;
-            }
+            },
         },
         observationsData: [
             {
@@ -54,7 +76,7 @@ export class AnalyzeService {
                 lastName: 'Otto',
                 username: '@mdo',
                 email: 'mdo@gmail.com',
-                age: '28'
+                age: '28',
             },
             {
                 id: 2,
@@ -62,7 +84,7 @@ export class AnalyzeService {
                 lastName: 'Thornton',
                 username: '@fat',
                 email: 'fat@yandex.ru',
-                age: '45'
+                age: '45',
             },
             {
                 id: 3,
@@ -70,7 +92,7 @@ export class AnalyzeService {
                 lastName: 'Bird',
                 username: '@twitter',
                 email: 'twitter@outlook.com',
-                age: '18'
+                age: '18',
             },
             {
                 id: 4,
@@ -78,7 +100,7 @@ export class AnalyzeService {
                 lastName: 'Snow',
                 username: '@snow',
                 email: 'snow@gmail.com',
-                age: '20'
+                age: '20',
             },
             {
                 id: 5,
@@ -86,7 +108,7 @@ export class AnalyzeService {
                 lastName: 'Sparrow',
                 username: '@jack',
                 email: 'jack@yandex.ru',
-                age: '30'
+                age: '30',
             },
             {
                 id: 6,
@@ -94,7 +116,7 @@ export class AnalyzeService {
                 lastName: 'Smith',
                 username: '@ann',
                 email: 'ann@gmail.com',
-                age: '21'
+                age: '21',
             },
             {
                 id: 7,
@@ -102,7 +124,7 @@ export class AnalyzeService {
                 lastName: 'Black',
                 username: '@barbara',
                 email: 'barbara@yandex.ru',
-                age: '43'
+                age: '43',
             },
             {
                 id: 8,
@@ -110,7 +132,7 @@ export class AnalyzeService {
                 lastName: 'Bagrat',
                 username: '@sevan',
                 email: 'sevan@outlook.com',
-                age: '13'
+                age: '13',
             },
             {
                 id: 9,
@@ -118,7 +140,7 @@ export class AnalyzeService {
                 lastName: 'Vardan',
                 username: '@ruben',
                 email: 'ruben@gmail.com',
-                age: '22'
+                age: '22',
             },
             {
                 id: 10,
@@ -126,7 +148,7 @@ export class AnalyzeService {
                 lastName: 'Sevan',
                 username: '@karen',
                 email: 'karen@yandex.ru',
-                age: '33'
+                age: '33',
             },
             {
                 id: 11,
@@ -134,7 +156,7 @@ export class AnalyzeService {
                 lastName: 'Otto',
                 username: '@mark',
                 email: 'mark@gmail.com',
-                age: '38'
+                age: '38',
             },
             {
                 id: 12,
@@ -142,7 +164,7 @@ export class AnalyzeService {
                 lastName: 'Thornton',
                 username: '@jacob',
                 email: 'jacob@yandex.ru',
-                age: '48'
+                age: '48',
             },
             {
                 id: 13,
@@ -150,7 +172,7 @@ export class AnalyzeService {
                 lastName: 'Hakob',
                 username: '@haik',
                 email: 'haik@outlook.com',
-                age: '48'
+                age: '48',
             },
             {
                 id: 14,
@@ -158,7 +180,7 @@ export class AnalyzeService {
                 lastName: 'Jirair',
                 username: '@garegin',
                 email: 'garegin@gmail.com',
-                age: '40'
+                age: '40',
             },
             {
                 id: 15,
@@ -166,39 +188,39 @@ export class AnalyzeService {
                 lastName: 'Bedros',
                 username: '@krikor',
                 email: 'krikor@yandex.ru',
-                age: '32'
+                age: '32',
             },
             {
-                "id": 16,
-                "firstName": "Francisca",
-                "lastName": "Brady",
-                "username": "@Gibson",
-                "email": "franciscagibson@comtours.com",
-                "age": 11
+                'id': 16,
+                'firstName': 'Francisca',
+                'lastName': 'Brady',
+                'username': '@Gibson',
+                'email': 'franciscagibson@comtours.com',
+                'age': 11,
             },
             {
-                "id": 17,
-                "firstName": "Tillman",
-                "lastName": "Figueroa",
-                "username": "@Snow",
-                "email": "tillmansnow@comtours.com",
-                "age": 34
+                'id': 17,
+                'firstName': 'Tillman',
+                'lastName': 'Figueroa',
+                'username': '@Snow',
+                'email': 'tillmansnow@comtours.com',
+                'age': 34,
             },
             {
-                "id": 18,
-                "firstName": "Jimenez",
-                "lastName": "Morris",
-                "username": "@Bryant",
-                "email": "jimenezbryant@comtours.com",
-                "age": 45
-            }
-        ]
+                'id': 18,
+                'firstName': 'Jimenez',
+                'lastName': 'Morris',
+                'username': '@Bryant',
+                'email': 'jimenezbryant@comtours.com',
+                'age': 45,
+            },
+        ],
     };
 
-    constructor(private _baConfig:BaThemeConfigProvider) {
+    constructor(private _baConfig: BaThemeConfigProvider, private http: Http) {
     }
 
-    public getAll() {
+    getAll() {
         return this._data;
     }
 
@@ -210,31 +232,31 @@ export class AnalyzeService {
         });
     }
 
-    public getResponsive(padding, offset) {
+    getResponsive(padding, offset) {
         return [
             ['screen and (min-width: 1550px)', {
                 chartPadding: padding,
                 labelOffset: offset,
                 labelDirection: 'explode',
-                labelInterpolationFnc: function (value) {
+                labelInterpolationFnc (value) {
                     return value;
-                }
+                },
             }],
             ['screen and (max-width: 1200px)', {
                 chartPadding: padding,
                 labelOffset: offset,
                 labelDirection: 'explode',
-                labelInterpolationFnc: function (value) {
+                labelInterpolationFnc (value) {
                     return value;
-                }
+                },
             }],
             ['screen and (max-width: 600px)', {
                 chartPadding: 0,
                 labelOffset: 0,
-                labelInterpolationFnc: function (value) {
+                labelInterpolationFnc (value) {
                     return value[0];
-                }
-            }]
+                },
+            }],
         ];
     }
 }
