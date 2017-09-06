@@ -74,8 +74,7 @@ export class AnalyzeComponent {
 
     ngOnInit() {
         this.data = this._analyzeService.getAll();
-        this.getTitles(); // = this._analyzeService.getTitles();
-        console.log(this.titles);
+        this.getTitles();
     }
 
     getResponsive(padding, offset) {

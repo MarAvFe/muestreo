@@ -81,7 +81,7 @@ export const PAGES_MENU = [
                 data: {
                     menu: {
                         title: 'general.menu.userManual',
-                        url: 'https://github.com/MarAvFe/muestreo',
+                        url: 'https://github.com/MarAvFe/muestreo/tree/master/documentos/usuario',
                         icon: 'ion-ios-book',
                         order: 800,
                         target: '_blank'
