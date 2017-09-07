@@ -16,10 +16,18 @@
     <div>
       <div class="channels-info-item" *ngFor="let item of doughnutData">
         <div class="legend-color" [ngStyle]="{'background-color': item.color }"></div>
-        <p>{{ item.label }}<span class="channel-number">{{ (item.value / totalActivities) * 100 }}%</span></p>
+        <p>{{ item.label }}
+            <span class="channel-number">
+                <!-- To display integer value -->
+                {{ ((item.value / totalActivities) * 100) - (((item.value / totalActivities) * 100) % 1) }}%
+            </span>
+        </p>
         <div class="progress progress-sm channel-progress">
           <div class="progress-bar" role="progressbar"
-               [attr.aria-valuenow]="(item.value / totalActivities) * 100" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width: (item.value / totalActivities) * 100 + '%' }">
+               [attr.aria-valuenow]="(item.value / totalActivities)"
+               aria-valuemin="0"
+               aria-valuemax="100"
+               [ngStyle]="{width: (item.value / totalActivities) * 100 + '%' }">
           </div>
         </div>
       </div>

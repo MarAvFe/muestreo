@@ -1,12 +1,12 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {TrafficChartService} from './trafficChart.service';
+import { TrafficChartService } from './trafficChart.service';
 import * as Chart from 'chart.js';
 
 @Component({
   selector: 'traffic-chart',
   templateUrl: './trafficChart.html',
-  styleUrls: ['./trafficChart.scss']
+  styleUrls: ['./trafficChart.scss'],
 })
 
 export class TrafficChart {
@@ -29,7 +29,7 @@ export class TrafficChart {
     new Chart(el.getContext('2d')).Doughnut(this.doughnutData, {
       segmentShowStroke: false,
       percentageInnerCutout : 64,
-      responsive: true
+      responsive: true,
     });
   }
 }
