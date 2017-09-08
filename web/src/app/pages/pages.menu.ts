@@ -3,17 +3,29 @@ export const PAGES_MENU = [
         path: 'pages',
         children: [
             {
-                path: 'mySamplings',
+                path: 'profile',
                 data: {
                     menu: {
-                        title: 'general.menu.mySamplings',
-                        icon: 'ion-ios-list-outline',
+                        title: 'general.menu.profile',
+                        icon: 'ion-android-person',
                         selected: false,
                         expanded: false,
                         order: 0
                     }
                 }
             },
+                {
+                    path: 'mySamplings',
+                    data: {
+                        menu: {
+                            title: 'general.menu.mySamplings',
+                            icon: 'ion-ios-list-outline',
+                            selected: false,
+                            expanded: false,
+                            order: 0
+                        }
+                    }
+                },
             {
                 path: 'admin',
                 data: {

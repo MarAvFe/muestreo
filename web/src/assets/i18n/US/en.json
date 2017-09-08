@@ -35,6 +35,7 @@
             "option1": "Option 1"
         },
         "menu": {
+            "profile":"Perfil",
             "mySamplings":"Mis Muestreos",
             "adminData": "Administrar datos",
             "create": "Crear",

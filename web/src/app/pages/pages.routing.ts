@@ -25,6 +25,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
       { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
+      { path: 'profile', loadChildren: './profile/profile.module#ProfileModule' },
       { path: 'mySamplings', loadChildren: './mySamplings/mySamplings.module#MySamplingsModule' },
       { path: 'admin/create', loadChildren: './create/create.module#CreateModule' },
       { path: 'admin/edit', loadChildren: './edit/edit.module#EditModule' },
