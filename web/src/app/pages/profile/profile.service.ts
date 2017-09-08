@@ -19,7 +19,7 @@ export class ProfileService {
     getData(): Promise<any> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(this._data.observationsData);
+                resolve(this._data);
             }, 2000);
         });
     }

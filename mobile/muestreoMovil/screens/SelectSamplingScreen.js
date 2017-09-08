@@ -34,9 +34,9 @@ export class SelectSamplingScreen extends Component {
         style={UtilStyles.container}>
 
         <View style={UtilStyles.section}>
-          <RkText rkType='header'>Seleccionar muestreo</RkText>
           <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
+            <RkText rkType='header'>Seleccionar muestreo</RkText>
             <Picker
             selectedValue={this.state.language}
             onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
@@ -45,6 +45,24 @@ export class SelectSamplingScreen extends Component {
             <Picker.Item label="CB021" value="13" />
             <Picker.Item label="FM032" value="14" />
             <Picker.Item label="MT039" value="15" />
+            </Picker>
+            <RkText rkType='header'>Seleccionar grupo</RkText>
+            <Picker
+            selectedValue={this.state.language}
+            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+            <Picker.Item label="Cuadrilla 1" value="11" />
+            <Picker.Item label="Cuadrilla 2" value="12" />
+            <Picker.Item label="Aulas 3" value="12" />
+            </Picker>
+            <RkText rkType='header'>Seleccionar recorrido</RkText>
+            <Picker
+            selectedValue={this.state.language}
+            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+            <Picker.Item label="8:00" value="11" />
+            <Picker.Item label="10:23" value="12" />
+            <Picker.Item label="12:03" value="13" />
+            <Picker.Item label="16:09" value="14" />
+            <Picker.Item label="17:30" value="15" />
             </Picker>
             <RkText rkType="large">Cantidad de trabajadores</RkText>
             <RkText rkType="medium">40</RkText>

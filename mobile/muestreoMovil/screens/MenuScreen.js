@@ -24,7 +24,7 @@ export class MenuScreen extends Component {
     this.state = {
       checked: true
     };
-    manUsuario = 'http://www.duckduckgo.com';
+    manUsuario = 'https://github.com/MarAvFe/muestreo/tree/master/documentos/usuario/readme.md';
   }
 
   render() {

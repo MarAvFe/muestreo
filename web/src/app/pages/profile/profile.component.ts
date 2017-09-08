@@ -57,9 +57,6 @@ export class ProfileComponent {
     source: LocalDataSource = new LocalDataSource();
 
     constructor(private _profileService: ProfileService) {
-        this._profileService.getData().then((data) => {
-          this.source.load(data);
-        });
     }
 
     ngOnInit() {
