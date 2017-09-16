@@ -42,11 +42,15 @@ Para ejecutar tareas sobre alguna tabla en específico, se sigue el formato `htt
 En todos los casos, los parámetros deben ser los existentes en la base de datos y se utilizan para filtrar las acciones.
 
 Asuma la tabla Usuario, con autoincrement en el id.
-| idUsuario  | nombre | edad |
-|---|---|---|
-| 1 | Andrea | 24 |
-| 2 | Carlos | 42 |
-| 3 | Luis  | 13 |
+```
+╔═══════════════════════════╗
+║ idUsuario | nombre | edad ║
+║───────────|────────|──────║
+║     1     | Andrea |  24  ║
+║     2     | Carlos |  42  ║
+║     3     | Luis   |  13  ║
+╚═══════════════════════════╝
+```
 
 ##### Para agregar una fila
 Debe enviar al menos los parámetros que tengan NotNull en la bd. El siguiente request:
@@ -102,3 +106,18 @@ generaría en la bd:
 ```sql
 getUsuariosEnRango(30, 60);
 ```
+---
+
+## Documentar API del WebService
+Para este procedimiento se utiliza la ayuda de la herramienta [JsDoc](https://github.com/jsdoc3/jsdoc), incluida en las dependencias, por lo que ya existe al momento de ejecutar npm install.
+
+Primero verifique si existe el directorio `~/path/to/muestreo/webservice/docs` y elimine el contenido del mismo.
+
+Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:
+``` bash
+developer:~/path/to/muestreo/webservice$ sudo chmod +x docs.sh
+developer:~/path/to/muestreo/webservice$ ./docs.sh
+```
+En caso de tener algún problema con este procedimiento, intente ejecutar desde la consola el contenido del archivo `docs.sh`
+
+Esto generará una serie de archivos html dentro de la carpeta `docs`. Ingrese a tal carpeta y abra el archivo `index.html`.

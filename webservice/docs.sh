@@ -1,1 +1,2 @@
-Running node v8.4.0 (npm v5.3.0)
+node ./node_modules/jsdoc/jsdoc.js api -r -c node_modules/jsdoc/conf.json -d docs -R readme.md
+
