@@ -1,0 +1,38 @@
+{
+	"mysql": {
+		"connectionLimit": 101,
+		"host": "localhost",
+		"port": "3306",
+		"user": "root",
+		"password": "123456",
+		"database": "sampling"
+
+	},
+
+	"express": {
+		"port": 2828
+	},
+
+	"generator": {
+		"crud": {
+			"request": {
+				"host": "localhost",
+				"port": 2828,
+				"path": "/tables/get",
+				"method": "POST"
+			},
+			"exceptions": [],
+			"routesDir": "../api/routes/gen/crud"
+		},
+		"procedures": {
+			"request": {
+				"host": "localhost",
+				"port": 2828,
+				"path": "/procedures/get",
+				"method": "POST"
+			},
+			"exceptions": [],
+			"routesDir": "../api/routes/gen/procedures"
+		}
+	}
+}
