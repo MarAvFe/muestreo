@@ -3,7 +3,7 @@ Prototipo
 
 Para comenzar a familiarizarse con la plantilla de [akveo](http://akveo.com/blur-admin-mint/#/dashboard), lo mejor es comenzar con las páginas de login y reestablecer contraseña que vienen siendo prácticamente lo mismo.
 
-Todo el prototipo pretende mostrar el mínimo necesario del contenido en las pantallas. Sin embargo no es imperativo que se vea tal cual está sugerido. Guíense en su mayoría por lo que está utilizado en akveo. Hay que andar con cuidado. Aunque pareza que la plantilla del dashboard es solo eliminar todo el contenido, no es tan simple.
+Todo el prototipo pretende mostrar el mínimo necesario del contenido en las pantallas. Sin embargo no es imperativo que se vea tal cual está sugerido. Guíense en su mayoría por lo que está utilizado en akveo. Hay que andar con cuidado. Aunque parezca que la plantilla del dashboard es solo eliminar todo el contenido, no es tan simple.
 
 ### Dashboard
 Luego lo mejor es hacer la del dashboard vacía y guardarla aparte como plantilla para copiar y pegar y comenzar las demás desde ahí.
