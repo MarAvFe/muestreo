@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3> </h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>WebService</h1><h2>Instalar dependencias del WebService</h2><p>Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:</p>
+<pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ npm install</code></pre><p>Verifique en el archivo <code>./path/to/muestreo/webservice/conf/default.json</code> los valores de conexión a mysql y la consistencia del puerto a escuchar, que sea el mismo en express y en el generador.</p>
+<h2>Ejecutar WebService</h2><p>Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:</p>
+<pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ node server.js</code></pre><h2>Generar WebService</h2><p>Para generar las funciones del webservice según la base de datos, debe tener corriendo el WebService en otra consola y ejecutar lo siguiente:</p>
+<pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ node generator/crud.js
+developer:~/path/to/muestreo/webservice$ node generator/procedures.js</code></pre><p>Finalmente reinicie la instancia del WebService en la otra consola.</p>
+<hr>
+<h2>Consultar WebService</h2><p>Las consultas al WebService deben llevar los siguientes encabezados:</p>
+<pre class="prettyprint source"><code>Content-Type : application/x-www-form-urlencoded
+Access-Control-Allow-Origin : *
+Access-Control-Allow-Headers : Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin</code></pre><p>En <a href="https://www.getpostman.com/">Postman</a> el segundo y tercer encabezado se incluyen automáticamente. Para definir el primero, debe ir a la pestaña de <code>body</code> y seleccionar <code>x-www-form-urlencoded</code>. Abajo se habilitará un formulario donde podrá incluir parámetros al request.</p>
+<p>Todas las consultas serán con el método <code>POST</code>.</p>
+<h3>CRUD sobre una tabla</h3><p>Para ejecutar tareas sobre alguna tabla en específico, se sigue el formato <code>http://localhost:2828/NombreDeLaTabla/accion</code> y se envían los parámetros pertinentes a la misma.</p>
+<p>En todos los casos, los parámetros deben ser los existentes en la base de datos y se utilizan para filtrar las acciones.</p>
+<p>Asuma la tabla Usuario, con autoincrement en el id.</p>
+<pre class="prettyprint source"><code>╔═══════════════════════════╗
+║ idUsuario | nombre | edad ║
+║───────────|────────|──────║
+║     1     | Andrea |  24  ║
+║     2     | Carlos |  42  ║
+║     3     | Luis   |  13  ║
+╚═══════════════════════════╝</code></pre><h5>Para agregar una fila</h5><p>Debe enviar al menos los parámetros que tengan NotNull en la bd. El siguiente request:</p>
+<pre class="prettyprint source"><code>url : http://localhost:2828/Usuario/add
+params : nombre=Marta&edad=30</code></pre><p>generaría en la bd:</p>
+<pre class="prettyprint source lang-sql"><code>Insert into Usuario (nombre, edad) values (Marta, 30);</code></pre><h5>Para leer filas</h5><p>Puede enviar tantos parámetros como guste para filtrar los resultados. El siguiente request:</p>
+<pre class="prettyprint source"><code>url : http://localhost:2828/Usuario/get
+params : nombre=Marta&edad=30</code></pre><p>generaría en la bd:</p>
+<pre class="prettyprint source lang-sql"><code>Select * From Usuario Where nombre = 'Marta' And edad = 30;</code></pre><h5>Para editar</h5><p>Se envían los valores actualizados con el mismo formato que en el <code>add</code>, pero se envían también los valores antigüos con el prefijo <code>f_</code> para utilizarlos como filtros del update. El siguiente request:</p>
+<pre class="prettyprint source"><code>url : http://localhost:2828/Usuario/get
+params : f_nombre=Marta&edad=50&f_edad=30</code></pre><p>generaría en la bd:</p>
+<pre class="prettyprint source lang-sql"><code>Update Usuario Set edad = 50 Where nombre = 'Marta' And edad = 30;</code></pre><h5>Para eliminar</h5><p>Se envían parámetros de la misma manera que en el <code>get</code> para filtrar los valores a eliminar. Recuerde que esta acción es <strong>irreversible</strong>; sea cuidadoso. El siguiente request:</p>
+<pre class="prettyprint source"><code>url : http://localhost:2828/Usuario/get
+params : nombre=Marta&edad=30</code></pre><p>generaría en la bd:</p>
+<pre class="prettyprint source lang-sql"><code>Select * From Usuario Where nombre = 'Marta' And edad = 30;</code></pre><h3>Ejecución de procedimientos</h3><p>Para ejecutar procedimientos, se sigue el formato <code>http://localhost:2828/NombreDelProcedimiento</code> y se envían los parámetros pertinentes a la misma, de la siguiente manera:</p>
+<pre class="prettyprint source"><code>url : http://localhost:2828/getUsuariosEnRango
+params : bajo=30&alto=60</code></pre><p>generaría en la bd:</p>
+<pre class="prettyprint source lang-sql"><code>getUsuariosEnRango(30, 60);</code></pre><hr>
+<h2>Documentar API del WebService</h2><p>Para este procedimiento se utiliza la ayuda de la herramienta <a href="https://github.com/jsdoc3/jsdoc">JsDoc</a>, incluida en las dependencias, por lo que ya existe al momento de ejecutar npm install.</p>
+<p>Primero verifique si existe el directorio <code>~/path/to/muestreo/webservice/docs</code> y elimine el contenido del mismo.</p>
+<p>Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:</p>
+<pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ sudo chmod +x docs.sh
+developer:~/path/to/muestreo/webservice$ ./docs.sh</code></pre><p>En caso de tener algún problema con este procedimiento, intente ejecutar desde la consola el contenido del archivo <code>docs.sh</code></p>
+<p>Esto generará una serie de archivos html dentro de la carpeta <code>docs</code>. Ingrese a tal carpeta y abra el archivo <code>index.html</code>.</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="app.html">app</a></li><li><a href="dbConnection.html">dbConnection</a></li><li><a href="logger.html">logger</a></li><li><a href="route.html">route</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Comment">Comment</a></li><li><a href="global.html#getImprodActs">getImprodActs</a></li><li><a href="global.html#ImprodAct">ImprodAct</a></li><li><a href="global.html#Observation">Observation</a></li><li><a href="global.html#procedures">procedures</a></li><li><a href="global.html#router">router</a></li><li><a href="global.html#Sampling">Sampling</a></li><li><a href="global.html#SamplingType">SamplingType</a></li><li><a href="global.html#Schedule">Schedule</a></li><li><a href="global.html#tables">tables</a></li><li><a href="global.html#Trail">Trail</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#Worker">Worker</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Sep 16 2017 14:45:22 GMT-0600 (CST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
