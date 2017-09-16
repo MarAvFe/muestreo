@@ -70,7 +70,54 @@
                 [source]="source"
                 (deleteConfirm)="onDeleteConfirm($event)">
             </ng2-smart-table>
-        </ba-card>
+            </ba-card>
+  <div class="row">
+            <div class="col-md-12">
+            <ba-card cardTitle="Sampling Details" baCardClass="with-scroll">
+              <div class="form-group">
+                  <label for="input11" translate>{{'Name'}}</label>
+                  <input type="text" class="form-control" id="input11" placeholder="">
+              </div>
+              <div class="form-group">
+                  <label for="input11" translate>{{'Description'}}</label>
+                  <input type="text" class="form-control" id="input11" placeholder="">
+              </div>
+              <div class="form-group">
+                <label for="exampleSelect1">Type</label>
+                <select class="form-control" id="exampleSelect1">
+                  <option>Muestreo del Trabajo</option>
+                  <option>Work Sampling</option>
+                  <option>Five minute</option>
+                  <option>Crew Balance</option>
+                </select>
+              </div>
+            </ba-card>
+            </div>
+</div>
+  <div class="row">
+    <div class="col-md-12">
+    <ba-card cardTitle="Parámetros" baCardClass="with-scroll">
+        <div class="form-group">
+          <ba-card cardTitle="Preliminares" baCardClass="with-scroll">
+                <ng2-smart-table [settings]="campostablapre" [source]="source"
+                (createConfirm)="onCreateConfirmImprodAct($event)"
+                (editConfirm)="onEditConfirmImprodAct($event)"
+                (deleteConfirm)="onDeleteConfirmImprodAct($event)"></ng2-smart-table>
+          </ba-card>
+        </div>
+
+        <div class="form-group">
+          <ba-card cardTitle="Definitivos" baCardClass="with-scroll">
+            <ng2-smart-table [settings]="campostabladefi" [source]="source"
+            (createConfirm)="onCreateConfirmImprodAct($event)"
+            (editConfirm)="onEditConfirmImprodAct($event)"
+            (deleteConfirm)="onDeleteConfirmImprodAct($event)"></ng2-smart-table>
+          </ba-card>
+        </div>
+      </ba-card>
+  </div>
+
+
     </div>
 </div>
 

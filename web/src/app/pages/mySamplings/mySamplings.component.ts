@@ -11,6 +11,78 @@ export class MySamplingsComponent {
 
     query: string = '';
 
+    campostabladefi = {
+    add: {
+        addButtonContent: '<i class="ion-ios-plus-outline"></i>',
+        createButtonContent: '<i class="ion-checkmark"></i>',
+        cancelButtonContent: '<i class="ion-close"></i>',
+        confirmCreate: true,
+    },
+    edit: {
+        editButtonContent: '<i class="ion-edit"></i>',
+        saveButtonContent: '<i class="ion-checkmark"></i>',
+        cancelButtonContent: '<i class="ion-close"></i>',
+        confirmSave: true,
+    },
+    delete: {
+        deleteButtonContent: '<i class="ion-trash-a"></i>',
+        confirmDelete: true,
+    },
+      columns: {
+        n1: {
+          title: 'n',
+          type: 'number'
+        },
+        e1: {
+          title: 'E',
+          type: 'number'
+        },
+        p1: {
+          title: 'p',
+          type: 'number'
+        },
+        q1: {
+          title: 'q',
+          type: 'number'
+        }
+      }
+    };
+    campostablapre = {
+    add: {
+        addButtonContent: '<i class="ion-ios-plus-outline"></i>',
+        createButtonContent: '<i class="ion-checkmark"></i>',
+        cancelButtonContent: '<i class="ion-close"></i>',
+        confirmCreate: true,
+    },
+    edit: {
+        editButtonContent: '<i class="ion-edit"></i>',
+        saveButtonContent: '<i class="ion-checkmark"></i>',
+        cancelButtonContent: '<i class="ion-close"></i>',
+        confirmSave: true,
+    },
+    delete: {
+        deleteButtonContent: '<i class="ion-trash-a"></i>',
+        confirmDelete: true,
+    },
+      columns: {
+        n: {
+          title: 'n',
+          type: 'number'
+        },
+        e: {
+          title: 'E',
+          type: 'number'
+        },
+        p: {
+          title: 'p',
+          type: 'number'
+        },
+        q: {
+          title: 'q',
+          type: 'number'
+        }
+      }
+    };
     settings = {
         add: {
           addButtonContent: '<i hidden="" class="ion-ios-plus-outline"></i>',
