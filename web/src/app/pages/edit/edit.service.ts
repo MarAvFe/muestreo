@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { ImprodAct } from './objects/ImprodAct';
+import { Activity } from './objects/Activity';
 import { Feedback } from './objects/Feedback';
 
 @Injectable()
@@ -23,30 +23,30 @@ export class EditService {
         return Promise.reject(error.message || error);
     }
 
-    getImprodActs(): Promise<ImprodAct[]> {
-        return this.http.post('http://localhost:2828/getImprodActs', { headers : this.heads } )
+    getActivities(): Promise<Activity[]> {
+        return this.http.post('http://localhost:2828/getActivities', { headers : this.heads } )
         .toPromise()
-        .then(response => response.json().data[0] as ImprodAct[])
+        .then(response => response.json().data[0] as Activity[])
         .catch(this.handleError);
     }
 
-    addImprodAct(data): Promise<Feedback> {
+    addActivity(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/ImprodAct/add', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/Activity/add', body, { headers : this.heads } )
         .toPromise()
         .then(response => response.json());
     }
 
-    editImprodAct(data): Promise<Feedback> {
+    editActivity(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/ImprodAct/update', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/Activity/update', body, { headers : this.heads } )
         .toPromise()
         .then(response => response.json());
     }
 
-    deleteImprodAct(data): Promise<Feedback> {
+    deleteActivity(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/ImprodAct/delete', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/Activity/delete', body, { headers : this.heads } )
         .toPromise()
         .then(response => response.json());
     }

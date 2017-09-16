@@ -137,14 +137,14 @@ ENGINE = InnoDB;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `sampling`.`ImprodAct`
+-- Table `sampling`.`Activity`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sampling`.`ImprodAct` (
-  `idImprodAct` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `sampling`.`Activity` (
+  `idActivity` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(255) NOT NULL,
-  `isCollaborative` BIT NOT NULL,
-  PRIMARY KEY (`idImprodAct`))
+  `type` TINYINT NOT NULL,
+  PRIMARY KEY (`idActivity`))
 ENGINE = InnoDB;
 
 SHOW WARNINGS;
@@ -161,12 +161,12 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
   `Worker_idWorker` INT NOT NULL,
   `User_idUser` INT NOT NULL,
   `Trail_idTrail` INT NOT NULL,
-  `ImprodAct_idImprodAct` INT NOT NULL,
-  PRIMARY KEY (`idObservation`, `User_idUser`, `ImprodAct_idImprodAct`, `Trail_idTrail`, `Worker_idWorker`),
+  `Activity_idActivity` INT NOT NULL,
+  PRIMARY KEY (`idObservation`, `User_idUser`, `Activity_idActivity`, `Trail_idTrail`, `Worker_idWorker`),
   INDEX `fk_Observation_Worker1_idx` (`Worker_idWorker` ASC),
   INDEX `fk_Observation_User1_idx` (`User_idUser` ASC),
   INDEX `fk_Observation_IdTrail_idx` (`Trail_idTrail` ASC),
-  INDEX `fk_Observation_ImprodAct1_idx` (`ImprodAct_idImprodAct` ASC),
+  INDEX `fk_Observation_ImprodAct1_idx` (`Activity_idActivity` ASC),
   CONSTRAINT `fk_Observation_Worker1`
     FOREIGN KEY (`Worker_idWorker`)
     REFERENCES `sampling`.`Worker` (`idWorker`)
@@ -183,8 +183,8 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Observation_ImprodAct1`
-    FOREIGN KEY (`ImprodAct_idImprodAct`)
-    REFERENCES `sampling`.`ImprodAct` (`idImprodAct`)
+    FOREIGN KEY (`Activity_idActivity`)
+    REFERENCES `sampling`.`Activity` (`idActivity`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -232,6 +232,30 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Schedule` (
   CONSTRAINT `fk_Sampling_idSampling`
     FOREIGN KEY (`Sampling_idSampling`)
     REFERENCES `sampling`.`Sampling` (`idSampling`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `sampling`.`Sampling_has_User`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sampling`.`Sampling_has_User` (
+  `Sampling_idSampling` INT NOT NULL,
+  `User_idUser` INT NOT NULL,
+  `isAdmin` BIT NOT NULL,
+  PRIMARY KEY (`Sampling_idSampling`, `User_idUser`),
+  INDEX `fk_Sampling_has_User_User1_idx` (`User_idUser` ASC),
+  INDEX `fk_Sampling_has_User_Sampling1_idx` (`Sampling_idSampling` ASC),
+  CONSTRAINT `fk_Sampling_has_User_Sampling1`
+    FOREIGN KEY (`Sampling_idSampling`)
+    REFERENCES `sampling`.`Sampling` (`idSampling`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Sampling_has_User_User1`
+    FOREIGN KEY (`User_idUser`)
+    REFERENCES `sampling`.`User` (`idUser`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

@@ -46,9 +46,12 @@
         <article><h1>WebService</h1><h2>Instalar dependencias del WebService</h2><p>Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:</p>
 <pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ npm install</code></pre><p>Verifique en el archivo <code>./path/to/muestreo/webservice/conf/default.json</code> los valores de conexión a mysql y la consistencia del puerto a escuchar, que sea el mismo en express y en el generador.</p>
 <h2>Ejecutar WebService</h2><p>Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:</p>
-<pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ node server.js</code></pre><h2>Generar WebService</h2><p>Para generar las funciones del webservice según la base de datos, debe tener corriendo el WebService en otra consola y ejecutar lo siguiente:</p>
-<pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ node generator/crud.js
-developer:~/path/to/muestreo/webservice$ node generator/procedures.js</code></pre><p>Finalmente reinicie la instancia del WebService en la otra consola.</p>
+<pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ node server.js</code></pre><h2>Generar WebService</h2><p>Antes de la generación, debe eliminar (si existe) el contenido de los directorios <code>muestreo/webservice/api/routes/gen</code>.
+Para generar las funciones del webservice según la base de datos, debe tener corriendo el WebService en otra consola y ejecutar lo siguiente:</p>
+<pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ cd generator
+developer:~/path/to/muestreo/webservice$ node crud.js
+developer:~/path/to/muestreo/webservice$ node procedures.js</code></pre><p>Por la ruta de generación de archivos, es importante que ejecute el <code>$ node crud.js</code> estando dentro de la carpeta <code>generator</code>.</p>
+<p>Verifique la existencia de múltiples archivos en la carpeta <code>gen</code> que se vació previamente. Finalmente reinicie la instancia del WebService en la otra consola.</p>
 <hr>
 <h2>Consultar WebService</h2><p>Las consultas al WebService deben llevar los siguientes encabezados:</p>
 <pre class="prettyprint source"><code>Content-Type : application/x-www-form-urlencoded
@@ -81,10 +84,16 @@ params : nombre=Marta&edad=30</code></pre><p>generaría en la bd:</p>
 params : bajo=30&alto=60</code></pre><p>generaría en la bd:</p>
 <pre class="prettyprint source lang-sql"><code>getUsuariosEnRango(30, 60);</code></pre><hr>
 <h2>Documentar API del WebService</h2><p>Para este procedimiento se utiliza la ayuda de la herramienta <a href="https://github.com/jsdoc3/jsdoc">JsDoc</a>, incluida en las dependencias, por lo que ya existe al momento de ejecutar npm install.</p>
-<p>Primero verifique si existe el directorio <code>~/path/to/muestreo/webservice/docs</code> y elimine el contenido del mismo.</p>
-<p>Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:</p>
-<pre class="prettyprint source lang-bash"><code>developer:~/path/to/muestreo/webservice$ sudo chmod +x docs.sh
-developer:~/path/to/muestreo/webservice$ ./docs.sh</code></pre><p>En caso de tener algún problema con este procedimiento, intente ejecutar desde la consola el contenido del archivo <code>docs.sh</code></p>
+<ol>
+<li><p>Verifique si existe el directorio <code>~/path/to/muestreo/webservice/docs</code> y elimine el contenido del mismo.</p>
+</li>
+<li><p>Cambie el nombre del archivo <code>./node_modules/jsdoc/conf.json.EXAMPLE</code> por <code>./node_modules/jsdoc/conf.json</code>.</p>
+</li>
+<li><p>Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:</p>
+<pre class="prettyprint source lang-bash"><code> developer:~/path/to/muestreo/webservice$ sudo chmod +x  docs.sh
+ developer:~/path/to/muestreo/webservice$ ./docs.sh</code></pre><p>En caso de tener algún problema con este procedimiento, intente ejecutar desde la consola el contenido del archivo <code>docs.sh</code></p>
+</li>
+</ol>
 <p>Esto generará una serie de archivos html dentro de la carpeta <code>docs</code>. Ingrese a tal carpeta y abra el archivo <code>index.html</code>.</p></article>
     </section>
 
@@ -96,13 +105,13 @@ developer:~/path/to/muestreo/webservice$ ./docs.sh</code></pre><p>En caso de ten
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="app.html">app</a></li><li><a href="dbConnection.html">dbConnection</a></li><li><a href="logger.html">logger</a></li><li><a href="route.html">route</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Comment">Comment</a></li><li><a href="global.html#getImprodActs">getImprodActs</a></li><li><a href="global.html#ImprodAct">ImprodAct</a></li><li><a href="global.html#Observation">Observation</a></li><li><a href="global.html#procedures">procedures</a></li><li><a href="global.html#router">router</a></li><li><a href="global.html#Sampling">Sampling</a></li><li><a href="global.html#SamplingType">SamplingType</a></li><li><a href="global.html#Schedule">Schedule</a></li><li><a href="global.html#tables">tables</a></li><li><a href="global.html#Trail">Trail</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#Worker">Worker</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="app.html">app</a></li><li><a href="dbConnection.html">dbConnection</a></li><li><a href="logger.html">logger</a></li><li><a href="route.html">route</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Activity">Activity</a></li><li><a href="global.html#Comment">Comment</a></li><li><a href="global.html#getActivities">getActivities</a></li><li><a href="global.html#Observation">Observation</a></li><li><a href="global.html#procedures">procedures</a></li><li><a href="global.html#router">router</a></li><li><a href="global.html#Sampling">Sampling</a></li><li><a href="global.html#Sampling_has_User">Sampling_has_User</a></li><li><a href="global.html#SamplingType">SamplingType</a></li><li><a href="global.html#Schedule">Schedule</a></li><li><a href="global.html#tables">tables</a></li><li><a href="global.html#Trail">Trail</a></li><li><a href="global.html#User">User</a></li><li><a href="global.html#Worker">Worker</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Sep 16 2017 14:45:22 GMT-0600 (CST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Sep 16 2017 17:35:34 GMT-0600 (CST)
 </footer>
 
 <script> prettyPrint(); </script>

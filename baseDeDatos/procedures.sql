@@ -1,6 +1,6 @@
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getImprodActs`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getActivities`()
 BEGIN
-	select name, description, isCollaborative from ImprodAct;
+	select name, description, type from Activity;
 END$$
 DELIMITER ;
