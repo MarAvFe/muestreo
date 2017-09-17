@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import { NgUploaderOptions } from 'ngx-uploader';
+import { ToastsManager, Toast } from 'ng2-toastr';
 
 import { EditService } from './edit.service';
 import { LocalDataSource } from 'ng2-smart-table';
@@ -60,7 +61,8 @@ export class EditComponent {
 
     source: LocalDataSource = new LocalDataSource();
 
-    constructor(protected service: EditService) {
+    constructor(public toastr: ToastsManager, vcr: ViewContainerRef, protected service: EditService) {
+        this.toastr.setRootViewContainerRef(vcr);
         this.service.getActivities().then((data) => {
             this.source.load(data);
         });
@@ -73,7 +75,8 @@ export class EditComponent {
              if (res.error === 'none') {
                  event.confirm.resolve();
              }else {
-                 console.debug/*errorModal(*/('Por favor, compruebe los parámetros.');
+
+                 this.toastr.error('Por favor, compruebe los parámetros.');
                  console.debug(JSON.stringify(res));
                  event.confirm.reject();
              }
@@ -87,7 +90,7 @@ export class EditComponent {
              if (res.error === 'none') {
                  event.confirm.resolve();
              }else {
-                 console.debug/*errorModal(*/('Por favor, compruebe los parámetros.');
+                 this.toastr.error('Por favor, compruebe los parámetros.');
                  console.debug(JSON.stringify(res));
                  event.confirm.reject();
              }
@@ -102,7 +105,7 @@ export class EditComponent {
                  if (res.error === 'none') {
                      event.confirm.resolve();
                  }else {
-                     console.debug/*errorModal(*/('Por favor, compruebe los parámetros.');
+                     this.toastr.error('Por favor, compruebe los parámetros.');
                      console.debug(JSON.stringify(res));
                      event.confirm.reject();
                  }
