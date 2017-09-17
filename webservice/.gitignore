@@ -1,4 +1,4 @@
-logs
-api/routes/gen
+logs/*
+api/routes/gen/*
 node_modules
-docs
+docs/*

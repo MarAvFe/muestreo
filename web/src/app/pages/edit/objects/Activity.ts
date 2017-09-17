@@ -1,4 +1,4 @@
-export class ImprodAct {
+export class Activity {
     name: string;
     description: string;
     isCollaborative: {

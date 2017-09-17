@@ -40,16 +40,17 @@ export class EditComponent {
                 title: 'Descripción',
                 type: 'string',
             },
-            isCollaborative: {
-                title: 'Es colaborativa?',
+            type: {
+                title: 'Tipo',
                 type: 'custom',
                 renderComponent: RenderBitComponent,
                 editor: {
                     type: 'list',
                     config: {
                         list: [
-                            { value: 'true', title: 'No' },
-                            { value: 'false', title: 'Si' },
+                            { value: 0, title: 'Productiva' },
+                            { value: 1, title: 'Improductiva' },
+                            { value: 2, title: 'Colaborativa' },
                         ],
                     },
                 },
@@ -60,13 +61,14 @@ export class EditComponent {
     source: LocalDataSource = new LocalDataSource();
 
     constructor(protected service: EditService) {
-        this.service.getImprodActs().then((data) => {
+        this.service.getActivities().then((data) => {
             this.source.load(data);
         });
     }
 
-    onCreateConfirmImprodAct(event): void {
-        this.service.addImprodAct(event.newData)
+    onCreateConfirmActivity(event): void {
+        console.debug(JSON.stringify(event.newData));
+        this.service.addActivity(event.newData)
         .then(res => {
              if (res.error === 'none') {
                  event.confirm.resolve();
@@ -79,8 +81,8 @@ export class EditComponent {
         );
     }
 
-    onEditConfirmImprodAct(event): void {
-        this.service.editImprodAct(this.service.selectFilters(event.data, event.newData))
+    onEditConfirmActivity(event): void {
+        this.service.editActivity(this.service.selectFilters(event.data, event.newData))
         .then(res => {
              if (res.error === 'none') {
                  event.confirm.resolve();
@@ -93,9 +95,9 @@ export class EditComponent {
         );
     }
 
-    onDeleteConfirmImprodAct(event): void {
+    onDeleteConfirmActivity(event): void {
         if (window.confirm('Seguro que desea eliminar?')) {
-            this.service.deleteImprodAct(event.data)
+            this.service.deleteActivity(event.data)
             .then(res => {
                  if (res.error === 'none') {
                      event.confirm.resolve();
