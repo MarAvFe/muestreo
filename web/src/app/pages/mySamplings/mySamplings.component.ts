@@ -5,6 +5,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 @Component({
   selector: 'mySamplings',
   templateUrl: 'mySamplings.html',
+  styleUrls: ['./smartTables.scss'],
 })
 export class MySamplingsComponent {
     data:any;
@@ -43,6 +44,10 @@ export class MySamplingsComponent {
         },
         q1: {
           title: 'q',
+          type: 'number'
+        },
+        z1: {
+          title: 'z',
           type: 'number'
         }
       }
