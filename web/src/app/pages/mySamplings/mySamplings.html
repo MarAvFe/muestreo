@@ -94,29 +94,28 @@
             </ba-card>
             </div>
 </div>
-  <div class="row">
-    <div class="col-md-12">
-    <ba-card cardTitle="Parámetros" baCardClass="with-scroll">
 
+    <ba-card cardTitle="Parámetros" baCardClass="with-scroll">
+      <div class="row">
+        <div class="col-lg-6 col-md-12">
           <ba-card cardTitle="Preliminares" baCardClass="with-scroll">
                 <ng2-smart-table [settings]="campostablapre" [source]="source"
                 (createConfirm)="onCreateConfirmImprodAct($event)"
                 (editConfirm)="onEditConfirmImprodAct($event)"
                 (deleteConfirm)="onDeleteConfirmImprodAct($event)"></ng2-smart-table>
           </ba-card>
-
-
+        </div>
+        <div class="col-lg-6 col-md-12">
           <ba-card cardTitle="Definitivos" baCardClass="with-scroll">
             <ng2-smart-table [settings]="campostabladefi" [source]="source"
             (createConfirm)="onCreateConfirmImprodAct($event)"
             (editConfirm)="onEditConfirmImprodAct($event)"
             (deleteConfirm)="onDeleteConfirmImprodAct($event)"></ng2-smart-table>
           </ba-card>
-      </ba-card>
-  </div>
-
 
     </div>
+    </div>
+    </ba-card> 
 </div>
 
 </div>
