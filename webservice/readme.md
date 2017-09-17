@@ -15,12 +15,16 @@ developer:~/path/to/muestreo/webservice$ node server.js
 ```
 
 ## Generar WebService
+Antes de la generación, debe eliminar (si existe) el contenido de los directorios `muestreo/webservice/api/routes/gen`.
 Para generar las funciones del webservice según la base de datos, debe tener corriendo el WebService en otra consola y ejecutar lo siguiente:
 ``` bash
-developer:~/path/to/muestreo/webservice$ node generator/crud.js
-developer:~/path/to/muestreo/webservice$ node generator/procedures.js
+developer:~/path/to/muestreo/webservice$ cd generator
+developer:~/path/to/muestreo/webservice$ node crud.js
+developer:~/path/to/muestreo/webservice$ node procedures.js
 ```
-Finalmente reinicie la instancia del WebService en la otra consola.
+Por la ruta de generación de archivos, es importante que ejecute el `$ node crud.js` estando dentro de la carpeta `generator`.
+
+Verifique la existencia de múltiples archivos en la carpeta `gen` que se vació previamente. Finalmente reinicie la instancia del WebService en la otra consola.
 
 ---
 
@@ -111,13 +115,15 @@ getUsuariosEnRango(30, 60);
 ## Documentar API del WebService
 Para este procedimiento se utiliza la ayuda de la herramienta [JsDoc](https://github.com/jsdoc3/jsdoc), incluida en las dependencias, por lo que ya existe al momento de ejecutar npm install.
 
-Primero verifique si existe el directorio `~/path/to/muestreo/webservice/docs` y elimine el contenido del mismo.
+1. Verifique si existe el directorio `~/path/to/muestreo/webservice/docs` y elimine el contenido del mismo.
 
-Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:
-``` bash
-developer:~/path/to/muestreo/webservice$ sudo chmod +x docs.sh
-developer:~/path/to/muestreo/webservice$ ./docs.sh
-```
+2. Cambie el nombre del archivo `./node_modules/jsdoc/conf.json.EXAMPLE` por `./node_modules/jsdoc/conf.json`.
+
+3. Navegue en su consola (donde ejecute node) hasta la carpeta del webservice y ejecute:
+    ``` bash
+    developer:~/path/to/muestreo/webservice$ sudo chmod +x  docs.sh
+    developer:~/path/to/muestreo/webservice$ ./docs.sh
+    ```
 En caso de tener algún problema con este procedimiento, intente ejecutar desde la consola el contenido del archivo `docs.sh`
 
 Esto generará una serie de archivos html dentro de la carpeta `docs`. Ingrese a tal carpeta y abra el archivo `index.html`.

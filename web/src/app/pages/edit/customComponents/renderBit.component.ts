@@ -15,9 +15,11 @@ export class RenderBitComponent implements ViewCell, OnInit {
   @Input() rowData: any;
 
   ngOnInit() {
-      if (typeof this.value === 'string') {
-          this.renderValue = this.value === '1' ? 'Si' : 'No';
-      }else if (this.value.data) {
+      if (typeof this.value === 'number') {
+          this.renderValue = this.value === 0 ? 'Productiva' : this.value === 1 ? 'Improductiva' : 'Colaborativa';
+      }else if (typeof this.value === 'string') {
+          this.renderValue = this.value === '0' ? 'Productiva' : this.value === '1' ? 'Improductiva' : 'Colaborativa';
+      }else if (this.value.data) { //
           this.renderValue = this.value.data[0] === 0 ? 'No' : 'Si';
       }else {
           const errStr = 'RenderBitComponent could not render: ';

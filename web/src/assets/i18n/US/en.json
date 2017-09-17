@@ -16,17 +16,17 @@
         "forgot_password": "Olvidó su contraseña?"
     },
     "register": {
-        "title": "Sign up to Work Sampling",
-        "signin_link": "Already have an Work Sampling account? Sign in!",
-        "name": "Name",
-        "lastname": "Lastname",
-        "password": "Password",
-        "repeat": "Repeat",
-        "identification" : "Identification",
-        "phone": "Phone",
-        "email": "Email",
-        "sign_up": "Sign up",
-        "difPwd": "Passwords don't match."
+        "title": "Registrarse en Muestreo del Trabajo",
+        "signin_link": "Ya cuenta con una cuenta en Muestreo del Trabajo? Inicie sesión!",
+        "name": "Nombre",
+        "lastname": "Apellido",
+        "password": "Contraseña",
+        "repeat": "Repetir",
+        "identification" : "Identificación",
+        "phone": "Teléfono",
+        "email": "Correo electrónico",
+        "sign_up": "Registrarse",
+        "difPwd": "Contraseñas no son iguales."
     },
     "general": {
         "appName": "Muestreo del Trabajo",
