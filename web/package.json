@@ -1,15 +1,15 @@
 {
-  "name": "ng2-admin",
-  "version": "1.0.0",
-  "description": "Angular and Bootstrap 4 Admin Template.",
-  "author": "Akveo <contact@akveo.com>",
-  "homepage": "http://akveo.github.io/ng2-admin/",
+  "name": "work-sampling",
+  "version": "0.1.0",
+  "description": "Tool for analyzing samples of some process sampling.",
+  "author": "MaKiNa",
+  "homepage": "https://github.com/MarAvFe/muestreo/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/akveo/ng2-admin.git"
+    "url": "https://github.com/MarAvFe/muestreo.git"
   },
   "bugs": {
-    "url": "https://github.com/akveo/ng2-admin/issues"
+    "url": "https://github.com/MarAvFe/muestreo/issues"
   },
   "license": "MIT",
   "scripts": {
@@ -122,4 +122,4 @@
     "wintersmith": "2.2.5",
     "wintersmith-sassy": "1.1.0"
   }
-} 
+}
