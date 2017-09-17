@@ -45,7 +45,7 @@ Para ejecutar tareas sobre alguna tabla en específico, se sigue el formato `htt
 
 En todos los casos, los parámetros deben ser los existentes en la base de datos y se utilizan para filtrar las acciones.
 
-Asuma la tabla Usuario, con autoincrement en el id.
+Asuma la tabla Usuario, con autoincrement en el id. Esta es únicamente un ejemplo
 ```
 ╔═══════════════════════════╗
 ║ idUsuario | nombre | edad ║
@@ -81,7 +81,7 @@ Select * From Usuario Where nombre = 'Marta' And edad = 30;
 ##### Para editar
 Se envían los valores actualizados con el mismo formato que en el `add`, pero se envían también los valores antigüos con el prefijo `f_` para utilizarlos como filtros del update. El siguiente request:
 ```
-url : http://localhost:2828/Usuario/get
+url : http://localhost:2828/Usuario/update
 params : f_nombre=Marta&edad=50&f_edad=30
 ```
 generaría en la bd:
@@ -92,7 +92,7 @@ Update Usuario Set edad = 50 Where nombre = 'Marta' And edad = 30;
 ##### Para eliminar
 Se envían parámetros de la misma manera que en el `get` para filtrar los valores a eliminar. Recuerde que esta acción es **irreversible**; sea cuidadoso. El siguiente request:
 ```
-url : http://localhost:2828/Usuario/get
+url : http://localhost:2828/Usuario/delete
 params : nombre=Marta&edad=30
 ```
 generaría en la bd:
