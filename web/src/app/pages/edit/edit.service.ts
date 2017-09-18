@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, RequestOptionsArgs } from '@angular/http';
+import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import { Activity } from './objects/Activity';
 import { Feedback } from './objects/Feedback';
@@ -8,7 +8,6 @@ import { Feedback } from './objects/Feedback';
 export class EditService {
 
     heads: any;
-    requestOptionsArgs: any;
 
     constructor(private http: Http) {
         this.heads = new Headers();

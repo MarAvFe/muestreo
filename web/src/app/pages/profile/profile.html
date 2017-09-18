@@ -15,24 +15,20 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="table-id">#</th>
-                            <th>Identificador</th>
                             <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Modalidad</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><a href="#">MT083</a></td>
-                            <td>Comedor Este</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><a href="#">CB011</a></td>
-                            <td>Auditorios por las tardes - noviembre</td>
+                        <tr *ngFor="let sampling of samplings">
+                            <td name="pName" ><a href="#">{{sampling.name}}</a></td>
+                            <td name="pSamplingType_idSamplingType" >{{sampling.SamplingType_idSamplingType}}</td>
+                            <td name="pLive" >{{sampling.live.data[0] == 0 ? "Presencial" : "Video" }}</td>
                         </tr>
                     </tbody>
                 </table>
+                <button type="submit" class="btn btn-success" (click)="createSamplingModal()">Crear</button>
             </ba-card>
         </div>
         <div class="col-md-6">

@@ -1,0 +1,32 @@
+@import "../../../theme/sass/conf/conf";
+
+.modal-buttons .btn {
+  margin-right: 20px;
+}
+
+.modal-content {
+  color: $body-bg;//$dropdown-text;
+}
+
+.modal-header{
+    background-color: $primary;
+    color: #fff;
+}
+
+label{
+    color: #000;
+}
+
+input, select, textarea{
+    border: 1px solid #000;
+    border-color: rgba(0, 0, 0, .7);
+    color: #333;
+
+    &::placeholder{
+        color: #888;
+    }
+
+    &:focus{
+        color: #333;
+    }
+}

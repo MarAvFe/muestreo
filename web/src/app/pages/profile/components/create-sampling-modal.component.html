@@ -1,0 +1,35 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">{{modalHeader}}</h4>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <form>
+          <div class="form-group">
+              <label for="input11" translate>Nombre</label>
+              <input [(ngModel)]="model.pName" name="name" type="text" class="form-control" id="input11" placeholder="Identificador corto">
+          </div>
+          <div class="form-group">
+              <label for="input13" translate>Descripción</label>
+              <textarea rows="3" [(ngModel)]="model.pDescription" name="description" class="form-control" id="input13" placeholder="Describa su muestreo"></textarea>
+          </div>
+          <div class="form-group">
+              <label for="input14" translate>Modalidad</label>
+              <select class="form-control" name="live" [(ngModel)]="model.pLive" id="input14">
+                  <option value="0">Presencial</option>
+                  <option value="1">Video</option>
+              </select>
+          </div>
+          <div class="form-group">
+              <label for="exampleSelect2">Tipo</label>
+              <select class="form-control" name="type" [(ngModel)]="model.pSamplingType_idSamplingType" id="exampleSelect2">
+                  <option *ngFor="let type of samplingTypes" value="{{type.idSamplingType}}">{{type.name}}</option>
+              </select>
+          </div>
+          <button class="btn btn-success btn-block confirm-btn" (click)="createSampling()">Crear</button>
+
+      </form>
+  </div>
+</div>
