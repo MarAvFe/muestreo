@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+
+import {DefParam} from './objects/DefParam'
 import { PreParam } from './objects/PreParam';
 import { Feedback } from './objects/Feedback';
-
 import { BaThemeConfigProvider } from '../../theme';
 
 @Injectable()
@@ -26,6 +27,17 @@ export class MySamplingsService {
     return Promise.reject(error.message || error);
   }
 
+  //carga los parámetros definitivos
+    getDefParam(data): Promise<DefParam[]> {
+      const body = this.toQueryString(data);
+      console.log("defintiivos" + JSON.stringify(body));
+      return this.http.post('http://localhost:2828/getDefParam', body, { headers : this.heads } )
+      .toPromise()
+      .then(response => response.json().data[0] as DefParam[])
+      .catch(this.handleError);
+    }
+
+//carga los parámetros preliminares
   getPreParam(data): Promise<PreParam[]> {
     const body = this.toQueryString(data);
     return this.http.post('http://localhost:2828/getPreParam', body, { headers : this.heads } )
@@ -34,6 +46,16 @@ export class MySamplingsService {
     .catch(this.handleError);
   }
 
+
+  //hace un update de los parámetros definitivos
+    editDefParam(data): Promise<Feedback> {
+      const body = this.toQueryString(data);
+      return this.http.post('http://localhost:2828/pUpDefParamsSampling', body, { headers : this.heads } )
+      .toPromise()
+      .then(response => response.json());
+    }
+
+//hace un update de los parámetros preliminares
   editPreParam(data): Promise<Feedback> {
     const body = this.toQueryString(data);
     return this.http.post('http://localhost:2828/pUpPreParamsSampling', body, { headers : this.heads } )
@@ -41,7 +63,18 @@ export class MySamplingsService {
     .then(response => response.json());
   }
 
-  createCompose(Info, bodyParams ): Object {
+  //hace un compuesto del idsampling, description, idsamplingtype mas los parámetros que ingresa el usuario
+    createComposeDef(Info, bodyParams ): Object {
+      console.log(Info);
+      console.log(bodyParams);
+     return {pId_Sampling:Info.pId_Sampling, pDescription: Info.pDescription, pIdSamplingType:Info.pIdSamplingType,
+       pp_definitive:bodyParams.p_definitive,pq_definitive:bodyParams.q_definitive, perror_definitive:bodyParams.error_definitive,
+       pn_definitive: bodyParams.n_definitive, pz_definitive:bodyParams.z_definitive}
+    }
+
+
+//hace un compuesto del idsampling, description, idsamplingtype mas los parámetros que ingresa el usuario
+  createComposePre(Info, bodyParams ): Object {
     console.log(Info);
     console.log(bodyParams);
    return {pId_Sampling:Info.pId_Sampling, pDescription: Info.pDescription, pIdSamplingType:Info.pIdSamplingType,

@@ -99,17 +99,16 @@
       <div class="row">
         <div class="col-lg-6 col-md-12">
           <ba-card cardTitle="Preliminares" baCardClass="with-scroll">
-                <ng2-smart-table [settings]="campostablapre" [source]="source"
+                <ng2-smart-table [settings]="campostablapre" [source]="sourcePreParam"
                 (editConfirm)="onEditConfirmPreParam($event)"
               ></ng2-smart-table>
           </ba-card>
         </div>
         <div class="col-lg-6 col-md-12">
           <ba-card cardTitle="Definitivos" baCardClass="with-scroll">
-            <ng2-smart-table [settings]="campostabladefi" [source]="source"
-            (createConfirm)="onCreateConfirmImprodAct($event)"
-            (editConfirm)="onEditConfirmImprodAct($event)"
-            (deleteConfirm)="onDeleteConfirmImprodAct($event)"></ng2-smart-table>
+            <ng2-smart-table [settings]="campostabladefi" [source]="sourceDefParam"
+            (editConfirm)="onEditConfirmDefParam($event)"
+          ></ng2-smart-table>
           </ba-card>
 
     </div>

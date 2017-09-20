@@ -18,40 +18,30 @@ export class MySamplingsComponent {
     query: string = '';
 
     campostabladefi = {
-    add: {
-        addButtonContent: '<i class="ion-ios-plus-outline"></i>',
-        createButtonContent: '<i class="ion-checkmark"></i>',
-        cancelButtonContent: '<i class="ion-close"></i>',
-        confirmCreate: true,
-    },
     edit: {
         editButtonContent: '<i class="ion-edit"></i>',
         saveButtonContent: '<i class="ion-checkmark"></i>',
         cancelButtonContent: '<i class="ion-close"></i>',
         confirmSave: true,
     },
-    delete: {
-        deleteButtonContent: '<i class="ion-trash-a"></i>',
-        confirmDelete: true,
-    },
       columns: {
-        n1: {
+        n_definitive: {
           title: 'n',
           type: 'number'
         },
-        e1: {
+        error_definitive: {
           title: 'E',
           type: 'number'
         },
-        p1: {
+        p_definitive: {
           title: 'p',
           type: 'number'
         },
-        q1: {
+        q_definitive: {
           title: 'q',
           type: 'number'
         },
-        z1: {
+        z_definitive: {
           title: 'z',
           type: 'number'
         }
@@ -130,21 +120,43 @@ export class MySamplingsComponent {
       }
     };
 
-    source: LocalDataSource = new LocalDataSource();
-
+    sourcePreParam: LocalDataSource = new LocalDataSource();
+    sourceDefParam: LocalDataSource = new LocalDataSource();
     constructor(public toastr: ToastsManager, vcr: ViewContainerRef, protected service: MySamplingsService) {
       this.toastr.setRootViewContainerRef(vcr);
+      this.service.getDefParam(this.sampleInfo).then((data) => {
+          this.sourceDefParam.load(data);
+      });
       this.service.getPreParam(this.sampleInfo).then((data) => {
-          this.source.load(data);
+          this.sourcePreParam.load(data);
 
       });
     }
 
+
+
     onEditConfirmPreParam(event): void {
       console.log("hola" + JSON.stringify(this.sampleInfo));
       console.log("new Data" +  JSON.stringify(event.newData));
-      console.log("funcion" +JSON.stringify(this.service.createCompose(this.sampleInfo,  event.newData)));
-        this.service.editPreParam(this.service.createCompose(this.sampleInfo,  event.newData))
+      console.log("funcion" +JSON.stringify(this.service.createComposePre(this.sampleInfo,  event.newData)));
+        this.service.editPreParam(this.service.createComposePre(this.sampleInfo,  event.newData))
+        .then(res => {
+             if (res.error === 'none') {
+                 event.confirm.resolve();
+             }else {
+                 this.toastr.error('Por favor, compruebe los parámetros.');
+                 console.debug(JSON.stringify(res));
+                 event.confirm.reject();
+             }
+         },
+        );
+    }
+
+    onEditConfirmDefParam(event): void {
+      console.log("hola" + JSON.stringify(this.sampleInfo));
+      console.log("new Data" +  JSON.stringify(event.newData));
+      console.log("funcion" +JSON.stringify(this.service.createComposeDef(this.sampleInfo,  event.newData)));
+        this.service.editDefParam(this.service.createComposeDef(this.sampleInfo,  event.newData))
         .then(res => {
              if (res.error === 'none') {
                  event.confirm.resolve();
