@@ -1,176 +1,87 @@
 import { Injectable } from '@angular/core';
+import { Headers, Http, RequestOptionsArgs } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+import { PreParam } from './objects/PreParam';
+import { Feedback } from './objects/Feedback';
 
 import { BaThemeConfigProvider } from '../../theme';
 
 @Injectable()
 export class MySamplingsService {
 
-    private _data = {
+  heads: any;
+  requestOptionsArgs: any;
 
-        observationsData: [
-            {
-                id: 1,
-                firstName: 'Mark',
-                lastName: 'Otto',
-                username: '@mdo',
-                email: 'mdo@gmail.com',
-                age: '28'
-            },
-            {
-                id: 2,
-                firstName: 'Jacob',
-                lastName: 'Thornton',
-                username: '@fat',
-                email: 'fat@yandex.ru',
-                age: '45'
-            },
-            {
-                id: 3,
-                firstName: 'Larry',
-                lastName: 'Bird',
-                username: '@twitter',
-                email: 'twitter@outlook.com',
-                age: '18'
-            },
-            {
-                id: 4,
-                firstName: 'John',
-                lastName: 'Snow',
-                username: '@snow',
-                email: 'snow@gmail.com',
-                age: '20'
-            },
-            {
-                id: 5,
-                firstName: 'Jack',
-                lastName: 'Sparrow',
-                username: '@jack',
-                email: 'jack@yandex.ru',
-                age: '30'
-            },
-            {
-                id: 6,
-                firstName: 'Ann',
-                lastName: 'Smith',
-                username: '@ann',
-                email: 'ann@gmail.com',
-                age: '21'
-            },
-            {
-                id: 7,
-                firstName: 'Barbara',
-                lastName: 'Black',
-                username: '@barbara',
-                email: 'barbara@yandex.ru',
-                age: '43'
-            },
-            {
-                id: 8,
-                firstName: 'Sevan',
-                lastName: 'Bagrat',
-                username: '@sevan',
-                email: 'sevan@outlook.com',
-                age: '13'
-            },
-            {
-                id: 9,
-                firstName: 'Ruben',
-                lastName: 'Vardan',
-                username: '@ruben',
-                email: 'ruben@gmail.com',
-                age: '22'
-            },
-            {
-                id: 10,
-                firstName: 'Karen',
-                lastName: 'Sevan',
-                username: '@karen',
-                email: 'karen@yandex.ru',
-                age: '33'
-            },
-            {
-                id: 11,
-                firstName: 'Mark',
-                lastName: 'Otto',
-                username: '@mark',
-                email: 'mark@gmail.com',
-                age: '38'
-            },
-            {
-                id: 12,
-                firstName: 'Jacob',
-                lastName: 'Thornton',
-                username: '@jacob',
-                email: 'jacob@yandex.ru',
-                age: '48'
-            },
-            {
-                id: 13,
-                firstName: 'Haik',
-                lastName: 'Hakob',
-                username: '@haik',
-                email: 'haik@outlook.com',
-                age: '48'
-            },
-            {
-                id: 14,
-                firstName: 'Garegin',
-                lastName: 'Jirair',
-                username: '@garegin',
-                email: 'garegin@gmail.com',
-                age: '40'
-            },
-            {
-                id: 15,
-                firstName: 'Krikor',
-                lastName: 'Bedros',
-                username: '@krikor',
-                email: 'krikor@yandex.ru',
-                age: '32'
-            }
-        ]
-    };
 
-    constructor(private _baConfig:BaThemeConfigProvider) {
-    }
+  constructor(private _baConfig: BaThemeConfigProvider, private http: Http) {
+    this.heads = new Headers();
+    this.heads.append('Content-Type', 'application/x-www-form-urlencoded');
+    this.heads.append('Access-Control-Allow-Origin', '*');
+    this.heads.append('Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
+  }
 
-    public getAll() {
-        return this._data;
-    }
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
+  }
 
-    getData(): Promise<any> {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(this._data.observationsData);
-            }, 2000);
-        });
-    }
+  getPreParam(data): Promise<PreParam[]> {
+    const body = this.toQueryString(data);
+    return this.http.post('http://localhost:2828/getPreParam', body, { headers : this.heads } )
+    .toPromise()
+    .then(response => response.json().data[0] as PreParam[])
+    .catch(this.handleError);
+  }
 
-    public getResponsive(padding, offset) {
-        return [
-            ['screen and (min-width: 1550px)', {
-                chartPadding: padding,
-                labelOffset: offset,
-                labelDirection: 'explode',
-                labelInterpolationFnc: function (value) {
-                    return value;
-                }
-            }],
-            ['screen and (max-width: 1200px)', {
-                chartPadding: padding,
-                labelOffset: offset,
-                labelDirection: 'explode',
-                labelInterpolationFnc: function (value) {
-                    return value;
-                }
-            }],
-            ['screen and (max-width: 600px)', {
-                chartPadding: 0,
-                labelOffset: 0,
-                labelInterpolationFnc: function (value) {
-                    return value[0];
-                }
-            }]
-        ];
-    }
+  editPreParam(data): Promise<Feedback> {
+    const body = this.toQueryString(data);
+    return this.http.post('http://localhost:2828/pUpPreParamsSampling', body, { headers : this.heads } )
+    .toPromise()
+    .then(response => response.json());
+  }
+
+  createCompose(Info, bodyParams ): Object {
+    console.log(Info);
+    console.log(bodyParams);
+   return {pId_Sampling:Info.pId_Sampling, pDescription: Info.pDescription, pIdSamplingType:Info.pIdSamplingType,
+     pp_preliminar:bodyParams.p_preliminar,pq_preliminar:bodyParams.q_preliminar, perror_preliminar:bodyParams.error_preliminar,
+     pn_preliminar: bodyParams.n_preliminar, pz_preliminar:bodyParams.z_preliminar}
+  }
+
+  private toQueryString(jsonBody: Object) {
+    // Receives some json and returns it in ws query format:
+    // {"name": "nombre","description": "descrip."} -> name=nombre&description=descrip
+    const keys = Object.keys(jsonBody).map(key => {
+      /* If boolean */
+      if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
+        jsonBody[key] = jsonBody[key] === 'true' ? 1 : 0;
+      }
+      /* If bit {"type": "Buffer","data": [1]} */
+      console.debug(jsonBody[key].type)
+      if (jsonBody[key].type ) {
+        jsonBody[key] = jsonBody[key].data[0];
+      }
+      return [key, jsonBody[key]].join('=');
+    });
+    const str = keys.join('&');
+    return str;
+  }
+
+  selectFilters(bef: Object, aft: Object) {
+    // Update ws function updates fields, filtering on the unchanged fields.
+    // The filter includes an 'f_' before the name (f_name).
+    // This function receives the before and after updating values, and adds the 'f_'
+    //   before the field name to define filters.
+    // bef : {"name": "nombre","description": "descrip."} ->
+    // aft : {"name": "nombre","description": "updated"} ->
+    // ret : {"fname": "nombre","fdescription": "descrip.","description": "updated"}
+    const ret = new Object();
+    const filterPrefix = 'f_';
+    const keys = Object.keys(bef).map(key => {
+      ret[key] = aft[key];
+      ret[filterPrefix + key] = bef[key];
+    });
+    return ret;
+  }
 }
