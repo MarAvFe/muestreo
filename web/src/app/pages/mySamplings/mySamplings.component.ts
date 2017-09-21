@@ -4,6 +4,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { RenderBitComponent } from './customComponents/renderBit.component';
 import { NgUploaderOptions } from 'ngx-uploader';
 import { ToastsManager, Toast } from 'ng2-toastr';
+import { SamplingName } from './objects/SamplingName';
 
 @Component({
   selector: 'mySamplings',
@@ -16,6 +17,12 @@ export class MySamplingsComponent {
     'pDescription': 'muestrear la construcción Escuela Mante',
      'pIdSamplingType': '1' };
     query: string = '';
+    SampName: SamplingName[];
+
+    getNames(service: MySamplingsService): void {
+      this.service.getSamplingName().then(SampName => this.SampName = SampName);
+    }
+
 
     campostabladefi = {
     edit: {
@@ -133,6 +140,9 @@ export class MySamplingsComponent {
       });
     }
 
+    ngOnInit() {
+        this.getNames(this.service);
+    }
 
 
     onEditConfirmPreParam(event): void {

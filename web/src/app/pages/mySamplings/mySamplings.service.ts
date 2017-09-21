@@ -5,6 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {DefParam} from './objects/DefParam'
 import { PreParam } from './objects/PreParam';
 import { Feedback } from './objects/Feedback';
+import { SamplingName } from './objects/SamplingName';
 import { BaThemeConfigProvider } from '../../theme';
 
 @Injectable()
@@ -27,10 +28,16 @@ export class MySamplingsService {
     return Promise.reject(error.message || error);
   }
 
+
+  getSamplingName(): Promise<SamplingName[]> {
+      return this.http.post('http://localhost:2828/getSamplingName', { headers : this.heads } )
+                 .toPromise()
+                 .then(response => response.json().data[0] as SamplingName[])
+                 .catch(this.handleError);
+  }
   //carga los parámetros definitivos
     getDefParam(data): Promise<DefParam[]> {
       const body = this.toQueryString(data);
-      console.log("defintiivos" + JSON.stringify(body));
       return this.http.post('http://localhost:2828/getDefParam', body, { headers : this.heads } )
       .toPromise()
       .then(response => response.json().data[0] as DefParam[])

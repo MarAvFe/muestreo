@@ -5,9 +5,7 @@
             <div class="form-group">
                 <h3>Seleccione un muestreo:</h3>
                 <select class="form-control">
-                    <option>Segundo piso, edificio de mecatrónica</option>
-                    <option>Uso de aulas D3 los miercoles en la tarde</option>
-                    <option>Linea de manufactura textil, cierre fiscal</option>
+                  <option *ngFor="let SamplingName of SampName">{{SamplingName.name}}</option>
                 </select>
             </div>
             <ba-card cardTitle="Colaboradores" baCardClass="with-scroll">
