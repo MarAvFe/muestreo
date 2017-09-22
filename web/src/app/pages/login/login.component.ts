@@ -1,33 +1,52 @@
-import {Component} from '@angular/core';
-import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
+import { Component, ViewContainerRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastsManager, Toast } from 'ng2-toastr';
+import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { LoginService } from './login.service';
 
 @Component({
-  selector: 'login',
-  templateUrl: './login.html',
-  styleUrls: ['./login.scss']
+    selector: 'login',
+    templateUrl: './login.html',
+    styleUrls: ['./login.scss']
 })
 export class Login {
 
-  public form:FormGroup;
-  public identif:AbstractControl;
-  public password:AbstractControl;
-  public submitted:boolean = false;
+    form: FormGroup;
+    pUser: AbstractControl;
+    pPwd: AbstractControl;
+    submitted: boolean = false;
 
-  constructor(fb:FormBuilder) {
-    this.form = fb.group({
-      'identif': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-      'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
-    });
+    constructor(fb: FormBuilder, protected loginService: LoginService, private router: Router,
+        public toastr: ToastsManager, vcr: ViewContainerRef) {
+        this.toastr.setRootViewContainerRef(vcr);
+        this.form = fb.group({
+            'pUser': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+            'pPwd': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+        });
 
-    this.identif = this.form.controls['identif'];
-    this.password = this.form.controls['password'];
-  }
-
-  public onSubmit(values:Object):void {
-    this.submitted = true;
-    if (this.form.valid) {
-      // your code goes here
-      // console.log(values);
+        this.pUser = this.form.controls['pUser'];
+        this.pPwd = this.form.controls['pPwd'];
     }
-  }
+
+    onSubmit(values: Object): void {
+        this.submitted = true;
+        this.loginService.authUser(values)
+            .then(data => {
+                if (data.data[0].length === 0) {
+                    this.toastr.error('Los datos ingresados no coinciden con ningún usuario.');
+                    console.debug('Fallo.');
+                }else {
+                    console.debug('Autenticado.');
+                    this.gotoProfile(data.data[0][0].cedula);
+                }
+            });
+        // if (this.form.valid) {
+        //     console.debug('aqui: '+ JSON.stringify(values));
+        // }
+    }
+
+    gotoProfile(pCedula: string) {
+      const cedula = pCedula;
+      this.router.navigate(['/pages/profile', cedula]);
+    }
 }

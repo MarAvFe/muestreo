@@ -4,24 +4,24 @@
     <a routerLink="/register" class="auth-link" translate>{{'login.signup_link'}}</a>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
-      <div class="form-group row" [ngClass]="{'has-error': (identif.empty && identif.touched), 'has-success': (identif.touched)}">
+      <div class="form-group row" [ngClass]="{'has-error': (pUser.empty && pUser.touched), 'has-success': (pUser.touched)}">
         <label for="inputEmail3" class="col-sm-2 control-label" translate>{{'login.identification'}}</label>
 
         <div class="col-sm-10">
-          <input [formControl]="identif" type="text" class="form-control" id="inputEmail3" placeholder="{{'login.identification' | translate}}">
+          <input [formControl]="pUser" type="text" class="form-control" id="inputEmail3" placeholder="{{'login.identification' | translate}}">
         </div>
       </div>
-      <div class="form-group row" [ngClass]="{'has-error': (!password.valid && password.touched), 'has-success': (password.valid && password.touched)}">
+      <div class="form-group row" [ngClass]="{'has-error': (!pPwd.valid && pPwd.touched), 'has-success': (pPwd.valid && pPwd.touched)}">
         <label for="inputPassword3" class="col-sm-2 control-label" translate>{{'login.password'}}</label>
 
         <div class="col-sm-10">
-          <input [formControl]="password" type="password" class="form-control" id="inputPassword3" placeholder="{{'login.password' | translate}}">
+          <input [formControl]="pPwd" type="password" class="form-control" id="inputPassword3" placeholder="{{'login.password' | translate}}">
         </div>
       </div>
       <div class="form-group row">
         <div class="offset-sm-2 col-sm-10">
           <!-- <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth" translate>{{'login.sign_in'}}</button> -->
-          <button routerLink="/pages/profile" class="btn btn-default btn-auth" translate>{{'login.sign_in'}}</button>
+          <button class="btn btn-default btn-auth" translate>{{'login.sign_in'}}</button>
           <a routerLink="/resetPassword" class="forgot-pass" translate>{{'login.forgot_password'}}</a>
         </div>
       </div>

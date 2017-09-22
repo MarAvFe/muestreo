@@ -18,11 +18,11 @@ import { routing } from './profile.routing';
         CommonModule,
         FormsModule,
         NgaModule,
-        routing,
         AppTranslationModule,
         Ng2SmartTableModule,
         NgbModalModule,
         ToastModule.forRoot(),
+        routing,
     ],
     declarations: [
         ProfileComponent,

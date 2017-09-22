@@ -1,23 +1,29 @@
-import { NgModule }      from '@angular/core';
-import { CommonModule }  from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AppTranslationModule } from '../../app.translation.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
+import { ToastModule } from 'ng2-toastr/ng2-toastr';
 
 import { Login } from './login.component';
-import { routing }       from './login.routing';
+import { LoginService } from './login.service';
+import { routing } from './login.routing';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgaModule,
-    AppTranslationModule,
-    ReactiveFormsModule,
-    routing
-  ],
-  declarations: [
-    Login
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        NgaModule,
+        AppTranslationModule,
+        ReactiveFormsModule,
+        routing,
+        ToastModule.forRoot(),
+    ],
+    declarations: [
+        Login,
+    ],
+    providers: [
+        LoginService,
+    ],
 })
 export class LoginModule {}

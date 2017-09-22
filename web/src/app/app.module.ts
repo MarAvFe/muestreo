@@ -44,13 +44,13 @@ export type StoreType = {
   imports: [ // import Angular's modules
     BrowserModule,
     BrowserAnimationsModule,
-    HttpModule,
-    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     NgaModule.forRoot(),
     NgbModule.forRoot(),
     PagesModule,
+    HttpModule,
+    RouterModule,
     routing,
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
