@@ -5,6 +5,7 @@ import { BaThemeConfigProvider } from '../../theme';
 import { SamplingType } from './SamplingType';
 import { Feedback } from './Feedback';
 import { BasicSampling } from './BasicSampling';
+import { User } from './objects/User';
 import { FormatService } from '../../services/FormatService';
 
 @Injectable()
@@ -30,6 +31,14 @@ export class ProfileService {
         return this.http.post('http://localhost:2828/createBasicSampling', body, { headers : this.heads } )
         .toPromise()
         .then(response => response.json())
+        .catch(this.handleError);
+    }
+
+    getUser(cedula: string): Promise<User> {
+        const body = this.toQueryString({ cedula });
+        return this.http.post('http://localhost:2828/User/get', body, { headers : this.heads } )
+        .toPromise()
+        .then(response => response.json().data[0] as User)
         .catch(this.handleError);
     }
 

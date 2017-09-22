@@ -1,13 +1,11 @@
 <div class="widgets">
-
     <div class="row">
         <div class="col-md-12">
-
             <ba-card baCardClass="with-scroll">
-                <h1>Giancarlo Valverde Zúñiga</h1>
-                <p><strong>Cédula: </strong>1-1304-6374</p>
-                <p><strong>Correo electrónico: </strong>gianval@yandex.ru</p>
-                <p><strong>Teléfono: </strong>8593-2946</p>
+                <h1>{{this.user.name}} {{this.user.lastname}}</h1>
+                <p><strong>Cédula: </strong>{{this.user.cedula}}</p>
+                <p><strong>Correo electrónico: </strong>{{this.user.email}}</p>
+                <p><strong>Teléfono: </strong>{{this.user.phone}}</p>
             </ba-card>
         </div>
         <div class="col-md-6">

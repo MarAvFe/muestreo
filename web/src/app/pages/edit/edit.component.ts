@@ -75,7 +75,6 @@ export class EditComponent {
              if (res.error === 'none') {
                  event.confirm.resolve();
              }else {
-
                  this.toastr.error('Por favor, compruebe los parámetros.');
                  console.debug(JSON.stringify(res));
                  event.confirm.reject();

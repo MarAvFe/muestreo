@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { LocalDataSource } from 'ng2-smart-table';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CreateSamplingModal } from './components/create-sampling-modal.component';
+import { User } from './objects/User';
 
 @Component({
     selector: 'profile',
@@ -11,7 +14,6 @@ import { CreateSamplingModal } from './components/create-sampling-modal.componen
 export class ProfileComponent implements OnInit {
     samplings: any;
     query: string = '';
-
 
     settings = {
         add: {
@@ -58,8 +60,11 @@ export class ProfileComponent implements OnInit {
 
     source: LocalDataSource = new LocalDataSource();
     samplingTypes: any;
+    cedula: string = '';
+    user: User = new User();
 
-    constructor(private _profileService: ProfileService, private modalService: NgbModal) {
+    constructor(private route: ActivatedRoute, private router: Router,
+        private _profileService: ProfileService, private modalService: NgbModal) {
     }
 
     createSamplingModal() {
@@ -69,6 +74,9 @@ export class ProfileComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.route.paramMap
+      .switchMap((params: ParamMap) => this._profileService.getUser(params.get('cedula')))
+      .subscribe(user => this.user = user as User);
         this._profileService.getBasicSamplings()
             .then(data => {
                 this.samplings = data;
