@@ -11,7 +11,7 @@ BEGIN
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPreparam`(pId_Sampling int, pDescription VARCHAR(255),pIdSamplingType int)
  BEGIN
- SELECT p_preliminar, q_preliminar, error_preliminar, n_preliminar,z_preliminar
+ SELECT p_preliminar, q_preliminar, n_preliminar
  from Sampling
  WHERE idSampling = pId_Sampling and description = pDescription and SamplingType_idSamplingType = pIdSamplingType ;
  END //
@@ -187,9 +187,7 @@ BEGIN
     SET
 		p_preliminar = pp_preliminar,
 		q_preliminar = pq_preliminar,
-		error_preliminar = perror_preliminar,
-		n_preliminar = pn_preliminar,
-		z_preliminar = pz_preliminar
+		n_preliminar = pn_preliminar
 	WHERE idSampling = pId_Sampling AND description = pDescription AND SamplingType_idSamplingType =  pIdSamplingType;
 END//
 DELIMITER ;

@@ -75,20 +75,12 @@ export class MySamplingsComponent {
                 title: 'n',
                 type: 'number',
             },
-            error_preliminar: {
-                title: 'E',
-                type: 'number',
-            },
             p_preliminar: {
                 title: 'p',
                 type: 'number',
             },
             q_preliminar: {
                 title: 'q',
-                type: 'number',
-            },
-            z_preliminar: {
-                title: 'z',
                 type: 'number',
             },
         },

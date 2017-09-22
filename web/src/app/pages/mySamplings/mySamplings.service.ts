@@ -86,9 +86,7 @@ export class MySamplingsService {
     console.debug(info);
     console.debug(bodyParams);
    return {pId_Sampling: info.pId_Sampling, pDescription: info.pDescription, pIdSamplingType: info.pIdSamplingType,
-     pp_preliminar: bodyParams.p_preliminar, pq_preliminar: bodyParams.q_preliminar,
-     perror_preliminar: bodyParams.error_preliminar, pn_preliminar: bodyParams.n_preliminar,
-     pz_preliminar: bodyParams.z_preliminar };
+     pp_preliminar: bodyParams.p_preliminar, pq_preliminar: bodyParams.q_preliminar,pn_preliminar: bodyParams.n_preliminar};
   }
 
   private toQueryString(jsonBody: Object) {

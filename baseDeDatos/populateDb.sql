@@ -19,9 +19,9 @@ INSERT INTO sampling.Activity(name,description,type)VALUES
     ('Caminando','El trabajador se desplaza de un lado a otro.',2);
 
 -- Inserción Sampling
-INSERT INTO sampling.Sampling(description,live,name,SamplingType_idSamplingType,p_preliminar,q_preliminar,error_preliminar,n_preliminar,z_preliminar)VALUES
-    ('Ejecutado para muestrear la construcción del segundo piso de la escuela de mantenimiento industrial, en el período de vacaciones 2015-2016, a cargo de la constructora Quirós y Román', 0, 'ManteQ&R', 1,0,0,0,0,0),
-    ('Ejecutado para muestrear la construcción del edificio D3, en el período 2016, a cargo de la constructora Sánchez-Carvajal', 0, 'D3S&C', 2,0,0,0,0,0);
+INSERT INTO sampling.Sampling(description,live,name,SamplingType_idSamplingType)VALUES
+    ('Ejecutado para muestrear la construcción del segundo piso de la escuela de mantenimiento industrial, en el período de vacaciones 2015-2016, a cargo de la constructora Quirós y Román', 0, 'ManteQ&R', 1),
+    ('Ejecutado para muestrear la construcción del edificio D3, en el período 2016, a cargo de la constructora Sánchez-Carvajal', 0, 'D3S&C', 2);
 
 -- Inserción en catálogo Group
 INSERT INTO sampling.Group(name, Sampling_idSampling)VALUES
