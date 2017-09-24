@@ -1,5 +1,5 @@
 export class SamplingDescIdSamp {
-    idSampling: number
+    idSampling: number;
     description: string;
     SamplingType_idSamplingType: number;
 }
