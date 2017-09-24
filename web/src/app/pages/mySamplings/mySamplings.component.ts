@@ -170,7 +170,6 @@ loadSamplingInfo(sampName): void {
 }
 
 onEditConfirmDefParam(event): void {
-
     this.service.editDefParam(this.service.createComposeDef(this.sampleInfo, event.newData))
       .then(res => {
       if (res.error === 'none') {

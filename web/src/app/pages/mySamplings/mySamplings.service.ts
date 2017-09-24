@@ -111,7 +111,7 @@ export class MySamplingsService {
         console.log("adsad"+ JSON.stringify(info)+ JSON.stringify(bodyParams));
       //  console.log("po"+bodyParams);
         return {
-            pId_Sampling: info.idSampling,
+            pId_Sampling: info.pId_Sampling,
             pDescription: info.pDescription,
             pIdSamplingType: info.pIdSamplingType,
             pp_preliminar: bodyParams.p_preliminar,
