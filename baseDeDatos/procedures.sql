@@ -256,3 +256,22 @@ BEGIN
 	WHERE idSampling = pId_Sampling;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE getDescIdSamp(pId_Sampling int)
+BEGIN
+ SELECT description,SamplingType_idSamplingType
+ from Sampling
+ WHERE idSampling = pId_Sampling;
+ END //
+ DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE getIdSampDescIdSampType(pName varchar(8))
+BEGI
+ SELECT idSampling, description, SamplingType_idSamplingType
+ from Sampling
+ WHERE name = pName;
+ END //
+ DELIMITER ;
+ 

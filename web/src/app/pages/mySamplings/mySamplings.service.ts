@@ -6,6 +6,8 @@ import {DefParam} from './objects/DefParam'
 import { PreParam } from './objects/PreParam';
 import { Feedback } from './objects/Feedback';
 import { SamplingName } from './objects/SamplingName';
+import { SamplingId } from './objects/SamplingId';
+import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
 import { BaThemeConfigProvider } from '../../theme';
 
 @Injectable()
@@ -29,12 +31,35 @@ export class MySamplingsService {
   }
 
 
+//devuelve el id del muestreo seleccionado
+  getSamplingId(data): Promise<SamplingId[]>{
+    const body = this.toQueryString({pName : data});
+    return this.http.post('http://localhost:2828/getSamplingId',body,{ headers : this.heads } )
+               .toPromise()
+               .then(response => response.json().data[0] as SamplingId[])
+               .catch(this.handleError);
+  }
+
+//devuelve idSampling, description y idSamplingType a partir del nombre del muestreo
+  getIdSampDescIdSampType(data): Promise<SamplingDescIdSamp[]>{
+    const body = this.toQueryString({pName : data});
+//    console.debug(JSON.stringify('pass1: '+this.toQueryString({})));
+//    console.debug(JSON.stringify('pass2: '+this.toQueryString({pName:data})));
+//    console.debug(JSON.stringify('pass3: '+this.toQueryString({par1:1, par2:'segundo'})));
+    return this.http.post('http://localhost:2828/getIdSampDescIdSampType',body,{ headers : this.heads } )
+               .toPromise()
+               .then(response => response.json().data[0] as SamplingDescIdSamp[])
+               .catch(this.handleError);
+  }
+
+
   getSamplingName(): Promise<SamplingName[]> {
       return this.http.post('http://localhost:2828/getSamplingName', { headers : this.heads } )
                  .toPromise()
                  .then(response => response.json().data[0] as SamplingName[])
                  .catch(this.handleError);
   }
+
   // carga los parámetros definitivos
     getDefParam(data): Promise<DefParam[]> {
       const body = this.toQueryString(data);
@@ -46,7 +71,9 @@ export class MySamplingsService {
 
 // carga los parámetros preliminares
   getPreParam(data): Promise<PreParam[]> {
+console.debug(JSON.stringify('pass4: '+this.toQueryString({pId_Sampling:data.idSampling})));
     const body = this.toQueryString(data);
+
     return this.http.post('http://localhost:2828/getPreParam', body, { headers : this.heads } )
     .toPromise()
     .then(response => response.json().data[0] as PreParam[])
@@ -72,9 +99,7 @@ export class MySamplingsService {
 
   // hace un compuesto del idsampling, description, idsamplingtype mas los parámetros que ingresa el usuario
     createComposeDef(info, bodyParams ): Object {
-      console.debug(info);
-      console.debug(bodyParams);
-     return {pId_Sampling: info.pId_Sampling, pDescription: info.pDescription, pIdSamplingType: info.pIdSamplingType,
+       return {pId_Sampling: info.pId_Sampling, pDescription: info.pDescription, pIdSamplingType: info.pIdSamplingType,
        pp_definitive: bodyParams.p_definitive,pq_definitive: bodyParams.q_definitive,
        perror_definitive: bodyParams.error_definitive,
        pn_definitive: bodyParams.n_definitive, pz_definitive: bodyParams.z_definitive};
@@ -82,16 +107,18 @@ export class MySamplingsService {
 
 
 // hace un compuesto del idsampling, description, idsamplingtype mas los parámetros que ingresa el usuario
-  createComposePre(info, bodyParams ): Object {
-    console.debug(info);
-    console.debug(bodyParams);
+  createComposePre( info, bodyParams ): Object {
+
+    console.log(info);
+    console.log(bodyParams);
    return {pId_Sampling: info.pId_Sampling, pDescription: info.pDescription, pIdSamplingType: info.pIdSamplingType,
      pp_preliminar: bodyParams.p_preliminar, pq_preliminar: bodyParams.q_preliminar,pn_preliminar: bodyParams.n_preliminar};
   }
 
   private toQueryString(jsonBody: Object) {
     // Receives some json and returns it in ws query format:
-    // {"name": "nombre","description": "descrip."} -> name=nombre&description=descrip
+    // {"name": "nombre","description": "descrip."} -> name=nombre&description=
+    console.log("jsonbody" + JSON.stringify(jsonBody) );
     const keys = Object.keys(jsonBody).map(key => {
       /* If boolean */
       if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
@@ -105,6 +132,7 @@ export class MySamplingsService {
       return [key, jsonBody[key]].join('=');
     });
     const str = keys.join('&');
+    console.log("SDFDSFDSADFSA"+str);
     return str;
   }
 

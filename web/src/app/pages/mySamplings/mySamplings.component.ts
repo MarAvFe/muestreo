@@ -5,6 +5,8 @@ import { RenderBitComponent } from './customComponents/renderBit.component';
 import { NgUploaderOptions } from 'ngx-uploader';
 import { ToastsManager, Toast } from 'ng2-toastr';
 import { SamplingName } from './objects/SamplingName';
+import { SamplingId } from './objects/SamplingId';
+import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
 
 @Component({
     selector: 'mySamplings',
@@ -13,11 +15,6 @@ import { SamplingName } from './objects/SamplingName';
 })
 export class MySamplingsComponent {
     data: any;
-    sampleInfo = {
-        pId_Sampling: 1,
-        pDescription: 'Ejecutado para muestrear la construcción del segundo piso de la escuela de mantenimiento industrial, en el período de vacaciones 2015-2016, a cargo de la constructora Quirós y Román',
-        pIdSamplingType: 1,
-    };
     query: string = '';
     sampName: SamplingName[];
 
@@ -136,21 +133,19 @@ export class MySamplingsComponent {
 
     ngOnInit() {
         this.getNames(this.service);
-        this.service.getDefParam(this.sampleInfo).then((data) => {
-            this.sourceDefParam.load(data);
-        });
-        this.service.getPreParam(this.sampleInfo).then((data) => {
-            this.sourcePreParam.load(data);
-            console.debug('preGot: ' + JSON.stringify(data));
-        });
+    //    this.service.getDefParam(this.service.getIdSampDescIdSampType(this.getSamplingName(this.sampName))).then((data) => {
+    //        this.sourceDefParam.load(data);
+  //      });
+
+  //      this.service.getPreParam(this.sampleInfo).then((data) => {
+  //          this.sourcePreParam.load(data);
+  //      });
     }
 
 
     onEditConfirmPreParam(event): void {
-        console.debug("hola" + JSON.stringify(this.sampleInfo));
         console.debug("new Data" +  JSON.stringify(event.newData));
-        console.debug("funcion" +JSON.stringify(this.service.createComposePre(this.sampleInfo, event.newData)));
-        this.service.editPreParam(this.service.createComposePre(this.sampleInfo, event.newData))
+    /*   this.service.editPreParam(this.service.createComposePre(this.sampleInfo, event.newData))
         .then(res => {
             if (res.error === 'none') {
                 event.confirm.resolve();
@@ -160,14 +155,22 @@ export class MySamplingsComponent {
                 event.confirm.reject();
             }
         },
-    );
+    );*/
+}
+
+
+
+getSamplingName(sampName):void{
+  console.log("parámetro:" + JSON.stringify((sampName )))
+  //this.service.getPreParam(this.service.getIdSampDescIdSampType(sampName));
+  var SampleInfo =  this.service.getIdSampDescIdSampType(sampName);
+  console.log("BJCDBJKDSBJVKDBVDJKS"+JSON.stringify(SampleInfo));
+  // this.service.getPreParam(SampleInfo);
 }
 
 onEditConfirmDefParam(event): void {
-    console.debug("hola" + JSON.stringify(this.sampleInfo));
     console.debug("new Data" +  JSON.stringify(event.newData));
-    console.debug("funcion" +JSON.stringify(this.service.createComposeDef(this.sampleInfo,  event.newData)));
-    this.service.editDefParam(this.service.createComposeDef(this.sampleInfo, event.newData))
+/*    this.service.editDefParam(this.service.createComposeDef(this.sampleInfo, event.newData))
     .then(res => {
         if (res.error === 'none') {
             event.confirm.resolve();
@@ -177,7 +180,7 @@ onEditConfirmDefParam(event): void {
             event.confirm.reject();
         }
     },
-);
+);*/
 }
 
 
