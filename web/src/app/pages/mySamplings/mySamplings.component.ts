@@ -15,6 +15,8 @@ import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
 })
 export class MySamplingsComponent {
     data: any;
+    heads: any;
+    sampleInfo: any;
     query: string = '';
     sampName: SamplingName[];
 
@@ -48,14 +50,17 @@ export class MySamplingsComponent {
             p_definitive: {
                 title: 'p',
                 type: 'number',
+                editable: false,
             },
             q_definitive: {
                 title: 'q',
                 type: 'number',
+                editable: false,
             },
             z_definitive: {
                 title: 'z',
                 type: 'number',
+                editable: false,
             },
         },
     };
@@ -78,10 +83,12 @@ export class MySamplingsComponent {
             p_preliminar: {
                 title: 'p',
                 type: 'number',
+                editable: false,
             },
             q_preliminar: {
                 title: 'q',
                 type: 'number',
+                editable: false,
             },
         },
     };
@@ -139,54 +146,61 @@ export class MySamplingsComponent {
         this.getNames(this.service);
     }
 
-
-    onEditConfirmPreParam(event): void {
-        console.debug("new Data" +  JSON.stringify(event.newData));
-        /*   this.service.editPreParam(this.service.createComposePre(this.sampleInfo, event.newData))
-        .then(res => {
-        if (res.error === 'none') {
-        event.confirm.resolve();
-    }else {
-    this.toastr.error('Por favor, compruebe los parámetros.');
-    console.debug('editConfirmPreParam' + JSON.stringify(res));
-    event.confirm.reject();
-}
-},
-);*/
-}
-
-
 loadSamplingInfo(sampName): void {
-    // this.service.getPreParam(this.service.getIdSampDescIdSampType(sampName));
-    let sampleInfo;
+    // se cargan los parámetros preeliminares
+  // let sampleInfo;
     this.service.getIdSampDescIdSampType(sampName).then( data => {
-        sampleInfo = {
+        this.sampleInfo = {
             pId_Sampling : data[0].idSampling,
             pDescription : data[0].description,
             pIdSamplingType : data[0].SamplingType_idSamplingType,
         };
 
-        this.service.getPreParam(sampleInfo).then((dataz) => {
+        //se cargan parámetros preliminares
+        this.service.getPreParam(this.sampleInfo).then((dataz) => {
             this.sourcePreParam.load(dataz);
         }).catch(err => console.debug('Error al cargar los datos preliminares.'));
+
+        //se cargan parámetros definitivos
+        this.service.getDefParam(this.sampleInfo).then((datax) => {
+            this.sourceDefParam.load(datax);
+        }).catch(err => console.debug('Error al cargar los datos definitivos.'));
     });
-    // this.service.getPreParam(SampleInfo);
+
 }
 
 onEditConfirmDefParam(event): void {
-    console.debug("new Data" +  JSON.stringify(event.newData));
-    /*    this.service.editDefParam(this.service.createComposeDef(this.sampleInfo, event.newData))
+
+    this.service.editDefParam(this.service.createComposeDef(this.sampleInfo, event.newData))
+      .then(res => {
+      if (res.error === 'none') {
+      event.confirm.resolve();
+  }else {
+  this.toastr.error('Por favor, compruebe los parámetros.');
+  console.debug(JSON.stringify(res));
+  event.confirm.reject();
+  }
+  },
+);
+}
+
+
+onEditConfirmPreParam(event): void {
+      console.debug("uhiuhuihihihi"+JSON.stringify(this.sampleInfo));
+      console.debug("ñañaña"+ JSON.stringify(event.newData) );
+     this.service.editPreParam(this.service.createComposePre(this.sampleInfo, event.newData))
     .then(res => {
     if (res.error === 'none') {
     event.confirm.resolve();
 }else {
 this.toastr.error('Por favor, compruebe los parámetros.');
-console.debug(JSON.stringify(res));
 event.confirm.reject();
 }
 },
-);*/
+);
 }
+
+
 
 
 }

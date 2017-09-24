@@ -78,6 +78,7 @@ export class MySamplingsService {
     // hace un update de los parámetros definitivos
     editDefParam(data): Promise<Feedback> {
         const body = this.toQueryString(data);
+        console.log("params"+ JSON.stringify(body));
         return this.http.post('http://localhost:2828/pUpDefParamsSampling', body, { headers : this.heads } )
         .toPromise()
         .then(response => response.json());
@@ -107,11 +108,10 @@ export class MySamplingsService {
 
     // hace un compuesto del idsampling, description, idsamplingtype mas los parámetros que ingresa el usuario
     createComposePre( info, bodyParams ): Object {
-
-        console.debug(info);
-        console.debug(bodyParams);
+        console.log("adsad"+ JSON.stringify(info)+ JSON.stringify(bodyParams));
+      //  console.log("po"+bodyParams);
         return {
-            pId_Sampling: info.pId_Sampling,
+            pId_Sampling: info.idSampling,
             pDescription: info.pDescription,
             pIdSamplingType: info.pIdSamplingType,
             pp_preliminar: bodyParams.p_preliminar,

@@ -179,9 +179,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpPreParamsSampling`(pId_Sampling 
 	pIdSamplingType int,
 	pp_preliminar double,
 	pq_preliminar double,
-	perror_preliminar double,
-	pn_preliminar int,
-	pz_preliminar double)
+	pn_preliminar int)
 BEGIN
 	UPDATE Sampling
     SET
@@ -195,7 +193,7 @@ DELIMITER ;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdate_SamplingPreParams`(pId_Sampling int, pDescription varchar(255),
 	pIdSamplingType int,
-    pp_preliminar double,
+        pp_preliminar double,
 	pq_preliminar double,
 	perror_preliminar double,
 	pn_preliminar int,
