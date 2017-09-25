@@ -4,8 +4,8 @@
         <div class="col-md-12">
             <div class="form-group">
                 <h3>Seleccione un muestreo:</h3>
-                <select class="form-control">
-                    <option *ngFor="let SamplingName of sampName">{{SamplingName.name}}</option>
+                <select (click)="loadSamplingInfo(selectedSampName.value)"  #selectedSampName class="form-control">
+                    <option *ngFor="let SamplingName of sampName" [value]="SamplingName.name" >{{SamplingName.name}}</option>
                 </select>
             </div>
             <ba-card cardTitle="Colaboradores" baCardClass="with-scroll">

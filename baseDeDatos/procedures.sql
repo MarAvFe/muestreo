@@ -9,7 +9,7 @@ BEGIN
  DELIMITER ;
 
 DELIMITER //
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPreparam`(pId_Sampling int, pDescription VARCHAR(255),pIdSamplingType int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPreParam`(pId_Sampling int, pDescription VARCHAR(255),pIdSamplingType int)
  BEGIN
  SELECT p_preliminar, q_preliminar, n_preliminar
  from Sampling
@@ -179,9 +179,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpPreParamsSampling`(pId_Sampling 
 	pIdSamplingType int,
 	pp_preliminar double,
 	pq_preliminar double,
-	perror_preliminar double,
-	pn_preliminar int,
-	pz_preliminar double)
+	pn_preliminar int)
 BEGIN
 	UPDATE Sampling
     SET
@@ -195,7 +193,7 @@ DELIMITER ;
 DELIMITER //
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdate_SamplingPreParams`(pId_Sampling int, pDescription varchar(255),
 	pIdSamplingType int,
-    pp_preliminar double,
+        pp_preliminar double,
 	pq_preliminar double,
 	perror_preliminar double,
 	pn_preliminar int,
@@ -256,3 +254,21 @@ BEGIN
 	WHERE idSampling = pId_Sampling;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE getDescIdSamp(pId_Sampling int)
+BEGIN
+ SELECT description,SamplingType_idSamplingType
+ from Sampling
+ WHERE idSampling = pId_Sampling;
+ END //
+ DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE getIdSampDescIdSampType(pName varchar(8))
+BEGIN
+ SELECT idSampling, description, SamplingType_idSamplingType
+ from Sampling
+ WHERE name = pName;
+ END //
+ DELIMITER ;

@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import {DefParam} from './objects/DefParam'
+import { DefParam } from './objects/DefParam'
 import { PreParam } from './objects/PreParam';
 import { Feedback } from './objects/Feedback';
 import { SamplingName } from './objects/SamplingName';
+import { SamplingId } from './objects/SamplingId';
+import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
 import { BaThemeConfigProvider } from '../../theme';
 
 @Injectable()
@@ -31,25 +33,44 @@ export class MySamplingsService {
     }
 
 
+    //devuelve el id del muestreo seleccionado
+    getSamplingId(data): Promise<SamplingId[]>{
+        const body = this.toQueryString({pName : data});
+        return this.http.post('http://localhost:2828/getSamplingId',body,{ headers : this.heads } )
+        .toPromise()
+        .then(response => response.json().data[0] as SamplingId[])
+        .catch(this.handleError);
+    }
+
     getSamplingName(): Promise<SamplingName[]> {
-        return this.http.post('http://localhost:2828/getSamplingName', '', this.options )
+        return this.http.post('http://localhost:2828/getSamplingName', { headers : this.heads } )
         .toPromise()
         .then(response => response.json().data[0] as SamplingName[])
         .catch(this.handleError);
     }
+
     // carga los parámetros definitivos
     getDefParam(data): Promise<DefParam[]> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/getDefParam', body, this.options )
+        return this.http.post('http://localhost:2828/getDefParam', body, { headers : this.heads } )
         .toPromise()
         .then(response => response.json().data[0] as DefParam[])
+        .catch(this.handleError);
+    }
+
+    // devuelve idSampling, description y idSamplingType a partir del nombre del muestreo
+    getIdSampDescIdSampType(data): Promise<SamplingDescIdSamp[]> {
+        const body = this.toQueryString({ pName : data });
+        return this.http.post('http://localhost:2828/getIdSampDescIdSampType', body, { headers : this.heads } )
+        .toPromise()
+        .then(response => response.json().data[0] as SamplingDescIdSamp[])
         .catch(this.handleError);
     }
 
     // carga los parámetros preliminares
     getPreParam(data): Promise<PreParam[]> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/getPreParam', body, this.options )
+        return this.http.post('http://localhost:2828/getPreParam', body, { headers : this.heads } )
         .toPromise()
         .then(response => response.json().data[0] as PreParam[])
         .catch(this.handleError);
@@ -59,7 +80,8 @@ export class MySamplingsService {
     // hace un update de los parámetros definitivos
     editDefParam(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/pUpDefParamsSampling', body, this.options )
+        console.log("params"+ JSON.stringify(body));
+        return this.http.post('http://localhost:2828/pUpDefParamsSampling', body, { headers : this.heads } )
         .toPromise()
         .then(response => response.json());
     }
@@ -67,63 +89,70 @@ export class MySamplingsService {
     // hace un update de los parámetros preliminares
     editPreParam(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/pUpPreParamsSampling', body, this.options )
+        return this.http.post('http://localhost:2828/pUpPreParamsSampling', body, { headers : this.heads } )
         .toPromise()
         .then(response => response.json());
     }
 
     // hace un compuesto del idsampling, description, idsamplingtype mas los parámetros que ingresa el usuario
     createComposeDef(info, bodyParams ): Object {
-        console.debug(info);
-        console.debug(bodyParams);
-        return {pId_Sampling: info.pId_Sampling, pDescription: info.pDescription, pIdSamplingType: info.pIdSamplingType,
-            pp_definitive: bodyParams.p_definitive,pq_definitive: bodyParams.q_definitive,
+        return {pId_Sampling: info.pId_Sampling,
+            pDescription: info.pDescription,
+            pIdSamplingType: info.pIdSamplingType,
+            pp_definitive: bodyParams.p_definitive,
+            pq_definitive: bodyParams.q_definitive,
             perror_definitive: bodyParams.error_definitive,
-            pn_definitive: bodyParams.n_definitive, pz_definitive: bodyParams.z_definitive};
-        }
+            pn_definitive: bodyParams.n_definitive,
+            pz_definitive: bodyParams.z_definitive
+        };
+    }
 
 
-        // hace un compuesto del idsampling, description, idsamplingtype mas los parámetros que ingresa el usuario
-        createComposePre(info, bodyParams ): Object {
-            console.debug(info);
-            console.debug(bodyParams);
-            return {pId_Sampling: info.pId_Sampling, pDescription: info.pDescription, pIdSamplingType: info.pIdSamplingType,
-                pp_preliminar: bodyParams.p_preliminar, pq_preliminar: bodyParams.q_preliminar,pn_preliminar: bodyParams.n_preliminar};
+    // hace un compuesto del idsampling, description, idsamplingtype mas los parámetros que ingresa el usuario
+    createComposePre( info, bodyParams ): Object {
+      //  console.log("po"+bodyParams);
+        return {
+            pId_Sampling: info.pId_Sampling,
+            pDescription: info.pDescription,
+            pIdSamplingType: info.pIdSamplingType,
+            pp_preliminar: bodyParams.p_preliminar,
+            pq_preliminar: bodyParams.q_preliminar,
+            pn_preliminar: bodyParams.n_preliminar
+        };
+    }
+
+    private toQueryString(jsonBody: Object) {
+        // Receives some json and returns it in ws query format:
+        // {"name": "nombre","description": "descrip."} -> name=nombre&description=
+        const keys = Object.keys(jsonBody).map(key => {
+            /* If boolean */
+            if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
+                jsonBody[key] = jsonBody[key] === 'true' ? 1 : 0;
             }
-
-            private toQueryString(jsonBody: Object) {
-                // Receives some json and returns it in ws query format:
-                // {"name": "nombre","description": "descrip."} -> name=nombre&description=descrip
-                const keys = Object.keys(jsonBody).map(key => {
-                    /* If boolean */
-                    if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
-                        jsonBody[key] = jsonBody[key] === 'true' ? 1 : 0;
-                    }
-                    /* If bit {"type": "Buffer","data": [1]} */
-                    console.debug(jsonBody[key].type);
-                    if (jsonBody[key].type ) {
-                        jsonBody[key] = jsonBody[key].data[0];
-                    }
-                    return [key, jsonBody[key]].join('=');
-                });
-                const str = keys.join('&');
-                return str;
+            /* If bit {"type": "Buffer","data": [1]} */
+            if (jsonBody[key].type ) {
+                jsonBody[key] = jsonBody[key].data[0];
             }
+            return [key, jsonBody[key]].join('=');
+        });
+        const str = keys.join('&');
+        return str;
+    }
 
-            selectFilters(bef: Object, aft: Object) {
-                // Update ws function updates fields, filtering on the unchanged fields.
-                // The filter includes an 'f_' before the name (f_name).
-                // This function receives the before and after updating values, and adds the 'f_'
-                //   before the field name to define filters.
-                // bef : {"name": "nombre","description": "descrip."} ->
-                // aft : {"name": "nombre","description": "updated"} ->
-                // ret : {"fname": "nombre","fdescription": "descrip.","description": "updated"}
-                const ret = new Object();
-                const filterPrefix = 'f_';
-                const keys = Object.keys(bef).map(key => {
-                    ret[key] = aft[key];
-                    ret[filterPrefix + key] = bef[key];
-                });
-                return ret;
-            }
-        }
+    selectFilters(bef: Object, aft: Object) {
+        // Update ws function updates fields, filtering on the unchanged fields.
+        // The filter includes an 'f_' before the name (f_name).
+        // This function receives the before and after updating values, and adds the 'f_'
+        //   before the field name to define filters.
+        // bef : {"name": "nombre","description": "descrip."} ->
+        // aft : {"name": "nombre","description": "updated"} ->
+        // ret : {"fname": "nombre","fdescription": "descrip.","description": "updated"}
+        const ret = new Object();
+        const filterPrefix = 'f_';
+        const keys = Object.keys(bef).map(key => {
+            ret[key] = aft[key];
+            ret[filterPrefix + key] = bef[key];
+        });
+        return ret;
+    }
+}
