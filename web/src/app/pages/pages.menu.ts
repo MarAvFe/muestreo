@@ -14,18 +14,18 @@ export const PAGES_MENU = [
                     }
                 }
             },
-                {
-                    path: 'mySamplings',
-                    data: {
-                        menu: {
-                            title: 'general.menu.mySamplings',
-                            icon: 'ion-ios-list-outline',
-                            selected: false,
-                            expanded: false,
-                            order: 0
-                        }
+            {
+                path: 'mySamplings',
+                data: {
+                    menu: {
+                        title: 'general.menu.mySamplings',
+                        icon: 'ion-ios-list-outline',
+                        selected: false,
+                        expanded: false,
+                        order: 0
                     }
-                },
+                }
+            },
             {
                 path: 'admin',
                 data: {
@@ -52,7 +52,7 @@ export const PAGES_MENU = [
                         data: {
                             menu: {
                                 title: 'general.menu.edit',
-                                   icon: 'ion-android-create'
+                                icon: 'ion-android-create'
                             }
                         }
                     },
@@ -70,7 +70,7 @@ export const PAGES_MENU = [
                         data: {
                             menu: {
                                 title: 'general.menu.consult',
-                                   icon: 'ion-ios-eye'
+                                icon: 'ion-ios-eye'
                             }
                         }
                     },
@@ -382,6 +382,14 @@ export const PAGES_MENU = [
                                 data: {
                                     menu: {
                                         title: 'general.menu.login'
+                                    }
+                                }
+                            },
+                            {
+                                path: ['/logout'],
+                                data: {
+                                    menu: {
+                                        title: 'general.menu.logout'
                                     }
                                 }
                             },

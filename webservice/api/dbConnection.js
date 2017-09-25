@@ -11,7 +11,7 @@ var pool;
 function dbConnection() {
 	this.pool = mysql.createPool(conf); //create new connection pool
 	this.pool.config.connectionConfig.queryFormat = parseQuery; //adds formatting to prepared statements
-	console.log(this.pool);
+	// console.log(this.pool);
 }
 
 exports.createPool = dbConnection;
@@ -52,7 +52,6 @@ exports.query = function (statement, body, res) { //;
  */
 
 function parseQuery(statement, values) {
-	//console.log("query0 = " + statement);
 	if (!values) return statement;
 	var temp = statement.replace(/\:V_(\w+)/g, function (txt, key) {
 		if (values.hasOwnProperty(key)) {

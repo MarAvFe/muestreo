@@ -9,11 +9,6 @@ export class LoginService {
     heads: any;
 
     constructor(private http: Http) {
-        this.heads = new Headers();
-        this.heads.append('Content-Type', 'application/x-www-form-urlencoded');
-        this.heads.append('Access-Control-Allow-Origin', '*');
-        this.heads.append('Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
     }
 
     private handleError(error: any): Promise<any> {
@@ -21,9 +16,14 @@ export class LoginService {
         return Promise.reject(error.message || error);
     }
 
-    authUser(data): Promise<Feedback> {
+    authUser(data): Promise<any> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/authUser', body, { headers : this.heads } )
+        const jsonHeads = new Headers();
+        jsonHeads.append('Content-Type', 'application/x-www-form-urlencoded');
+        jsonHeads.append('Access-Control-Allow-Origin', '*');
+        jsonHeads.append('Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
+        return this.http.post('http://localhost:2828/auth/login', body, { headers : jsonHeads } )
         .toPromise()
         .then(response => response.json())
         .catch(this.handleError);
@@ -46,22 +46,5 @@ export class LoginService {
         });
         const str = keys.join('&');
         return str;
-    }
-
-    selectFilters(bef: Object, aft: Object) {
-        // Update ws function updates fields, filtering on the unchanged fields.
-        // The filter includes an 'f_' before the name (f_name).
-        // This function receives the before and after updating values, and adds the 'f_'
-        //   before the field name to define filters.
-        // bef : {"name": "nombre","description": "descrip."} ->
-        // aft : {"name": "nombre","description": "updated"} ->
-        // ret : {"fname": "nombre","fdescription": "descrip.","description": "updated"}
-        const ret = new Object();
-        const filterPrefix = 'f_';
-        const keys = Object.keys(bef).map(key => {
-            ret[key] = aft[key];
-            ret[filterPrefix + key] = bef[key];
-        });
-        return ret;
     }
 }

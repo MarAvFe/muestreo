@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from './profile.service';
 import { LocalDataSource } from 'ng2-smart-table';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import 'rxjs/add/operator/switchMap';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CreateSamplingModal } from './components/create-sampling-modal.component';
@@ -65,33 +65,40 @@ export class ProfileComponent implements OnInit {
 
     constructor(private route: ActivatedRoute, private router: Router,
         private _profileService: ProfileService, private modalService: NgbModal) {
-    }
 
-    createSamplingModal() {
-        const activeModal = this.modalService.open(CreateSamplingModal, { size: 'sm', backdrop: 'static' });
-        activeModal.componentInstance.modalHeader = 'Crear muestreo';
-        activeModal.componentInstance.modalSaProfileComponentProfileComponentmplingTypes = this.samplingTypes;
-    }
+        }
 
-    ngOnInit() {
-        this.route.paramMap
-      .switchMap((params: ParamMap) => this._profileService.getUser(params.get('cedula')))
-      .subscribe(user => this.user = user as User);
-        this._profileService.getBasicSamplings()
-            .then(data => {
-                this.samplings = data;
-            });
-    }
+        createSamplingModal() {
+            const activeModal = this.modalService.open(CreateSamplingModal, { size: 'sm', backdrop: 'static' });
+            activeModal.componentInstance.modalHeader = 'Crear muestreo';
+            activeModal.componentInstance.modalSaProfileComponentProfileComponentmplingTypes = this.samplingTypes;
+        }
 
-    getResponsive(padding, offset) {
-        return this._profileService.getResponsive(padding, offset);
-    }
+        ngOnInit() {
+            this.cedula = localStorage.getItem('cedula');
+            if (this.cedula !== null) {
+                this._profileService.getUser(this.cedula)
+                .then( user => this.user = user as User)
+                .catch( err => console.error(err));
 
-    onDeleteConfirm(event): void {
-        if (window.confirm('Desea agregar a esta persona como colaborador?')) {
-            event.confirm.resolve();
-        } else {
-            event.confirm.reject();
+                this._profileService.getBasicSamplings()
+                .then(data => {
+                    this.samplings = data;
+                });
+            } else {
+                this.router.navigate(['/logout']);
+            }
+        }
+
+        getResponsive(padding, offset) {
+            return this._profileService.getResponsive(padding, offset);
+        }
+
+        onDeleteConfirm(event): void {
+            if (window.confirm('Desea agregar a esta persona como colaborador?')) {
+                event.confirm.resolve();
+            } else {
+                event.confirm.reject();
+            }
         }
     }
-}

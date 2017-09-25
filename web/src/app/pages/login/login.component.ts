@@ -32,21 +32,18 @@ export class Login {
         this.submitted = true;
         this.loginService.authUser(values)
             .then(data => {
-                if (data.data[0].length === 0) {
-                    this.toastr.error('Los datos ingresados no coinciden con ningún usuario.');
+                console.debug('Autenticado.');
+                localStorage.setItem('cedula', data.data);
+                this.router.navigate(['/pages/profile']);
+            })
+            .catch(err => {
+                if (err.status === 401) {
+                    this.toastr.error('Los datos ingresados no coinciden con ningún usuario o son incorrectos.');
                     console.debug('Fallo.');
-                }else {
-                    console.debug('Autenticado.');
-                    this.gotoProfile(data.data[0][0].cedula);
                 }
             });
         // if (this.form.valid) {
         //     console.debug('aqui: '+ JSON.stringify(values));
         // }
-    }
-
-    gotoProfile(pCedula: string) {
-      const cedula = pCedula;
-      this.router.navigate(['/pages/profile', cedula]);
     }
 }

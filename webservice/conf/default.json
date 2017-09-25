@@ -6,13 +6,10 @@
 		"user": "root",
 		"password": "123456",
 		"database": "sampling"
-
 	},
-
 	"express": {
 		"port": 2828
 	},
-
 	"generator": {
 		"crud": {
 			"request": {

@@ -9,7 +9,7 @@ logger.bind();
 var connection = require("./api/dbConnection.js"); //instantiate connection provider
 connection.createPool(); //initiate connection pool
 
-var app = require("./api/app.js").app; //create Express application
+var app = require("./api/app.js").app(connection); //create Express application
 
 var router = require("./api/router.js"); //main router
 router.route(app, connection); //add the router to app and route all paths
