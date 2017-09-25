@@ -28,7 +28,7 @@ exports.router = function(connection) {
         } else {
             req.session.cookie.maxAge = 1000 * 60 * 10;
         }
-        console.debug('req.session: ' + JSON.stringify(req.session));
+        console.log('req.session: ' + JSON.stringify(req.session));
         return res.json({data: req.user.cedula, error: null});
     });
 

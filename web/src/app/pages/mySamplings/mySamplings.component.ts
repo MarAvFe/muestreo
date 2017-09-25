@@ -134,15 +134,20 @@ export class MySamplingsComponent {
         this.toastr.setRootViewContainerRef(vcr);
     }
 
+    private handleError(error: any): Promise<any> {
+        console.error('An error occurred', error); // for demo purposes only
+        return Promise.reject(error.message || error);
+    }
+
     ngOnInit() {
         this.getNames(this.service);
         this.service.getDefParam(this.sampleInfo).then((data) => {
             this.sourceDefParam.load(data);
-        });
+        }).catch(this.handleError);
         this.service.getPreParam(this.sampleInfo).then((data) => {
             this.sourcePreParam.load(data);
             console.debug('preGot: ' + JSON.stringify(data));
-        });
+        }).catch(this.handleError);
     }
 
 
@@ -159,8 +164,7 @@ export class MySamplingsComponent {
                 console.debug('editConfirmPreParam' + JSON.stringify(res));
                 event.confirm.reject();
             }
-        },
-    );
+        }).catch(this.handleError);
 }
 
 onEditConfirmDefParam(event): void {
@@ -176,8 +180,7 @@ onEditConfirmDefParam(event): void {
             console.debug(JSON.stringify(res));
             event.confirm.reject();
         }
-    },
-);
+    }).catch(this.handleError);
 }
 
 

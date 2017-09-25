@@ -7,6 +7,7 @@ import { Feedback } from './objects/Feedback';
 @Injectable()
 export class EditService {
 
+    options: any;
     heads: any;
 
     constructor(private http: Http) {
@@ -15,6 +16,7 @@ export class EditService {
         this.heads.append('Access-Control-Allow-Origin', '*');
         this.heads.append('Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
+        this.options = { headers : this.heads, withCredentials : true };
     }
 
     private handleError(error: any): Promise<any> {
@@ -23,7 +25,7 @@ export class EditService {
     }
 
     getActivities(): Promise<Activity[]> {
-        return this.http.post('http://localhost:2828/getActivities', { headers : this.heads } )
+        return this.http.post('http://localhost:2828/getActivities', '', this.options )
         .toPromise()
         .then(response => response.json().data[0] as Activity[])
         .catch(this.handleError);
@@ -31,21 +33,21 @@ export class EditService {
 
     addActivity(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/Activity/add', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/Activity/add', body, this.options )
         .toPromise()
         .then(response => response.json());
     }
 
     editActivity(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/Activity/update', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/Activity/update', body, this.options )
         .toPromise()
         .then(response => response.json());
     }
 
     deleteActivity(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/Activity/delete', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/Activity/delete', body, this.options )
         .toPromise()
         .then(response => response.json());
     }

@@ -12,7 +12,9 @@ exports.route = function (app, connection) {
 	 * @param {String} path - File name with the router
 	 */
 	addToApp = function (path) {
-		app.use("/", require("." + path).router(connection));
+		var tempRouter = require("." + path).router(connection);
+		if(path !== './api/routes/authentication.js') tempRouter.use(isLoggedIn);
+		app.use("/", tempRouter);
 	}
 
 	var files = getFiles("./api/routes");
@@ -51,3 +53,12 @@ function getFiles(dir) {
 	return results;
 
 };
+
+// route middleware to make sure
+function isLoggedIn(req, res, next) {
+
+	// if user is authenticated in the session, carry on
+	if (req.isAuthenticated())
+		return next();
+	return res.status(401).json({data:'Unauthenticated'});
+}

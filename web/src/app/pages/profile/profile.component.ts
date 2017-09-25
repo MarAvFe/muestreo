@@ -68,6 +68,11 @@ export class ProfileComponent implements OnInit {
 
         }
 
+        private handleError(error: any): Promise<any> {
+            console.error('An error occurred', error); // for demo purposes only
+            return Promise.reject(error.message || error);
+        }
+
         createSamplingModal() {
             const activeModal = this.modalService.open(CreateSamplingModal, { size: 'sm', backdrop: 'static' });
             activeModal.componentInstance.modalHeader = 'Crear muestreo';
@@ -79,12 +84,11 @@ export class ProfileComponent implements OnInit {
             if (this.cedula !== null) {
                 this._profileService.getUser(this.cedula)
                 .then( user => this.user = user as User)
-                .catch( err => console.error(err));
+                .catch( this.handleError );
 
                 this._profileService.getBasicSamplings()
-                .then(data => {
-                    this.samplings = data;
-                });
+                .then(data => this.samplings = data)
+                .catch( this.handleError );
             } else {
                 this.router.navigate(['/logout']);
             }

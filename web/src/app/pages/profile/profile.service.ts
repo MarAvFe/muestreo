@@ -11,6 +11,7 @@ import { FormatService } from '../../services/FormatService';
 @Injectable()
 export class ProfileService {
 
+    options: any;
     heads: any;
 
     constructor(private _baConfig: BaThemeConfigProvider, private http: Http) {
@@ -19,6 +20,7 @@ export class ProfileService {
         this.heads.append('Access-Control-Allow-Origin', '*');
         this.heads.append('Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
+        this.options = { headers : this.heads, withCredentials : true };
     }
 
     private handleError(error: any): Promise<any> {
@@ -28,7 +30,7 @@ export class ProfileService {
 
     createBasicSampling(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/createBasicSampling', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/createBasicSampling', body, this.options )
         .toPromise()
         .then(response => response.json())
         .catch(this.handleError);
@@ -36,21 +38,21 @@ export class ProfileService {
 
     getUser(cedula: string): Promise<User> {
         const body = this.toQueryString({ cedula });
-        return this.http.post('http://localhost:2828/User/get', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/User/get', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as User)
         .catch(this.handleError);
     }
 
     getBasicSamplings(): Promise<BasicSampling[]> {
-        return this.http.post('http://localhost:2828/Sampling/get', { headers : this.heads } )
+        return this.http.post('http://localhost:2828/Sampling/get', '', this.options )
         .toPromise()
         .then(response => response.json().data as BasicSampling[])
         .catch(this.handleError);
     }
 
     getSamplingTypes(): Promise<SamplingType[]> {
-        return this.http.post('http://localhost:2828/SamplingType/get', { headers : this.heads } )
+        return this.http.post('http://localhost:2828/SamplingType/get', '', this.options )
         .toPromise()
         .then(response => response.json().data as SamplingType[])
         .catch(this.handleError);

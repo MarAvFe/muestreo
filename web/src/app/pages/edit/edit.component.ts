@@ -68,6 +68,11 @@ export class EditComponent {
         });
     }
 
+    private handleError(error: any): Promise<any> {
+        console.error('An error occurred', error); // for demo purposes only
+        return Promise.reject(error.message || error);
+    }
+
     onCreateConfirmActivity(event): void {
         console.debug(JSON.stringify(event.newData));
         this.service.addActivity(event.newData)
@@ -79,8 +84,7 @@ export class EditComponent {
                  console.debug(JSON.stringify(res));
                  event.confirm.reject();
              }
-         },
-        );
+         }).catch(this.handleError);
     }
 
     onEditConfirmActivity(event): void {
@@ -93,8 +97,7 @@ export class EditComponent {
                  console.debug(JSON.stringify(res));
                  event.confirm.reject();
              }
-         },
-        );
+         }).catch(this.handleError);
     }
 
     onDeleteConfirmActivity(event): void {
@@ -108,8 +111,7 @@ export class EditComponent {
                      console.debug(JSON.stringify(res));
                      event.confirm.reject();
                  }
-             },
-            );
+             }).catch(this.handleError);
         } else {
             event.confirm.reject();
         }

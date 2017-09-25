@@ -6,6 +6,7 @@ import { Feedback } from './objects/Feedback';
 @Injectable()
 export class LoginService {
 
+    options: any;
     heads: any;
 
     constructor(private http: Http) {
@@ -23,7 +24,9 @@ export class LoginService {
         jsonHeads.append('Access-Control-Allow-Origin', '*');
         jsonHeads.append('Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
-        return this.http.post('http://localhost:2828/auth/login', body, { headers : jsonHeads } )
+        this.options = { headers : jsonHeads, withCredentials: true };
+
+        return this.http.post('http://localhost:2828/auth/login', body, this.options )
         .toPromise()
         .then(response => response.json())
         .catch(this.handleError);

@@ -8,6 +8,8 @@ import 'rxjs/add/operator/toPromise';
     template: '<p>Logging out</p>',
 })
 export class Logout {
+
+    options: any;
     heads: any;
 
     constructor( private router: Router, private http: Http) {
@@ -16,6 +18,7 @@ export class Logout {
         this.heads.append('Access-Control-Allow-Origin', '*');
         this.heads.append('Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
+        this.options = { headers : this.heads, withCredentials : true };
 
         this.logoutUser();
         localStorage.clear();
@@ -28,7 +31,7 @@ export class Logout {
     }
 
     logoutUser(): Promise<any> {
-        return this.http.post('http://localhost:2828/auth/logout', { headers : this.heads } )
+        return this.http.post('http://localhost:2828/auth/logout', this.options )
         .toPromise()
         .then(response => response.json())
         .catch(this.handleError);

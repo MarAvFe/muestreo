@@ -1,5 +1,6 @@
 var express = require("express");
 var passport = require("passport");
+var cors = require("cors");
 
 var conf = require("../conf/default.json").express;
 
@@ -16,13 +17,19 @@ function app(connection) {
 	var flash = require('connect-flash');
 	console.info("Server running on port " + conf.port + ".");
 	app.use(function (req, res, next) {
-		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin, access-control-allow-headers");
 		next();
 	});
 
 	require('./passport')(connection); // pass passport for configuration
 
+	var corsSettings = {
+	  origin: true,
+	  methods: ['POST'],
+	  credentials: true
+	};
+
+	app.use(cors(corsSettings));
 	app.use(morgan('dev')); // log every request to the console
 	app.use(cookieParser()); // read cookies (needed for auth)
 	app.use(bodyParser.urlencoded({
@@ -34,7 +41,7 @@ function app(connection) {
 		secret: 'kEEpOnRolliNgLiketHeMAKINA',
 		resave: true,
 		saveUninitialized: false,
-		name: 'muestreo.sid'
+		name: 'muestrookie'
 	} )); // session secret
 	app.use(passport.initialize());
 	app.use(passport.session()); // persistent login sessions

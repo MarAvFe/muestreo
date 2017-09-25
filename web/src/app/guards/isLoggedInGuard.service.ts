@@ -9,7 +9,7 @@ export class IsLoggedInGuardService {
     }
 
     isLoggedIn() {
-        console.debug('Checking if logged in access...');
+        console.debug('Checking if logged in...');
         return localStorage.getItem('cedula') !== null;
     }
 }
