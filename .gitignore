@@ -1,2 +1,4 @@
 
 *.bak
+
+webservice/generator/lastRun\.log
