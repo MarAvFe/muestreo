@@ -1,20 +1,20 @@
 # Ejecutado desde la raíz del repositorio
 
 set -e
-source ~/.bashrc
 echo "Definiendo uso de Node v8.4.0"
 
-~/.nvm/nvm.sh use v8.4.0 
+~/.nvm/nvm.sh use v8.4.0
 ~/.nvm/nvm.sh ls
 
-echo "Iniciando webservice..." 
-node server.js > lastRun.log & servId=$(echo $!)
-echo "server.js pi: "$servId
+echo "Iniciando webservice..."
+node server.js --gen=true > lastRun.log & servId=$(echo $!)
+echo "server.js pid: "$servId
 echo "OK"
 
-echo "Reiniciando Base de Datos..." 
+echo "Reiniciando Base de Datos..."
 cd ../baseDeDatos
-mysql -u root -p123456 -D sampling -e "source resetDb.sql" >> lastRun.log
+mysql -u root -p123456 -D sampling -e "source tablesFks.sql;" >> lastRun.log
+mysql -u root -p123456 -D sampling -e "source populateDb.sql;" >> lastRun.log
 echo "OK"
 
 echo "Eliminando archivos generados (docs/gen)..."
@@ -46,6 +46,3 @@ echo "___________________________________"
 echo
 echo "Inicie el webservice nuevamente con"
 echo "$ node server.js"
-
-
-

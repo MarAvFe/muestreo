@@ -12,47 +12,17 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="table-id">#</th>
+                            <th class="table-id">Administrador</th>
                             <th>Identificación</th>
                             <th>Nombre</th>
                             <th>Desasignar</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>0</td>
-                            <td><a href="#">x-xxxx-xxxx</a></td>
-                            <td>Yo</td>
-                            <td>
-                                <div class="button-wrapper">
-                                    <button type="button" class="btn btn-danger btn-default  btn-xs">Desasignar</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td><a href="#">2-3374-3475</a></td>
-                            <td>Andrea Fernandez Vargas</td>
-                            <td>
-                                <div class="button-wrapper">
-                                    <button type="button" class="btn btn-danger btn-default  btn-xs">Desasignar</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><a href="#">1-0639-3096</a></td>
-                            <td>Carmen Rojas Suárez</td>
-                            <td>
-                                <div class="button-wrapper">
-                                    <button type="button" class="btn btn-danger btn-default  btn-xs">Desasignar</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><a href="#">1-1209-1250</a></td>
-                            <td>Alvaro Ramírez Duarte</td>
+                        <tr *ngFor="let colab of colaborators">
+                            <td>{{colab.admin.data[0]!=0?"No":"Si"}}</td>
+                            <td><a href="#">{{colab.cedula}}</a></td>
+                            <td>{{colab.name}}</td>
                             <td>
                                 <div class="button-wrapper">
                                     <button type="button" class="btn btn-danger btn-default  btn-xs">Desasignar</button>

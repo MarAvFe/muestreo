@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Activity` (
   `type` TINYINT(4) NOT NULL,
   PRIMARY KEY (`idActivity`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`User` (
   `pwd` VARCHAR(60) NOT NULL,
   PRIMARY KEY (`idUser`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 9
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`SamplingType` (
   `initials` VARCHAR(4) NOT NULL,
   PRIMARY KEY (`idSamplingType`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Sampling` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Comment` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Group` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Trail` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -188,7 +188,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Worker` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -232,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -640,32 +640,34 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure registerUser
+-- procedure getIdSampDescIdSampType
 -- -----------------------------------------------------
 
 DELIMITER $$
-USE `sampling`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `registerUser`(
-	in pCedula varchar(12),
-	in pName varchar(45),
-	in pLastname varchar(45),
-	in pEmail varchar(255),
-	in pPhone varchar(12),
-	in pPwd varchar(60)
+CREATE PROCEDURE getIdSampDescIdSampType(pName varchar(8))
+BEGIN
+SELECT idSampling, description, SamplingType_idSamplingType
+from Sampling
+WHERE name = pName;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getColaborators
+-- -----------------------------------------------------
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getColaborators`(
+	in pNameSampling varchar(255)
 )
 BEGIN
-	INSERT INTO `sampling`.`User`
-	(`cedula`,
-	`name`,
-	`lastname`,
-	`email`,
-	`phone`,
-	`pwd`)
-	VALUES
-	(pCedula, pName, pLastname, pEmail, pPhone, pPwd);
-END$$
-
-DELIMITER ;
+	select u.cedula as cedula, concat(u.name, ' ', u.lastname) as name, su.isAdmin as admin
+	from Sampling_has_User su
+		join User u on su.User_idUser = u.idUser
+		join Sampling s on s.idSampling = su.Sampling_idSampling
+	where s.name = pNameSampling;
+END $$
 SHOW WARNINGS;
 
 SET SQL_MODE=@OLD_SQL_MODE;

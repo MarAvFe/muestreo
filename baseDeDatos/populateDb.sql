@@ -9,7 +9,8 @@ INSERT INTO sampling.SamplingType(name,initials)VALUES
 INSERT INTO sampling.User(cedula,name,lastname,email,phone,pwd)VALUES
     ('106720123','Michael','Mena','mikemena@gmail.com','84572163','mikem25'),
     ('301480674','Andrea','Ramírez','andreramirez@gmail.com','86974236','andreram30'),
-    ('305980215','Camila','Alvarez','camialvarez@gmail.com','86489723','camialva123');
+    ('305980215','Camila','Alvarez','camialvarez@gmail.com','86489723','camialva123'),
+    ('100320253','Miranda','Barlow','mirba@gmail.com','89123489','$2a$10$jqFr9cjmWQ32yqPcwazxteieSk..Vb1qFJ2qlBW7jSBY/6Nn4NPxS');
 
 -- Inserción en catálogo Activity
 INSERT INTO sampling.Activity(name,description,type)VALUES
@@ -20,8 +21,8 @@ INSERT INTO sampling.Activity(name,description,type)VALUES
 
 -- Inserción Sampling
 INSERT INTO sampling.Sampling(description,live,name,SamplingType_idSamplingType,n_preliminar,n_definitive)VALUES
-    ('Ejecutado para muestrear la construcción del segundo piso de la escuela de mantenimiento industrial, en el período de vacaciones 2015-2016, a cargo de la constructora Quirós y Román', 0, 'ManteQ&R', 1,30,10),
-    ('Ejecutado para muestrear la construcción del edificio D3, en el período 2016, a cargo de la constructora Sánchez-Carvajal', 0, 'D3S&C', 2,15,20);
+    ('Ejecutado para muestrear la construcción del segundo piso de la escuela de mantenimiento industrial, en el período de vacaciones 2015-2016, a cargo de la constructora Quirós y Román', 0, 'ManteQR', 1,30,10),
+    ('Ejecutado para muestrear la construcción del edificio D3, en el período 2016, a cargo de la constructora Sánchez-Carvajal', 0, 'D3SC', 2,15,20);
 
 -- Inserción en catálogo Group
 INSERT INTO sampling.Group(name, Sampling_idSampling)VALUES
@@ -61,6 +62,6 @@ INSERT INTO sampling.Observation(date, hasData, isProductive, isCancelled, Activ
 
 -- Inserción Sampling_has_User
 INSERT INTO sampling.Sampling_has_User(Sampling_idSampling, User_idUser, isAdmin)VALUES
-    (1,1,1),
+    (1,4,1),
     (2,2,1),
     (1,3,0);

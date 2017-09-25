@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptionsArgs } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import { DefParam } from './objects/DefParam'
+import { DefParam } from './objects/DefParam';
+import { Colaborator } from './objects/Colaborator';
 import { PreParam } from './objects/PreParam';
 import { Feedback } from './objects/Feedback';
 import { SamplingName } from './objects/SamplingName';
@@ -16,7 +17,6 @@ export class MySamplingsService {
     options: any;
     heads: any;
     requestOptionsArgs: any;
-
 
     constructor(private _baConfig: BaThemeConfigProvider, private http: Http) {
         this.heads = new Headers();
@@ -32,18 +32,26 @@ export class MySamplingsService {
         return Promise.reject(error.message || error);
     }
 
+    // devuelve el id del muestreo seleccionado
+    getColaborators(data): Promise<Colaborator[]> {
+        const body = this.toQueryString({ pNameSampling : data });
+        return this.http.post('http://localhost:2828/getColaborators', body, this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as Colaborator[])
+        .catch(this.handleError);
+    }
 
-    //devuelve el id del muestreo seleccionado
-    getSamplingId(data): Promise<SamplingId[]>{
-        const body = this.toQueryString({pName : data});
-        return this.http.post('http://localhost:2828/getSamplingId',body,{ headers : this.heads } )
+    // devuelve el id del muestreo seleccionado
+    getSamplingId(data): Promise<SamplingId[]> {
+        const body = this.toQueryString({ pName : data });
+        return this.http.post('http://localhost:2828/getSamplingId', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as SamplingId[])
         .catch(this.handleError);
     }
 
     getSamplingName(): Promise<SamplingName[]> {
-        return this.http.post('http://localhost:2828/getSamplingName', { headers : this.heads } )
+        return this.http.post('http://localhost:2828/getSamplingName', '', this.options )
         .toPromise()
         .then(response => response.json().data[0] as SamplingName[])
         .catch(this.handleError);
@@ -52,7 +60,7 @@ export class MySamplingsService {
     // carga los parámetros definitivos
     getDefParam(data): Promise<DefParam[]> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/getDefParam', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/getDefParam', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as DefParam[])
         .catch(this.handleError);
@@ -61,7 +69,7 @@ export class MySamplingsService {
     // devuelve idSampling, description y idSamplingType a partir del nombre del muestreo
     getIdSampDescIdSampType(data): Promise<SamplingDescIdSamp[]> {
         const body = this.toQueryString({ pName : data });
-        return this.http.post('http://localhost:2828/getIdSampDescIdSampType', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/getIdSampDescIdSampType', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as SamplingDescIdSamp[])
         .catch(this.handleError);
@@ -70,7 +78,7 @@ export class MySamplingsService {
     // carga los parámetros preliminares
     getPreParam(data): Promise<PreParam[]> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/getPreParam', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/getPreParam', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as PreParam[])
         .catch(this.handleError);
@@ -80,8 +88,7 @@ export class MySamplingsService {
     // hace un update de los parámetros definitivos
     editDefParam(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        console.log("params"+ JSON.stringify(body));
-        return this.http.post('http://localhost:2828/pUpDefParamsSampling', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/pUpDefParamsSampling', body, this.options )
         .toPromise()
         .then(response => response.json());
     }
@@ -89,7 +96,7 @@ export class MySamplingsService {
     // hace un update de los parámetros preliminares
     editPreParam(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/pUpPreParamsSampling', body, { headers : this.heads } )
+        return this.http.post('http://localhost:2828/pUpPreParamsSampling', body, this.options )
         .toPromise()
         .then(response => response.json());
     }
@@ -103,7 +110,7 @@ export class MySamplingsService {
             pq_definitive: bodyParams.q_definitive,
             perror_definitive: bodyParams.error_definitive,
             pn_definitive: bodyParams.n_definitive,
-            pz_definitive: bodyParams.z_definitive
+            pz_definitive: bodyParams.z_definitive,
         };
     }
 
@@ -117,7 +124,7 @@ export class MySamplingsService {
             pIdSamplingType: info.pIdSamplingType,
             pp_preliminar: bodyParams.p_preliminar,
             pq_preliminar: bodyParams.q_preliminar,
-            pn_preliminar: bodyParams.n_preliminar
+            pn_preliminar: bodyParams.n_preliminar,
         };
     }
 

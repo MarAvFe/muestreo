@@ -6,6 +6,13 @@
  */
 exports.route = function (app, connection) {
 
+	// If gen==true, the server started for generating ws,
+	// so no authentication blocking will be set.
+	var options = require('node-options');
+	var opts =  { "gen" : false };
+	var result = options.parse(process.argv.slice(2), opts);
+	opts.gen = opts.gen=='true'?1:0;
+
 	/**
 	 * Routes single file.
 	 * @memberOf route
@@ -13,7 +20,10 @@ exports.route = function (app, connection) {
 	 */
 	addToApp = function (path) {
 		var tempRouter = require("." + path).router(connection);
-		if(path !== './api/routes/authentication.js') tempRouter.use(isLoggedIn);
+		if (opts.gen < 1) {
+			//console.log("path: " + path);
+			if((path !== './api/routes/authentication.js')) tempRouter.use(isLoggedIn);
+		}
 		app.use("/", tempRouter);
 	}
 

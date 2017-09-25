@@ -51,17 +51,20 @@ export class Register {
 
         onSubmit(values: Object): void {
             this.submitted = true;
-            console.debug('Values: ' + JSON.stringify(values));
+            console.debug(`Values: ${JSON.stringify(values)}`);
             if (this.form.valid) {
                 this.registerService.registerUser(values)
                 .then(data => {
-                    console.debug('Autenticado.');
-                    localStorage.setItem('cedula', data.data);
-                    this.router.navigate(['/pages/profile']);
+                    console.debug('Registro.');
+                    this.toastr.error(`Se ha registrado satisfactoriamente a ${this.pName}.`);
+                    this.router.navigate(['/']);
                 })
                 .catch(err => {
                     if (err.status === 401) {
                         this.toastr.error('Los datos ingresados no coinciden con ningún usuario o son incorrectos.');
+                        console.debug('Fallo.');
+                    } else {
+                        this.toastr.error('Ha ocurrido un error de conexión. Por favor intente nuevamente.');
                         console.debug('Fallo.');
                     }
                 });

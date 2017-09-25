@@ -17,15 +17,14 @@ export class RegisterService {
     }
 
     registerUser(data): Promise<any> {
-        const interfaceUser = 'username=' + JSON.stringify({
+        const interfaceUser = `username=${JSON.stringify({
                 pName: data.pName,
                 pLastname: data.pLastname,
                 pEmail: data.pEmail,
                 pPhone: data.pPhone,
                 pCedula: data.pCedula,
-            }) + '&password=' + data.passwords.pPwd;
-        console.debug('interfaceUser: '+interfaceUser);
-        const body = this.toQueryString(interfaceUser);
+            })}&password=${data.passwords.pPwd}`;
+        console.debug(`interfaceUser: ${interfaceUser}`);
         const jsonHeads = new Headers();
         jsonHeads.append('Content-Type', 'application/x-www-form-urlencoded');
         jsonHeads.append('Access-Control-Allow-Origin', '*');
@@ -33,7 +32,7 @@ export class RegisterService {
         'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
         this.options = { headers : jsonHeads, withCredentials: true };
 
-        return this.http.post('http://localhost:2828/auth/register', body, this.options )
+        return this.http.post('http://localhost:2828/auth/register', interfaceUser, { headers : jsonHeads } )
         .toPromise()
         .then(response => response.json())
         .catch(this.handleError);

@@ -25,6 +25,7 @@ http.request(options, function (res) {
 // Main function
 function generate(tables) {
 	mkdirp(dir);
+console.log("tables: " + tables);
 	for (i1 = 0; i1 < tables.length; i1++) {
 		it: {
 			var table = tables[i1];

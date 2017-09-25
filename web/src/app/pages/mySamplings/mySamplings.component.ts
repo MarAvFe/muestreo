@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { MySamplingsService } from './mySamplings.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { RenderBitComponent } from './customComponents/renderBit.component';
@@ -7,18 +7,20 @@ import { ToastsManager, Toast } from 'ng2-toastr';
 import { SamplingName } from './objects/SamplingName';
 import { SamplingId } from './objects/SamplingId';
 import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
+import { Colaborator } from './objects/Colaborator';
 
 @Component({
     selector: 'mySamplings',
     templateUrl: 'mySamplings.html',
     styleUrls: ['./smartTables.scss'],
 })
-export class MySamplingsComponent {
+export class MySamplingsComponent implements OnInit {
     data: any;
     heads: any;
     sampleInfo: any;
     query: string = '';
     sampName: SamplingName[];
+    colaborators: Colaborator[];
 
     getNames(service: MySamplingsService): void {
         this.service.getSamplingName().then(sampName => {
@@ -149,35 +151,33 @@ export class MySamplingsComponent {
 
     ngOnInit() {
         this.getNames(this.service);
-        this.service.getDefParam(this.sampleInfo).then((data) => {
-            this.sourceDefParam.load(data);
-        }).catch(this.handleError);
-        this.service.getPreParam(this.sampleInfo).then((data) => {
-            this.sourcePreParam.load(data);
-            console.debug('preGot: ' + JSON.stringify(data));
-        }).catch(this.handleError);
     }
 
-loadSamplingInfo(sampName): void {
-    // se cargan los parámetros preeliminares
-  // let sampleInfo;
-    this.service.getIdSampDescIdSampType(sampName).then( data => {
-        this.sampleInfo = {
-            pId_Sampling : data[0].idSampling,
-            pDescription : data[0].description,
-            pIdSamplingType : data[0].SamplingType_idSamplingType,
-        };
+    loadSamplingInfo(sampName): void {
+        // se cargan los parámetros preeliminares
+        this.service.getIdSampDescIdSampType(sampName).then( data => {
+            this.sampleInfo = {
+                pId_Sampling : data[0].idSampling,
+                pDescription : data[0].description,
+                pIdSamplingType : data[0].SamplingType_idSamplingType,
+            };
 
-        //se cargan parámetros preliminares
-        this.service.getPreParam(this.sampleInfo).then((dataz) => {
-            this.sourcePreParam.load(dataz);
-        }).catch(err => console.debug('Error al cargar los datos preliminares.'));
+            // se cargan parámetros preliminares
+            this.service.getPreParam(this.sampleInfo).then((dataz) => {
+                this.sourcePreParam.load(dataz);
+            }).catch(err => console.debug('Error al cargar los datos preliminares.'));
 
-        //se cargan parámetros definitivos
-        this.service.getDefParam(this.sampleInfo).then((datax) => {
-            this.sourceDefParam.load(datax);
-        }).catch(err => console.debug('Error al cargar los datos definitivos.'));
-    });
+            // se cargan parámetros definitivos
+            this.service.getDefParam(this.sampleInfo).then((dataz) => {
+                this.sourceDefParam.load(dataz);
+            }).catch(err => console.debug('Error al cargar los datos definitivos.'));
+
+            // se cargan tabla de colaboradores
+            this.service.getColaborators(sampName).then((dataz) => {
+                this.colaborators = dataz;
+            }).catch(err => console.debug('Error al cargar los colaboradores.'));
+        });
+    }
 
     onEditConfirmPreParam(event): void {
         console.debug("hola" + JSON.stringify(this.sampleInfo));
@@ -193,39 +193,20 @@ loadSamplingInfo(sampName): void {
                 event.confirm.reject();
             }
         }).catch(this.handleError);
+    }
+
+    onEditConfirmDefParam(event): void {
+        this.service.editDefParam(this.service.createComposeDef(this.sampleInfo, event.newData))
+        .then(res => {
+            if (res.error === 'none') {
+                event.confirm.resolve();
+            }else {
+                this.toastr.error('Por favor, compruebe los parámetros.');
+                console.debug(JSON.stringify(res));
+                event.confirm.reject();
+            }
+        },
+    );
 }
-
-onEditConfirmDefParam(event): void {
-    this.service.editDefParam(this.service.createComposeDef(this.sampleInfo, event.newData))
-      .then(res => {
-      if (res.error === 'none') {
-      event.confirm.resolve();
-  }else {
-  this.toastr.error('Por favor, compruebe los parámetros.');
-  console.debug(JSON.stringify(res));
-  event.confirm.reject();
-  }
-  },
-);
-}
-
-
-onEditConfirmPreParam(event): void {
-      console.debug("uhiuhuihihihi"+JSON.stringify(this.sampleInfo));
-      console.debug("ñañaña"+ JSON.stringify(event.newData) );
-     this.service.editPreParam(this.service.createComposePre(this.sampleInfo, event.newData))
-    .then(res => {
-        if (res.error === 'none') {
-            event.confirm.resolve();
-        }else {
-            this.toastr.error('Por favor, compruebe los parámetros.');
-            console.debug(JSON.stringify(res));
-            event.confirm.reject();
-        }
-    }).catch(this.handleError);
-}
-
-
-
 
 }
