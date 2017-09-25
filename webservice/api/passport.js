@@ -40,35 +40,44 @@ module.exports = function() {
     // by default, if there was no name, it would just be called 'local'
 
     passport.use(
-        'local-signup',
+        'local-register',
         new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
             usernameField : 'username',
-            passwordField : 'password',
-            passReqToCallback : true // allows us to pass back the entire request to the callback
+            passwordField : 'password'
         },
-        function(req, username, password, done) {
+        function(username, password, done) {
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            connection.query("SELECT * FROM users WHERE username = ?",[username], function(err, rows) {
+            userObj = JSON.parse(username);
+            connection.query("SELECT * FROM User WHERE cedula = ? or email = ?",[userObj.pCedula,userObj.pEmail], function(err, rows) {
                 if (err)
-                    return done(err);
+                return done(err);
                 if (rows.length) {
-                    return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+                    console.log("rows: " + JSON.stringify(rows));
+                    return done(null, false);
                 } else {
                     // if there is no user with that username
                     // create the user
-                    var newUserMysql = {
-                        username: username,
-                        password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
+                    var newUser = {
+                        pName: userObj.pName,
+                        pLastname: userObj.pLastname,
+                        pEmail: userObj.pEmail,
+                        cedula: userObj.pCedula,
+                        pPhone: userObj.pPhone,
+                        pPwd: bcrypt.hashSync(password) // use the generateHash function in our user model
                     };
-
-                    var insertQuery = "INSERT INTO users ( username, password ) values (?,?)";
-
-                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password],function(err, rows) {
-                        newUserMysql.id = rows.insertId;
-
-                        return done(null, newUserMysql);
+                    var insertQuery = "INSERT INTO User ( name, lastname, email, cedula, phone, pwd ) values (?,?,?,?,?,?)";
+                    connection.query(insertQuery,[
+                        newUser.pName,
+                        newUser.pLastname,
+                        newUser.pEmail,
+                        newUser.cedula,
+                        newUser.pPhone,
+                        newUser.pPwd,
+                    ],function(err, rows) {
+                        newUser.id = rows.insertId;
+                        return done(null, newUser);
                     });
                 }
             });
@@ -89,17 +98,18 @@ module.exports = function() {
             passwordField : 'pPwd'
         },
         function(username, password, done) { // callback with email and password from our form
-            quer = "Select cedula From sampling.User Where (cedula = '"+username+"' or email = '"+username+"') and pwd = '"+password+"';"
+            quer = "Select cedula, pwd From sampling.User Where cedula = '"+username+"' or email = '"+username+"';"
             connection.query(quer, function(err, rows){
                 if (err) return done(err);
-                console.log("ROWS: "+JSON.stringify(rows));
                 if (rows.length < 1) {
                     return done(null, false); // req.flash is the way to set flashdata using connect-flash
                 }
 
-                // // if the user is found but the password is wrong
-                // if (!bcrypt.compareSync(password, rows[0].password))
-                //     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+                // if the user is found but the password is wrong
+                if (!bcrypt.compareSync(password, rows[0].pwd)){
+                    console.log("failedCmpareSync.");
+                    return done(null, false);
+                }
 
                 // all is well, return successful user
                 return done(null, rows[0]);

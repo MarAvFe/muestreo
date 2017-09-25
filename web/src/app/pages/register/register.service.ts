@@ -3,7 +3,7 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class LoginService {
+export class RegisterService {
 
     options: any;
     heads: any;
@@ -16,8 +16,16 @@ export class LoginService {
         return Promise.reject(error.message || error);
     }
 
-    authUser(data): Promise<any> {
-        const body = this.toQueryString(data);
+    registerUser(data): Promise<any> {
+        const interfaceUser = 'username=' + JSON.stringify({
+                pName: data.pName,
+                pLastname: data.pLastname,
+                pEmail: data.pEmail,
+                pPhone: data.pPhone,
+                pCedula: data.pCedula,
+            }) + '&password=' + data.passwords.pPwd;
+        console.debug('interfaceUser: '+interfaceUser);
+        const body = this.toQueryString(interfaceUser);
         const jsonHeads = new Headers();
         jsonHeads.append('Content-Type', 'application/x-www-form-urlencoded');
         jsonHeads.append('Access-Control-Allow-Origin', '*');
@@ -25,7 +33,7 @@ export class LoginService {
         'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
         this.options = { headers : jsonHeads, withCredentials: true };
 
-        return this.http.post('http://localhost:2828/auth/login', body, this.options )
+        return this.http.post('http://localhost:2828/auth/register', body, this.options )
         .toPromise()
         .then(response => response.json())
         .catch(this.handleError);

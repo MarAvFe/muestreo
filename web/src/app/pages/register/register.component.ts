@@ -1,55 +1,70 @@
-import {Component} from '@angular/core';
-import {FormGroup, AbstractControl, FormBuilder, Validators} from '@angular/forms';
-import {EmailValidator, EqualPasswordsValidator} from '../../theme/validators';
+import { Component, ViewContainerRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastsManager, Toast } from 'ng2-toastr';
+import { FormGroup, AbstractControl, FormBuilder, Validators } from '@angular/forms';
+import { EmailValidator, EqualPasswordsValidator } from '../../theme/validators';
+import { RegisterService } from './register.service';
 
 @Component({
     selector: 'register',
     templateUrl: './register.html',
-    styleUrls: ['./register.scss']
+    styleUrls: ['./register.scss'],
 })
 export class Register {
 
-    public form:FormGroup;
-    public name:AbstractControl;
-    public lastname:AbstractControl;
-    public email:AbstractControl;
-    public password:AbstractControl;
-    public repeatPassword:AbstractControl;
-    public passwords:FormGroup;
-    public identification:AbstractControl;
-    public phone:AbstractControl;
+    form: FormGroup;
+    pName: AbstractControl;
+    pLastname: AbstractControl;
+    pEmail: AbstractControl;
+    passwords: FormGroup;
+    pPwd: AbstractControl;
+    repeatPassword: AbstractControl;
+    pCedula: AbstractControl;
+    pPhone: AbstractControl;
 
-    public submitted:boolean = false;
+    submitted: boolean = false;
 
-    constructor(fb:FormBuilder) {
+    constructor(fb: FormBuilder, protected registerService: RegisterService, private router: Router,
+        public toastr: ToastsManager, vcr: ViewContainerRef) {
+            this.toastr.setRootViewContainerRef(vcr);
+            this.form = fb.group({
+                'pName': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+                'pLastname': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+                'pEmail': ['', Validators.compose([Validators.required, EmailValidator.validate])],
+                'passwords': fb.group({
+                    'pPwd': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+                    'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+                }, { validator: EqualPasswordsValidator.validate('pPwd', 'repeatPassword') }),
+                'pCedula': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+                'pPhone': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+            });
 
-        this.form = fb.group({
-            'name': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-            'lastname': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-            'email': ['', Validators.compose([Validators.required, EmailValidator.validate])],
-            'passwords': fb.group({
-                'password': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-                'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(4)])]
-            }, { validator: EqualPasswordsValidator.validate('password', 'repeatPassword') }),
-            'identification': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-            'phone': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-        });
+            this.pName = this.form.controls['pName'];
+            this.pLastname = this.form.controls['pLastname'];
+            this.pEmail = this.form.controls['pEmail'];
+            this.passwords = <FormGroup> this.form.controls['passwords'];
+            this.pPwd = this.passwords.controls['pPwd'];
+            this.repeatPassword = this.passwords.controls['repeatPassword'];
+            this.pCedula = this.form.controls['pCedula'];
+            this.pPhone = this.form.controls['pPhone'];
+        }
 
-        this.name = this.form.controls['name'];
-        this.lastname = this.form.controls['lastname'];
-        this.email = this.form.controls['email'];
-        this.passwords = <FormGroup> this.form.controls['passwords'];
-        this.password = this.passwords.controls['password'];
-        this.repeatPassword = this.passwords.controls['repeatPassword'];
-        this.identification = this.form.controls['identification'];
-        this.phone = this.form.controls['phone'];
-    }
-
-    public onSubmit(values:Object):void {
-        this.submitted = true;
-        if (this.form.valid) {
-            // your code goes here
-            // console.log(values);
+        onSubmit(values: Object): void {
+            this.submitted = true;
+            console.debug('Values: ' + JSON.stringify(values));
+            if (this.form.valid) {
+                this.registerService.registerUser(values)
+                .then(data => {
+                    console.debug('Autenticado.');
+                    localStorage.setItem('cedula', data.data);
+                    this.router.navigate(['/pages/profile']);
+                })
+                .catch(err => {
+                    if (err.status === 401) {
+                        this.toastr.error('Los datos ingresados no coinciden con ningún usuario o son incorrectos.');
+                        console.debug('Fallo.');
+                    }
+                });
+            }
         }
     }
-}

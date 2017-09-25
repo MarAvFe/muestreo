@@ -4,60 +4,60 @@
         <a routerLink="/login" class="auth-link" translate>{{'register.signin_link'}}</a>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
-            <div class="form-group row" [ngClass]="{'has-error': (!name.valid && name.touched), 'has-success': (name.valid && name.touched)}">
+            <div class="form-group row" [ngClass]="{'has-error': (!pName.valid && pName.touched), 'has-success': (pName.valid && pName.touched)}">
                 <label for="inputName3" class="col-sm-2 control-label" translate>{{'register.name'}}</label>
 
                 <div class="col-sm-10">
-                    <input [formControl]="name" type="text" class="form-control" id="inputName3" placeholder="{{'register.name' | translate}}">
+                    <input value="nombre" [formControl]="pName" type="text" class="form-control" id="inputName3" placeholder="{{'register.name' | translate}}">
                 </div>
             </div>
-            <div class="form-group row" [ngClass]="{'has-error': (!lastname.valid && lastname.touched), 'has-success': (lastname.valid && lastname.touched)}">
+            <div class="form-group row" [ngClass]="{'has-error': (!pLastname.valid && pLastname.touched), 'has-success': (pLastname.valid && pLastname.touched)}">
                 <label for="inputLastName3" class="col-sm-2 control-label" translate>{{'register.lastname'}}</label>
 
                 <div class="col-sm-10">
-                    <input [formControl]="lastname" type="text" class="form-control" id="inputLastName3" placeholder="{{'register.lastname' | translate}}">
+                    <input value="apellidos" [formControl]="pLastname" type="text" class="form-control" id="inputLastName3" placeholder="{{'register.lastname' | translate}}">
                 </div>
             </div>
-            <div class="form-group row" [ngClass]="{'has-error': (!email.valid && email.touched), 'has-success': (email.valid && email.touched)}">
+            <div class="form-group row" [ngClass]="{'has-error': (!pEmail.valid && pEmail.touched), 'has-success': (pEmail.valid && pEmail.touched)}">
                 <label for="inputEmail3" class="col-sm-2 control-label" translate>{{'register.email'}}</label>
 
                 <div class="col-sm-10">
-                    <input [formControl]="email" type="email" class="form-control" id="inputEmail3" placeholder="{{'register.email' | translate}}">
+                    <input value="correo@dominio.com" [formControl]="pEmail" type="email" class="form-control" id="inputEmail3" placeholder="{{'register.email' | translate}}">
                 </div>
             </div>
-            <div class="form-group row" [ngClass]="{'has-error': (!password.valid && password.touched), 'has-success': (password.valid && password.touched)}">
+            <div class="form-group row" [ngClass]="{'has-error': (!pPwd.valid && pPwd.touched), 'has-success': (pPwd.valid && pPwd.touched)}">
                 <label for="inputPassword3" class="col-sm-2 control-label" translate>{{'register.password'}}</label>
 
                 <div class="col-sm-10">
-                    <input [formControl]="password" type="password" class="form-control" id="inputPassword3" placeholder="{{'register.password' | translate}}">
+                    <input value="123456" [formControl]="pPwd" type="password" class="form-control" id="inputPassword3" placeholder="{{'register.password' | translate}}">
                 </div>
             </div>
             <div class="form-group row" [ngClass]="{'has-error': (!repeatPassword.valid && repeatPassword.touched), 'has-success': (repeatPassword.valid && repeatPassword.touched)}">
                 <label for="inputPassword4" class="col-sm-2 control-label" translate>{{'register.repeat'}}</label>
 
                 <div class="col-sm-10">
-                    <input [formControl]="repeatPassword" type="password" class="form-control" id="inputPassword4" placeholder="{{'register.repeat' | translate}}">
-                    <span *ngIf="!passwords.valid && (password.touched || repeatPassword.touched)" class="help-block sub-little-text">{{'register.difPwd'}}</span>
+                    <input value="123456" [formControl]="repeatPassword" type="password" class="form-control" id="inputPassword4" placeholder="{{'register.repeat' | translate}}">
+                    <span *ngIf="!passwords.valid && (pPwd.touched || repeatPassword.touched)" class="help-block sub-little-text">{{'register.difPwd'}}</span>
                 </div>
             </div>
 
-            <div class="form-group row" [ngClass]="{'has-error': (!identification.valid && identification.touched), 'has-success': (identification.valid && identification.touched)}">
+            <div class="form-group row" [ngClass]="{'has-error': (!pCedula.valid && pCedula.touched), 'has-success': (pCedula.valid && pCedula.touched)}">
                 <label for="inputIdentification" class="col-sm-2 control-label" translate>{{'register.identification'}}</label>
 
                 <div class="col-sm-10">
-                    <input [formControl]="identification" type="text" class="form-control" id="inputIdentification" placeholder="{{'register.identification' | translate}}">
+                    <input value="123456789" [formControl]="pCedula" type="text" class="form-control" id="inputIdentification" placeholder="{{'register.identification' | translate}}">
                 </div>
             </div>
-            <div class="form-group row" [ngClass]="{'has-error': (!phone.valid && phone.touched), 'has-success': (phone.valid && phone.touched)}">
+            <div class="form-group row" [ngClass]="{'has-error': (!pPhone.valid && pPhone.touched), 'has-success': (pPhone.valid && pPhone.touched)}">
                 <label for="inputPhone" class="col-sm-2 control-label" translate>{{'register.phone'}}</label>
 
                 <div class="col-sm-10">
-                    <input [formControl]="phone" type="text" class="form-control" id="inputPhone" placeholder="{{'register.phone' | translate}}">
+                    <input value="23453425" [formControl]="pPhone" type="text" class="form-control" id="inputPhone" placeholder="{{'register.phone' | translate}}">
                 </div>
             </div>
             <div class="form-group row"><div class="offset-sm-2 col-sm-10">
-                <!-- <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth" translate>{{'register.sign_up'}}</button> -->
-                <button  routerLink="/login" class="btn btn-default btn-auth" translate>{{'register.sign_up'}}</button>
+                <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth" translate>{{'register.sign_up'}}</button>
+                <!-- <button  routerLink="/login" class="btn btn-default btn-auth" translate>{{'register.sign_up'}}</button> -->
             </div></div>
         </form>
     </div>

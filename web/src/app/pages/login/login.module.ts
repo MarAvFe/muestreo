@@ -16,8 +16,8 @@ import { routing } from './login.routing';
         NgaModule,
         AppTranslationModule,
         ReactiveFormsModule,
-        routing,
         ToastModule.forRoot(),
+        routing,
     ],
     declarations: [
         Login,
