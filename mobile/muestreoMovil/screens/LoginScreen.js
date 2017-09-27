@@ -1,16 +1,39 @@
 import React from 'react';
 
-import {Alert, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {Alert, Image, ScrollView, StyleSheet, ListView, Text, View } from 'react-native';
 import {RkButton, RkText, RkTextInput} from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UtilStyles} from '../style/styles';
 
 export class LoginScreen extends React.Component {
+
   static navigationOptions = {
-    title: 'LOGIN'
+    title: 'LOGIN',
   };
+
     render() {
         const { navigate } = this.props.navigation;
+        let cedula;
+        fetch('http://172.23.6.85:2828/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            withCredentials: true,
+            body: JSON.stringify({
+                pUser: 'mirba@gmail.com',
+                pPwd: 'qwe123',
+            })
+        })
+          .then((response) => {
+              console.log('Fetched: '+ JSON.stringify(response._bodyInit));
+              console.log('FetchedJSON: '+ JSON.stringify(response.json()));
+              cedula = response.json().data;
+              console.log('ced: ' + JSON.stringify(cedula));
+          })
+          .catch(err => {
+              console.log('Error happened: '+ JSON.stringify(err));
+          });
         return (
             <View style={UtilStyles.container}>
             <View style={{flex:1.5, backgroundColor:'red'}}>

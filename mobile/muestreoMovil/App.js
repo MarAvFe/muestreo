@@ -22,7 +22,7 @@ const ExplorerApp = StackNavigator({
 }, {
   navigationOptions: {
     headerStyle: {
-      backgroundColor: 'white'
+      backgroundColor: '#007777'
     }
   }
 });
