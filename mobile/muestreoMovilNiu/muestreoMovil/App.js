@@ -79,6 +79,7 @@ const ExplorerApp = StackNavigator({
   SelectSampling: {screen: Screens.SelectSamplingScreen},
   AddObservation: {screen: Screens.AddObservationScreen},
   Report: {screen: Screens.ReportScreen},
+  Activity: {screen: Screens.AddActivityScreen },
   Comment: {screen: Screens.CommentScreen},
   Button: {screen: Screens.ButtonScreen},
   Card: {screen: Screens.CardScreen},

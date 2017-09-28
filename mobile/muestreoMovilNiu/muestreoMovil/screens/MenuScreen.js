@@ -39,7 +39,7 @@ export class MenuScreen extends Component {
             str.push(encodeURIComponent(p) + "=" + encodeURIComponent(bod[p]));
         }
         const body = str.join("&");
-        return fetch('http://192.168.42.225:2828/auth/login', {
+        return fetch('http://192.168.43.238:2828/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -78,6 +78,8 @@ export class MenuScreen extends Component {
             <RkButton style={UtilStyles.spaceTop} rkType='success stretch' onPress={() => navigate('SelectSampling', { name: 'Hackerman' })}>Muestrear</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Report', { name: 'Hackerman' })}>Reportar</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Comment', { name: 'Hackerman' })}>Comentario</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Activity', { name: 'Hackerman' })}>Agregar actividad</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Agregar observacion</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='warning stretch'
             onPress={() =>
                 Linking.openURL(manUsuario)
