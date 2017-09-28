@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {
+    Alert,
     Linking,
     View,
     Text,
@@ -13,33 +14,36 @@ import {
 import {RkButton, RkText} from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UtilStyles} from '../style/styles';
+import Network from '../constants/Network';
 
 export class MenuScreen extends Component {
-    static navigationOptions = {
-        title: 'Menu'
-    };
+    static navigationOptions = ({navigation}) => ({
+        title: 'Menu',
+      });
 
     constructor(props) {
         super(props);
         this.state = {
             checked: true,
-            cedula: '',
-            status: '',
+            name: '',
         };
         manUsuario = 'https://github.com/MarAvFe/muestreo/tree/master/documentos/usuario/readme.md';
+
+        this.greetUser();
     }
 
-    componentDidMount(){
-        const bod = {
-            pUser: 'mirba@gmail.com',
-            pPwd: 'qwe123'
-        };
+
+    greetUser(){
         const str = [];
-        for (let p in bod) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(bod[p]));
+        let parameters = {
+            cedula: this.props.navigation.state.params.cedula,
+        }
+        for (let p in parameters) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
         }
         const body = str.join("&");
-        return fetch('http://192.168.42.225:2828/auth/login', {
+        console.log('access: ' + JSON.stringify(parameters));
+        return fetch(`http://${Network.wsIp}:${Network.wsPort}/User/get`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -49,30 +53,64 @@ export class MenuScreen extends Component {
         })
         .then((response) => {
             const resp = response;
-            console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
-            console.log('FetchedJSON: '+ JSON.stringify(resp));
             status = resp.status;
-            let budd = JSON.parse(resp._bodyInit);
-            console.log('status: ' + JSON.stringify(status));
-            if (status != 400) {
-                cedula = budd.data;
-                console.log('gotCedula: ' + JSON.stringify(cedula));
+            if (status < 400) {
+                let budd = JSON.parse(resp._bodyInit).data[0];
+                console.log('status: ' + JSON.stringify(status));
+                name = budd.name;
+                this.setState({name});
+                console.log('gotName: ' + name);
+                return true;
             }
+            console.log("Login unauthenticated.");
+            return false;
         })
         .catch(err => {
             console.log('Error happened: '+ err);
+            return false;
+        });
+    }
+
+
+    logout(){
+        return fetch(`http://${Network.wsIp}:${Network.wsPort}/auth/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            withCredentials: true,
+        })
+        .then((response) => {
+            const resp = response;
+            status = resp.status;
+            if (status < 400) {
+                let budd = JSON.parse(resp._bodyInit);
+                console.log('status: ' + JSON.stringify(status));
+                ans = budd.data;
+                console.log('Logout status: ' + ans);
+                return true;
+            }
+            console.log("Logout failed.");
+            return false;
+        })
+        .catch(err => {
+            console.log('Error happened: '+ err);
+            return false;
         });
     }
 
     render() {
         const { navigate } = this.props.navigation;
+        console.log("cedGot: " + this.props.navigation.state.params.cedula);
         return (
             <ScrollView
             ref={'scrollView'}
             automaticallyAdjustContentInsets={true}
             style={UtilStyles.container}>
 
+
             <View style={UtilStyles.section}>
+            <RkText rkType='xxlarge'>Buenas tardes, {this.state.name}</RkText>
             <RkText rkType='header'>Seleccionar acción</RkText>
             <View style={UtilStyles.columnContainer}>
             <RkButton style={UtilStyles.spaceTop} rkType='success stretch' onPress={() => navigate('SelectSampling', { name: 'Hackerman' })}>Muestrear</RkButton>
@@ -83,6 +121,12 @@ export class MenuScreen extends Component {
                 Linking.openURL(manUsuario)
                 .catch(err => console.error('An error occurred', err))}>
                 Manual de Usuario</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch danger' onPress={() =>
+                this.logout().then((accepted) =>
+                accepted
+                ? navigate('Home')
+                : Alert.alert('Final de sesión','Ha habido un error en el cierre de sesión.')
+            )}>Cerrar sesión</RkButton>
                 </View>
                 </View>
                 </ScrollView>
