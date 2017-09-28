@@ -13,5 +13,6 @@ export * from './ChoiceScreen'
 export * from './SettingsScreen'
 export * from './TabScreen'
 export * from './ImageScreen'
+export * from './ScheduleRange'
 
 //export * from './AvatarScreen'

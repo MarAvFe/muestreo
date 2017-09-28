@@ -34,11 +34,11 @@ export class AddObservationScreen extends Component {
         ref={'scrollView'}
         automaticallyAdjustContentInsets={true}
         style={UtilStyles.container}>
-
         <View style={UtilStyles.section}>
           <RkText rkType='header'>Agregar observación</RkText>
           <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
+            <RkText rkType="large">Trabajador:</RkText>
             <Picker
             selectedValue={this.state.language}
             onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
@@ -48,12 +48,16 @@ export class AddObservationScreen extends Component {
             <Picker.Item label="WRK032" value="14" />
             <Picker.Item label="WRK039" value="15" />
             </Picker>
-                <View style={UtilStyles.rowContainer}>
-                  <RkText rkType='bold' style={{marginLeft: 16.5}}>Es productivo?</RkText>
+            <View style={UtilStyles.rowContainer}>
+              <RkText rkType="large">Es productivo?:</RkText>
                   <RkChoice/>
-                </View>
+          </View>
+            <View style={UtilStyles.rowContainer}>
+                  <RkText rkType="large">Se cancela?:</RkText>
+                      <RkChoice/>
+          </View>
 
-<RkText rkType="large">Distracción:</RkText>
+          <RkText rkType="large">Distracción:</RkText>
                 <Picker
                 style={UtilStyles.form}
                 selectedValue={this.state.language}
@@ -64,6 +68,8 @@ export class AddObservationScreen extends Component {
                 </Picker>
 
             <RkButton rkType='stretch success' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Continuar</RkButton>
+
+            <RkButton rkType='stretch success' onPress={() => navigate('Activity', { name: 'Hackerman' })}>Agregar actividad</RkButton>
             </View>
           </View>
         </View>
