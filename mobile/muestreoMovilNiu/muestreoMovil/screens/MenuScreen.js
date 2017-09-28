@@ -113,9 +113,12 @@ export class MenuScreen extends Component {
             <RkText rkType='xxlarge'>Buenas tardes, {this.state.name}</RkText>
             <RkText rkType='header'>Seleccionar acción</RkText>
             <View style={UtilStyles.columnContainer}>
-            <RkButton style={UtilStyles.spaceTop} rkType='success stretch' onPress={() => navigate('SelectSampling', { name: 'Hackerman' })}>Muestrear</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('SelectSampling', { name: 'Hackerman' })}>Muestrear</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Report', { name: 'Hackerman' })}>Reportar</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Comment', { name: 'Hackerman' })}>Comentario</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Activity', { name: 'Hackerman' })}>Agregar actividad</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Agregar observacion</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('ScheduleRange', { name: 'Hackerman' })}>Seleccionar rango y estimado</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='warning stretch'
             onPress={() =>
                 Linking.openURL(manUsuario)
