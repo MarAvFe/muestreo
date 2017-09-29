@@ -132,6 +132,10 @@ export class MySamplingsService {
         // Receives some json and returns it in ws query format:
         // {"name": "nombre","description": "descrip."} -> name=nombre&description=
         const keys = Object.keys(jsonBody).map(key => {
+            /* If null */
+            if (!jsonBody[key]) {
+                return '';
+            }
             /* If boolean */
             if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
                 jsonBody[key] = jsonBody[key] === 'true' ? 1 : 0;

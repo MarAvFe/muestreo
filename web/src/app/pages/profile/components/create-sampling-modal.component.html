@@ -1,35 +1,49 @@
 <div class="modal-content">
-  <div class="modal-header">
-    <h4 class="modal-title">{{modalHeader}}</h4>
-    <button class="close" aria-label="Close" (click)="closeModal()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-      <form>
-          <div class="form-group">
-              <label for="input11" translate>Nombre</label>
-              <input [(ngModel)]="model.pName" name="name" type="text" class="form-control" id="input11" placeholder="Identificador corto">
-          </div>
-          <div class="form-group">
-              <label for="input13" translate>Descripción</label>
-              <textarea rows="3" [(ngModel)]="model.pDescription" name="description" class="form-control" id="input13" placeholder="Describa su muestreo"></textarea>
-          </div>
-          <div class="form-group">
-              <label for="input14" translate>Modalidad</label>
-              <select class="form-control" name="live" [(ngModel)]="model.pLive" id="input14">
-                  <option value="0">Presencial</option>
-                  <option value="1">Video</option>
-              </select>
-          </div>
-          <div class="form-group">
-              <label for="exampleSelect2">Tipo</label>
-              <select class="form-control" name="type" [(ngModel)]="model.pSamplingType_idSamplingType" id="exampleSelect2">
-                  <option *ngFor="let type of samplingTypes" value="{{type.idSamplingType}}">{{type.name}}</option>
-              </select>
-          </div>
-          <button class="btn btn-success btn-block confirm-btn" (click)="createSampling()">Crear</button>
+    <div class="modal-header">
+        <h4 class="modal-title">{{modalHeader}}</h4>
+        <button class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="input11" translate>Nombre del muestreo</label>
+                        <input [(ngModel)]="model.pName" name="name" type="text" class="form-control" id="input11">
+                    </div>
+                    <div class="form-group">
+                        <label for="input13" translate>Descripción del muestreo</label>
+                        <textarea rows="3" [(ngModel)]="model.pDescription" name="description" class="form-control" id="input13" placeholder="Describa su muestreo"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="input14" translate>Modalidad</label>
+                        <select class="form-control" name="live" [(ngModel)]="model.pLive" id="input14">
+                            <option value="0">Presencial</option>
+                            <option value="1">Video</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleSelect2">Tipo</label>
+                        <select class="form-control" name="type" [(ngModel)]="model.pSamplingType_idSamplingType" id="exampleSelect2">
+                            <option *ngFor="let type of samplingTypes" value="{{type.idSamplingType}}">{{type.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="input18" translate>Objeto a muestrear</label>
+                        <input [(ngModel)]="model.pSampleProfileName" name="sampleProfileName" type="text" class="form-control" id="input18" placeholder="Aula">
+                    </div>
+                    <div class="form-group">
+                        <label for="input19" translate>Descripción del objeto</label>
+                        <textarea rows="3" [(ngModel)]="model.pSampleProfileDescription" name="sampleProfileDescription" class="form-control" id="input19" placeholder="Describa el objeto del muestreo"></textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-success btn-block confirm-btn" (click)="createSampling()">Crear</button>
 
-      </form>
-  </div>
+        </form>
+    </div>
 </div>

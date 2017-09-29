@@ -74,7 +74,7 @@ export class ProfileComponent implements OnInit {
         }
 
         createSamplingModal() {
-            const activeModal = this.modalService.open(CreateSamplingModal, { size: 'sm', backdrop: 'static' });
+            const activeModal = this.modalService.open(CreateSamplingModal, { size: 'lg', backdrop: 'static' });
             activeModal.componentInstance.modalHeader = 'Crear muestreo';
             activeModal.componentInstance.modalSaProfileComponentProfileComponentmplingTypes = this.samplingTypes;
         }
