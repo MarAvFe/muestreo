@@ -8,3 +8,5 @@ webservice/generator/lastRun\.log
 baseDeDatos/modelo\.pdf
 
 *.mwb
+
+mobile/muestreoMovilNiu/muestreoMovil/constants/Network\.js
