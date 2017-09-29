@@ -38,38 +38,54 @@ export class AddObservationScreen extends Component {
           <RkText rkType='header'>Agregar observación</RkText>
           <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
-            <RkText rkType="large">Trabajador:</RkText>
+
+            <RkText rkType="large">Muestreo relacionado:</RkText>
             <Picker
             selectedValue={this.state.language}
             onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-            <Picker.Item label="WRK037" value="11" />
-            <Picker.Item label="WRK038" value="12" />
-            <Picker.Item label="WRK021" value="13" />
-            <Picker.Item label="WRK032" value="14" />
-            <Picker.Item label="WRK039" value="15" />
+            <Picker.Item label="MT037" value="11" />
+            <Picker.Item label="MT038" value="12" />
+            <Picker.Item label="CB021" value="13" />
+            <Picker.Item label="FM032" value="14" />
+            <Picker.Item label="MT039" value="15" />
+            <Picker.Item label="MT037" value="11" />
+            <Picker.Item label="MT038" value="12" />
+            <Picker.Item label="CB021" value="13" />
+            <Picker.Item label="FM032" value="14" />
+            <Picker.Item label="MT039" value="15" />
+            <Picker.Item label="MT037" value="11" />
+            <Picker.Item label="MT038" value="12" />
+            <Picker.Item label="CB021" value="13" />
+            <Picker.Item label="FM032" value="14" />
+            <Picker.Item label="MT039" value="15" />
             </Picker>
-            <View style={UtilStyles.rowContainer}>
-              <RkText rkType="large">Es productivo?:</RkText>
-                  <RkChoice/>
-          </View>
-            <View style={UtilStyles.rowContainer}>
-                  <RkText rkType="large">Se cancela?:</RkText>
-                      <RkChoice/>
-          </View>
 
-          <RkText rkType="large">Distracción:</RkText>
-                <Picker
-                style={UtilStyles.form}
-                selectedValue={this.state.language}
-                onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-                <Picker.Item label="Comiendo" value="11" />
-                <Picker.Item label="Jeteando" value="12" />
-                <Picker.Item label="Esperando" value="13" />
-                </Picker>
+            <RkText rkType="large">Muestreando:</RkText>
+            <RkText rkType="large">Peon</RkText>
+
+            <RkText rkType="large">Hora del recorrido:</RkText>
+            <Picker
+            selectedValue={this.state.language}
+            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+            <Picker.Item label="08:43" value="11" />
+            <Picker.Item label="09:51" value="12" />
+            <Picker.Item label="11:02" value="13" />
+            </Picker>
+
+            <RkText rkType="large">Actividad:</RkText>
+            <Picker
+            selectedValue={this.state.language}
+            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
+            <Picker.Item label="Comiendo" value="1" />
+            <Picker.Item label="Jeteando" value="2" />
+            <Picker.Item label="Esperando" value="3" />
+            <Picker.Item label="Trabajando" value="4" />
+            </Picker>
+            <RkButton rkType='stretch success' onPress={() => navigate('Activity', { name: 'Hackerman' })}>Agregar nueva actividad</RkButton>
+
 
             <RkButton rkType='stretch success' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Continuar</RkButton>
 
-            <RkButton rkType='stretch success' onPress={() => navigate('Activity', { name: 'Hackerman' })}>Agregar actividad</RkButton>
             </View>
           </View>
         </View>
