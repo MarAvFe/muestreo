@@ -4,3 +4,7 @@
 webservice/generator/lastRun\.log
 
 *.log
+
+baseDeDatos/modelo\.pdf
+
+*.mwb

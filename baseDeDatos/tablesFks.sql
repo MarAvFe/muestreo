@@ -4,6 +4,9 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
 SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Schema sampling
@@ -20,6 +23,9 @@ USE `sampling` ;
 -- -----------------------------------------------------
 -- Table `sampling`.`Activity`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`Activity` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Activity` (
   `idActivity` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
@@ -27,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Activity` (
   `type` TINYINT(4) NOT NULL,
   PRIMARY KEY (`idActivity`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 1
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -35,6 +41,9 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Table `sampling`.`User`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`User` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`User` (
   `idUser` INT(11) NOT NULL AUTO_INCREMENT,
   `cedula` VARCHAR(12) NOT NULL,
@@ -45,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`User` (
   `pwd` VARCHAR(60) NOT NULL,
   PRIMARY KEY (`idUser`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 1
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -53,13 +62,33 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Table `sampling`.`SamplingType`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`SamplingType` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`SamplingType` (
   `idSamplingType` INT(11) NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `initials` VARCHAR(4) NOT NULL,
   PRIMARY KEY (`idSamplingType`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 1
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `sampling`.`SampledProfile`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`SampledProfile` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `sampling`.`SampledProfile` (
+  `idSampledProfile` INT(11) NOT NULL AUTO_INCREMENT COMMENT '	',
+  `name` VARCHAR(45) NULL DEFAULT NULL,
+  `description` VARCHAR(255) NULL DEFAULT NULL,
+  PRIMARY KEY (`idSampledProfile`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -67,11 +96,14 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Table `sampling`.`Sampling`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`Sampling` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Sampling` (
   `idSampling` INT(11) NOT NULL AUTO_INCREMENT,
-  `description` VARCHAR(255) NOT NULL,
+  `description` VARCHAR(1000) NOT NULL,
   `live` BIT(1) NOT NULL,
-  `name` VARCHAR(8) NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
   `SamplingType_idSamplingType` INT(11) NOT NULL,
   `estimatedTrailTime_Minutes` INT(11) NULL DEFAULT NULL,
   `isPreliminarSampling` BIT(1) NULL DEFAULT NULL,
@@ -89,15 +121,22 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Sampling` (
   `abs_precision_definitive` DOUBLE NULL DEFAULT NULL,
   `relative_precision_preliminar` DOUBLE NULL DEFAULT NULL,
   `relative_precision_definitive` DOUBLE NULL DEFAULT NULL,
+  `SampledProfile_idSampledProfile` INT(11) NOT NULL,
   PRIMARY KEY (`idSampling`, `SamplingType_idSamplingType`),
   INDEX `fk_Sampling_SamplingType1_idx` (`SamplingType_idSamplingType` ASC),
+  INDEX `fk_Sampling_SampledProfile1_idx` (`SampledProfile_idSampledProfile` ASC),
   CONSTRAINT `fk_Sampling_SamplingType1`
     FOREIGN KEY (`SamplingType_idSamplingType`)
     REFERENCES `sampling`.`SamplingType` (`idSamplingType`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Sampling_SampledProfile1`
+    FOREIGN KEY (`SampledProfile_idSampledProfile`)
+    REFERENCES `sampling`.`SampledProfile` (`idSampledProfile`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 1
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -105,6 +144,9 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Table `sampling`.`Comment`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`Comment` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Comment` (
   `idComment` INT(11) NOT NULL AUTO_INCREMENT,
   `comment` VARCHAR(500) NOT NULL,
@@ -126,27 +168,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Comment` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = utf8;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Table `sampling`.`Group`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sampling`.`Group` (
-  `idGroup` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `Sampling_idSampling` INT(11) NOT NULL,
-  PRIMARY KEY (`idGroup`, `Sampling_idSampling`),
-  INDEX `Sampling_idSampling_idGroup_fk_idx` (`Sampling_idSampling` ASC),
-  CONSTRAINT `Sampling_idSampling_idGroup_fk`
-    FOREIGN KEY (`Sampling_idSampling`)
-    REFERENCES `sampling`.`Sampling` (`idSampling`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -154,6 +176,9 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Table `sampling`.`Trail`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`Trail` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Trail` (
   `idTrail` INT(11) NOT NULL AUTO_INCREMENT COMMENT '			',
   `hour` TIME NULL DEFAULT NULL,
@@ -166,29 +191,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Trail` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = utf8;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Table `sampling`.`Worker`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sampling`.`Worker` (
-  `idWorker` INT(11) NOT NULL AUTO_INCREMENT COMMENT '	',
-  `name` VARCHAR(45) NULL DEFAULT NULL,
-  `position` VARCHAR(45) NULL DEFAULT NULL,
-  `description` VARCHAR(45) NULL DEFAULT NULL,
-  `Group_idGroup` INT(11) NOT NULL,
-  PRIMARY KEY (`idWorker`, `Group_idGroup`),
-  INDEX `fk_Group_idGroup_idx` (`Group_idGroup` ASC),
-  CONSTRAINT `fk_Group_idGroup`
-    FOREIGN KEY (`Group_idGroup`)
-    REFERENCES `sampling`.`Group` (`idGroup`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
+AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -196,18 +199,19 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Table `sampling`.`Observation`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`Observation` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
   `idObservation` INT(11) NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
   `hasData` BIT(1) NOT NULL,
   `isProductive` BIT(1) NOT NULL,
   `isCancelled` BIT(1) NOT NULL,
-  `Worker_idWorker` INT(11) NOT NULL,
   `User_idUser` INT(11) NOT NULL,
   `Trail_idTrail` INT(11) NOT NULL,
   `Activity_idActivity` INT(11) NOT NULL,
-  PRIMARY KEY (`idObservation`, `User_idUser`, `Activity_idActivity`, `Trail_idTrail`, `Worker_idWorker`),
-  INDEX `fk_Observation_Worker1_idx` (`Worker_idWorker` ASC),
+  PRIMARY KEY (`idObservation`, `User_idUser`, `Activity_idActivity`, `Trail_idTrail`),
   INDEX `fk_Observation_User1_idx` (`User_idUser` ASC),
   INDEX `fk_Observation_IdTrail_idx` (`Trail_idTrail` ASC),
   INDEX `fk_Observation_ImprodAct1_idx` (`Activity_idActivity` ASC),
@@ -225,14 +229,9 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
     FOREIGN KEY (`User_idUser`)
     REFERENCES `sampling`.`User` (`idUser`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Observation_Worker1`
-    FOREIGN KEY (`Worker_idWorker`)
-    REFERENCES `sampling`.`Worker` (`idWorker`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 1
+AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -240,6 +239,9 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Table `sampling`.`Sampling_has_User`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`Sampling_has_User` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Sampling_has_User` (
   `Sampling_idSampling` INT(11) NOT NULL,
   `User_idUser` INT(11) NOT NULL,
@@ -265,6 +267,9 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- Table `sampling`.`Schedule`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`Schedule` ;
+
+SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Schedule` (
   `idSchedule` INT(11) NOT NULL,
   `initial_hour` TIME NULL DEFAULT NULL,
@@ -288,6 +293,10 @@ USE `sampling` ;
 -- procedure authUser
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`authUser`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `authUser`(
@@ -307,11 +316,15 @@ SHOW WARNINGS;
 -- procedure createBasicSampling
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`createBasicSampling`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `createBasicSampling`(
-	in pDescription varchar(255),
-	in pName varchar(8),
+	in pDescription varchar(1000),
+	in pName varchar(255),
 	in pLive bit,
 	in pSamplingType_idSamplingType int
 )
@@ -333,6 +346,10 @@ SHOW WARNINGS;
 -- procedure getActivities
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getActivities`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getActivities`()
@@ -344,12 +361,40 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure getDefParam
+-- procedure getColaborators
 -- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getColaborators`;
+SHOW WARNINGS;
 
 DELIMITER $$
 USE `sampling`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getDefParam`(pId_Sampling int, pDescription VARCHAR(255),pIdSamplingType int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getColaborators`(
+	in pNameSampling varchar(255)
+)
+BEGIN
+	select u.cedula as cedula, concat(u.name, ' ', u.lastname) as name, su.isAdmin as admin
+	from Sampling_has_User su
+		join User u on su.User_idUser = u.idUser
+		join Sampling s on s.idSampling = su.Sampling_idSampling
+	where s.name = pNameSampling;
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getDefParam
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getDefParam`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDefParam`(pId_Sampling int, pDescription VARCHAR(1000),pIdSamplingType int)
 BEGIN
  SELECT p_definitive, q_definitive, error_definitive, n_definitive,z_definitive
  from Sampling
@@ -360,12 +405,36 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure getPreparam
+-- procedure getIdSampDescIdSampType
 -- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getIdSampDescIdSampType`;
+SHOW WARNINGS;
 
 DELIMITER $$
 USE `sampling`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPreparam`(pId_Sampling int, pDescription VARCHAR(255),pIdSamplingType int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getIdSampDescIdSampType`(pName varchar(255))
+BEGIN
+SELECT idSampling, description, SamplingType_idSamplingType
+from Sampling
+WHERE name = pName;
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getPreparam
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getPreparam`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPreparam`(pId_Sampling int, pDescription VARCHAR(1000),pIdSamplingType int)
 BEGIN
  SELECT p_preliminar, q_preliminar, n_preliminar
  from Sampling
@@ -379,9 +448,13 @@ SHOW WARNINGS;
 -- procedure getSamplingId
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getSamplingId`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getSamplingId`(pName VARCHAR(8))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSamplingId`(pName VARCHAR(255))
 BEGIN
  SELECT idSampling
  from Sampling
@@ -394,6 +467,10 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- procedure getSamplingName
 -- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getSamplingName`;
+SHOW WARNINGS;
 
 DELIMITER $$
 USE `sampling`$$
@@ -411,6 +488,10 @@ SHOW WARNINGS;
 -- procedure pInsert_Group
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pInsert_Group`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Group`(IN pname varchar(45), IN pid_sampling INT)
@@ -426,9 +507,13 @@ SHOW WARNINGS;
 -- procedure pInsert_Sampling
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pInsert_Sampling`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Sampling`(IN pdescription varchar(255),IN pname varchar(8),IN pidsampling_type int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Sampling`(IN pdescription varchar(1000),IN pname varchar(255),IN pidsampling_type int)
 BEGIN
     insert into Sampling(description,
 						name,
@@ -445,6 +530,10 @@ SHOW WARNINGS;
 -- procedure pInsert_Schedule
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pInsert_Schedule`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Schedule`(IN pinitial_hour TIME, IN pfinal_hour TIME, IN pid_sampling INT)
@@ -460,6 +549,10 @@ SHOW WARNINGS;
 -- procedure pInsert_Trail
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pInsert_Trail`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Trail`(IN phour time, IN pday_number int, IN pid_sampling int)
@@ -474,6 +567,10 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- procedure pUpDefParamsSampling
 -- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pUpDefParamsSampling`;
+SHOW WARNINGS;
 
 DELIMITER $$
 USE `sampling`$$
@@ -502,6 +599,10 @@ SHOW WARNINGS;
 -- procedure pUpPreParamsSampling
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pUpPreParamsSampling`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpPreParamsSampling`(pId_Sampling int, pDescription varchar(255),
@@ -526,6 +627,10 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- procedure pUpdate_DefSampling
 -- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pUpdate_DefSampling`;
+SHOW WARNINGS;
 
 DELIMITER $$
 USE `sampling`$$
@@ -557,6 +662,10 @@ SHOW WARNINGS;
 -- procedure pUpdate_PreSampling
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pUpdate_PreSampling`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdate_PreSampling`(IN pId_Sampling int, 	pestimatedTrailTime int,
@@ -586,6 +695,10 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 -- procedure pUpdate_Sampling
 -- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pUpdate_Sampling`;
+SHOW WARNINGS;
 
 DELIMITER $$
 USE `sampling`$$
@@ -617,6 +730,10 @@ SHOW WARNINGS;
 -- procedure pUpdate_SamplingPreParams
 -- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pUpdate_SamplingPreParams`;
+SHOW WARNINGS;
+
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdate_SamplingPreParams`(pId_Sampling int, pDescription varchar(255),
@@ -637,37 +754,6 @@ BEGIN
 END$$
 
 DELIMITER ;
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- procedure getIdSampDescIdSampType
--- -----------------------------------------------------
-
-DELIMITER $$
-CREATE PROCEDURE getIdSampDescIdSampType(pName varchar(8))
-BEGIN
-SELECT idSampling, description, SamplingType_idSamplingType
-from Sampling
-WHERE name = pName;
-END $$
-DELIMITER ;
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- procedure getColaborators
--- -----------------------------------------------------
-
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getColaborators`(
-	in pNameSampling varchar(255)
-)
-BEGIN
-	select u.cedula as cedula, concat(u.name, ' ', u.lastname) as name, su.isAdmin as admin
-	from Sampling_has_User su
-		join User u on su.User_idUser = u.idUser
-		join Sampling s on s.idSampling = su.Sampling_idSampling
-	where s.name = pNameSampling;
-END $$
 SHOW WARNINGS;
 
 SET SQL_MODE=@OLD_SQL_MODE;
