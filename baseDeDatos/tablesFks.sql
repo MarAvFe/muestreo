@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Activity` (
   `type` TINYINT(4) NOT NULL,
   PRIMARY KEY (`idActivity`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`User` (
   `pwd` VARCHAR(60) NOT NULL,
   PRIMARY KEY (`idUser`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`SamplingType` (
   `initials` VARCHAR(4) NOT NULL,
   PRIMARY KEY (`idSamplingType`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`SampledProfile` (
   `description` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`idSampledProfile`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Sampling` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -168,7 +168,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Comment` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Trail` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -231,7 +231,7 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -326,17 +326,21 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `createBasicSampling`(
 	in pDescription varchar(1000),
 	in pName varchar(255),
 	in pLive bit,
-	in pSamplingType_idSamplingType int
+	in pSamplingType_idSamplingType int,
+	in pSampleProfileName varchar(45),
+	in pSampleProfileDescription varchar(255)
 )
 BEGIN
-	INSERT INTO `sampling`.`Sampling`
-(
-`description`,
-`live`,
-`name`,
-`SamplingType_idSamplingType`)
-VALUES
-(pDescription, pLive, pName, pSamplingType_idSamplingType);
+	INSERT INTO `sampling`.`SampledProfile`(`name`,`description`)VALUES
+    (pSampleProfileName,pSampleProfileDescription);
+
+	select idSampledProfile into @pNew
+    from SampledProfile
+    where name = pSampleProfileName and description = pSampleProfileDescription
+    limit 1;
+
+	INSERT INTO `sampling`.`Sampling`(`description`,`live`,`name`,`SamplingType_idSamplingType`,`SampledProfile_idSampledProfile`)VALUES
+    (pDescription, pLive, pName, pSamplingType_idSamplingType, @pNew);
 END$$
 
 DELIMITER ;

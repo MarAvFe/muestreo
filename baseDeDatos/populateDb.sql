@@ -19,28 +19,15 @@ INSERT INTO sampling.Activity(name,description,type)VALUES
     ('WC','El trabajador se encuentra ausento por utilización del servicio sanitario.',0),
     ('Caminando','El trabajador se desplaza de un lado a otro.',2);
 
+-- Inserción SampledProfile
+INSERT INTO `sampling`.`SampledProfile`(`name`,`description`)VALUES
+    ('Cuadrilla','Contratados bajo estándares de calidad elevados.'),
+    ('Equipo','Para la instalación electrica en tema de calidad.');
+
 -- Inserción Sampling
-INSERT INTO sampling.Sampling(description,live,name,SamplingType_idSamplingType,n_preliminar,n_definitive)VALUES
-    ('Ejecutado para muestrear la construcción del segundo piso de la escuela de mantenimiento industrial, en el período de vacaciones 2015-2016, a cargo de la constructora Quirós y Román', 0, 'ManteQR', 1,30,10),
-    ('Ejecutado para muestrear la construcción del edificio D3, en el período 2016, a cargo de la constructora Sánchez-Carvajal', 0, 'D3SC', 2,15,20);
-
--- Inserción en catálogo Group
-INSERT INTO sampling.Group(name, Sampling_idSampling)VALUES
-    ('Cuadrilla',1),
-    ('Edificio',2),
-    ('Edificio',2),
-    ('Edificio',2);
-
--- Inserción en catálogo Worker
-INSERT INTO sampling.Worker(name,position,description, Group_idGroup)VALUES
-    ('Nombre1','posicion1','descripcion1',1),
-    ('Nombre2','posicion2','descripcion2',1),
-    ('Nombre3','posicion3','descripcion3',2),
-    ('Nombre4','posicion4','descripcion4',2),
-    ('Nombre5','posicion5','descripcion5',3),
-    ('Nombre6','posicion6','descripcion6',3),
-    ('Nombre7','posicion7','descripcion7',4);
-
+INSERT INTO sampling.Sampling(description,live,name,SamplingType_idSamplingType,n_preliminar,n_definitive,SampledProfile_idSampledProfile)VALUES
+    ('Ejecutado para muestrear la construcción del segundo piso de la escuela de mantenimiento industrial, en el período de vacaciones 2015-2016, a cargo de la constructora Quirós y Román', 0, 'ManteQR', 1,30,10,1),
+    ('Ejecutado para muestrear la construcción del edificio D3, en el período 2016, a cargo de la constructora Sánchez-Carvajal', 0, 'D3SC', 2,15,20,2);
 
 -- Insercion en catalogo trail
 INSERT INTO sampling.Trail(hour, Sampling_idSampling)VALUES
@@ -49,16 +36,16 @@ INSERT INTO sampling.Trail(hour, Sampling_idSampling)VALUES
     ('12:45:00', 2),
     ('3:15:00', 2);
 
--- comments
+-- Inserción Comment
 INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification)VALUES
     ('Feriado Anexión de Guanacaste','2015-07-25',1,1),
     ('Feriado 02 de Agosto','2016-08-02',3,0);
 
 -- Inserción Observation
-INSERT INTO sampling.Observation(date, hasData, isProductive, isCancelled, Activity_idActivity, Worker_idWorker, User_idUser, Trail_idTrail)VALUES
-    ('2015-05-21',0,0,0,1,1,3,1),
-    ('2015-10-09',1,0,0,2,2,1,3),
-    ('2016-07-15',0,0,0,3,2,2,3);
+INSERT INTO sampling.Observation(date, hasData, isProductive, isCancelled, Activity_idActivity, User_idUser, Trail_idTrail)VALUES
+    ('2015-05-21',0,0,0,1,3,1),
+    ('2015-10-09',1,0,0,2,1,3),
+    ('2016-07-15',0,0,0,3,2,3);
 
 -- Inserción Sampling_has_User
 INSERT INTO sampling.Sampling_has_User(Sampling_idSampling, User_idUser, isAdmin)VALUES

@@ -16,7 +16,7 @@ export class CreateSamplingModal implements OnInit {
     modalSamplingTypes: any;
 
     samplingTypes: any;
-    model: BasicSampling = new BasicSampling('', '', 0, 0);
+    model: BasicSampling = new BasicSampling('', '', 0, 0, '', '');
     submitted = false;
 
     constructor(public toastr: ToastsManager, vcr: ViewContainerRef,
