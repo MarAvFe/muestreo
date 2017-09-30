@@ -14,6 +14,7 @@ import {
 import {RkButton, RkText, RkTextInput, RkChoiceGroup} from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UtilStyles} from '../style/styles';
+import Network from '../constants/Network';
 
 export class AddActivityScreen extends Component {
   static navigationOptions = {
@@ -23,9 +24,60 @@ export class AddActivityScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: true
+      checked: true,
+      name: '',
+      error: '',
+      description: '',
+      type: -1,
     };
   }
+
+  createActivity(){
+    const str = [];
+    let parameters = {
+      name: this.state.name,
+      description: this.state.description,
+      type:  this.state.type,
+    }
+
+    for(let p in parameters){
+      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
+    }
+
+    const body = str.join("&");
+    console.log(JSON.stringify(body));
+    console.log('access: ' + JSON.stringify(parameters));
+    return fetch(`http://${Network.wsIp}:${Network.wsPort}/Activity/add`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        withCredentials: true,
+        body: body,
+    })
+    .then((response) => {
+       const resp = response;
+       console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
+       console.log('FetchedJSON: '+ JSON.stringify(resp));
+       status = resp.status;
+       if(status < 400 ){
+         let budd = JSON.parse(resp._bodyInit);
+         console.log('status: ' + JSON.stringify(status));
+         error = budd.error;
+         this.setState({error});
+         console.log('Error:' + error);
+         return true;
+       }
+       console.log("Failed adding activity.");
+       return false;
+    })
+    .catch(err => {
+      console.log('Error happened: '+ err);
+      return false;
+    });
+  }
+
+
     render(){
         const { navigate } = this.props.navigation;
       return (
@@ -38,58 +90,34 @@ export class AddActivityScreen extends Component {
             <RkText rkType='header'>Agregar actividad</RkText>
             <View style={UtilStyles.rowContainer}>
               <View style={{flex: 1}}>
-              <RkText rkType="large">Nombre:</RkText>
-              <RkTextInput autoCorrect={true}
-                           autoCapitalize={'none'} placeholder='' clearButtonMode='always'/>
-                           <RkText rkType="large">Descripcion:</RkText>
-              <RkTextInput autoCorrect={true}
+          <RkText rkType="large">Nombre:</RkText>
+              <RkTextInput
+                    rkType='rounded'
+                    autoCorrect={true}
+                    onChangeText={(name) => this.setState({name})}
+                    autoCapitalize={'none'} placeholder='' clearButtonMode='always'/>
+           <RkText rkType="large">Descripcion:</RkText>
+              <RkTextInput
+                    rkType='rounded'
+                    autoCorrect={true}
+                    onChangeText={(description) => this.setState({description})}
                     autoCapitalize={'none'} placeholder='descripcion...' clearButtonMode='always'/>
 
-                    <RkText rkType="large">Tipo de actividad:</RkText>
+
+              <RkText rkType="large">Tipo de actividad:</RkText>
                     <Picker
-                    selectedValue={this.state.language}
-                    onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-                    <Picker.Item label="Productiva" value="1" />
-                    <Picker.Item label="Improductiva" value="2" />
-                    <Picker.Item label="Colaborativa" value="3" />
+                    selectedValue={this.state.type}
+                    onValueChange={(type) => this.setState({type})}>
+                    <Picker.Item label="Productiva" value="0" />
+                    <Picker.Item label="Improductiva" value="1" />
+                    <Picker.Item label="Colaborativa" value="2" />
                     </Picker>
 
-               <RkText rkType="large">Muestreo relacionado:</RkText>
-               <Picker
-               selectedValue={this.state.language}
-               onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-               <Picker.Item label="MT037" value="11" />
-               <Picker.Item label="MT038" value="12" />
-               <Picker.Item label="CB021" value="13" />
-               <Picker.Item label="FM032" value="14" />
-               <Picker.Item label="MT039" value="15" />
-               <Picker.Item label="MT037" value="11" />
-               <Picker.Item label="MT038" value="12" />
-               <Picker.Item label="CB021" value="13" />
-               <Picker.Item label="FM032" value="14" />
-               <Picker.Item label="MT039" value="15" />
-               <Picker.Item label="MT037" value="11" />
-               <Picker.Item label="MT038" value="12" />
-               <Picker.Item label="CB021" value="13" />
-               <Picker.Item label="FM032" value="14" />
-               <Picker.Item label="MT039" value="15" />
-               <Picker.Item label="MT037" value="11" />
-               <Picker.Item label="MT038" value="12" />
-               <Picker.Item label="CB021" value="13" />
-               <Picker.Item label="FM032" value="14" />
-               <Picker.Item label="MT039" value="15" />
-               <Picker.Item label="MT037" value="11" />
-               <Picker.Item label="MT038" value="12" />
-               <Picker.Item label="CB021" value="13" />
-               <Picker.Item label="FM032" value="14" />
-               <Picker.Item label="MT039" value="15" />
-               <Picker.Item label="MT037" value="11" />
-               <Picker.Item label="MT038" value="12" />
-               <Picker.Item label="CB021" value="13" />
-               <Picker.Item label="FM032" value="14" />
-               <Picker.Item label="MT039" value="15" />
-               </Picker>
-                <RkButton rkType='stretch success' onPress={() => navigate('Report', { name: 'Hackerman' })}>Continuar</RkButton>
+                <RkButton rkType='stretch success' onPress={()=>
+                    this.createActivity().then((accepted) =>
+                    accepted
+                    ? navigate('Menu', { error: this.state.error })
+                    : Alert.alert('Agregar actividad ha fallado','Los datos ingresados no son válidos.'))}>Agregar Actividad</RkButton>
               </View>
             </View>
           </View>
