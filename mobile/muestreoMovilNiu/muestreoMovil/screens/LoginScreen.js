@@ -17,8 +17,8 @@ export class LoginScreen extends React.Component {
         this.state = {
             cedula: '',
             status: '',
-            pUser: '',
-            pPwd: '',
+            pUser: 'mirba@gmail.com',
+            pPwd: 'qwe123',
         };
     }
 
@@ -101,7 +101,6 @@ export class LoginScreen extends React.Component {
             <RkText rkType='warning'>Olvidé mi contraseña</RkText>
             </RkButton>
             </View>
-
             </View>
         );
     }

@@ -60,23 +60,6 @@ DEFAULT CHARACTER SET = utf8;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- Table `sampling`.`SamplingType`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sampling`.`SamplingType` ;
-
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS `sampling`.`SamplingType` (
-  `idSamplingType` INT(11) NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `initials` VARCHAR(4) NOT NULL,
-  PRIMARY KEY (`idSamplingType`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 1
-DEFAULT CHARACTER SET = utf8;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
 -- Table `sampling`.`SampledProfile`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `sampling`.`SampledProfile` ;
@@ -87,6 +70,23 @@ CREATE TABLE IF NOT EXISTS `sampling`.`SampledProfile` (
   `name` VARCHAR(45) NULL DEFAULT NULL,
   `description` VARCHAR(255) NULL DEFAULT NULL,
   PRIMARY KEY (`idSampledProfile`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 1
+DEFAULT CHARACTER SET = utf8;
+
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- Table `sampling`.`SamplingType`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `sampling`.`SamplingType` ;
+
+SHOW WARNINGS;
+CREATE TABLE IF NOT EXISTS `sampling`.`SamplingType` (
+  `idSamplingType` INT(11) NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(45) NOT NULL,
+  `initials` VARCHAR(4) NOT NULL,
+  PRIMARY KEY (`idSamplingType`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
@@ -125,14 +125,14 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Sampling` (
   PRIMARY KEY (`idSampling`, `SamplingType_idSamplingType`),
   INDEX `fk_Sampling_SamplingType1_idx` (`SamplingType_idSamplingType` ASC),
   INDEX `fk_Sampling_SampledProfile1_idx` (`SampledProfile_idSampledProfile` ASC),
-  CONSTRAINT `fk_Sampling_SamplingType1`
-    FOREIGN KEY (`SamplingType_idSamplingType`)
-    REFERENCES `sampling`.`SamplingType` (`idSamplingType`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_Sampling_SampledProfile1`
     FOREIGN KEY (`SampledProfile_idSampledProfile`)
     REFERENCES `sampling`.`SampledProfile` (`idSampledProfile`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Sampling_SamplingType1`
+    FOREIGN KEY (`SamplingType_idSamplingType`)
+    REFERENCES `sampling`.`SamplingType` (`idSamplingType`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -181,13 +181,20 @@ DROP TABLE IF EXISTS `sampling`.`Trail` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Trail` (
   `idTrail` INT(11) NOT NULL AUTO_INCREMENT COMMENT '			',
-  `hour` TIME NULL DEFAULT NULL,
+  `hour` TIME NOT NULL,
   `Sampling_idSampling` INT(11) NOT NULL,
-  PRIMARY KEY (`idTrail`, `Sampling_idSampling`),
+  `User_idUser` INT(11) NOT NULL,
+  PRIMARY KEY (`idTrail`, `Sampling_idSampling`, `User_idUser`),
   INDEX `Sampling_idSampling_Trail_fk_idx` (`Sampling_idSampling` ASC),
+  INDEX `fk_Trail_User1_idx` (`User_idUser` ASC),
   CONSTRAINT `Sampling_idSampling_Trail_fk`
     FOREIGN KEY (`Sampling_idSampling`)
     REFERENCES `sampling`.`Sampling` (`idSampling`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Trail_User1`
+    FOREIGN KEY (`User_idUser`)
+    REFERENCES `sampling`.`User` (`idUser`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -208,11 +215,9 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
   `hasData` BIT(1) NOT NULL,
   `isProductive` BIT(1) NOT NULL,
   `isCancelled` BIT(1) NOT NULL,
-  `User_idUser` INT(11) NOT NULL,
   `Trail_idTrail` INT(11) NOT NULL,
   `Activity_idActivity` INT(11) NOT NULL,
-  PRIMARY KEY (`idObservation`, `User_idUser`, `Activity_idActivity`, `Trail_idTrail`),
-  INDEX `fk_Observation_User1_idx` (`User_idUser` ASC),
+  PRIMARY KEY (`idObservation`, `Activity_idActivity`, `Trail_idTrail`),
   INDEX `fk_Observation_IdTrail_idx` (`Trail_idTrail` ASC),
   INDEX `fk_Observation_ImprodAct1_idx` (`Activity_idActivity` ASC),
   CONSTRAINT `fk_Observation_IdTrail`
@@ -223,11 +228,6 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
   CONSTRAINT `fk_Observation_ImprodAct1`
     FOREIGN KEY (`Activity_idActivity`)
     REFERENCES `sampling`.`Activity` (`idActivity`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Observation_User1`
-    FOREIGN KEY (`User_idUser`)
-    REFERENCES `sampling`.`User` (`idUser`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -443,6 +443,27 @@ BEGIN
  SELECT p_preliminar, q_preliminar, n_preliminar
  from Sampling
  WHERE idSampling = pId_Sampling and description = pDescription and SamplingType_idSamplingType = pIdSamplingType ;
+ END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getParticipatingSamplings
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getParticipatingSamplings`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getParticipatingSamplings`(pIdUser int(11))
+BEGIN
+ SELECT idSampling, name
+ from Sampling s
+	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
+ WHERE su.User_idUser = pIdUser;
  END$$
 
 DELIMITER ;
@@ -726,6 +747,29 @@ BEGIN
 		relative_precision_preliminar = prelative_precision_preliminar
 	WHERE idSampling = pId_Sampling;
 END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure pInsertTrail
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pInsertTrail`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertTrail`(
+    pHour datetime,
+    pIdSampling int(11),
+    pIdUser int
+)
+BEGIN
+    INSERT INTO `sampling`.`Trail`(`hour`,`Sampling_idSampling`,`User_idUser`)VALUES
+    (pHour, pIdSampling, pIdUser);
+ END$$
 
 DELIMITER ;
 SHOW WARNINGS;

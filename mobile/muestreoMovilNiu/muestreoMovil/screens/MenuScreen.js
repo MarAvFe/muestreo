@@ -11,9 +11,9 @@ import {
     Picker
 } from 'react-native';
 
-import {RkButton, RkText} from 'react-native-ui-kitten';
+import { RkButton, RkText } from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {UtilStyles} from '../style/styles';
+import { UtilStyles } from '../style/styles';
 import Network from '../constants/Network';
 
 export class MenuScreen extends Component {
@@ -26,6 +26,7 @@ export class MenuScreen extends Component {
         this.state = {
             checked: true,
             name: '',
+            idUser: -1,
         };
         manUsuario = 'https://github.com/MarAvFe/muestreo/tree/master/documentos/usuario/readme.md';
 
@@ -58,8 +59,11 @@ export class MenuScreen extends Component {
                 let budd = JSON.parse(resp._bodyInit).data[0];
                 console.log('status: ' + JSON.stringify(status));
                 name = budd.name;
+                idUser = budd.idUser;
                 this.setState({name});
+                this.setState({idUser});
                 console.log('gotName: ' + name);
+                console.log('gotId: ' + this.state.idUser);
                 return true;
             }
             console.log("Login unauthenticated.");
@@ -118,7 +122,7 @@ export class MenuScreen extends Component {
             <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Comment', { name: 'Hackerman' })}>Comentario</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Activity', { name: 'Hackerman' })}>Agregar actividad</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Agregar observacion</RkButton>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('ScheduleRange', { name: 'Hackerman' })}>Seleccionar rango y estimado</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('ScheduleRange', { idUser: this.state.idUser })}>Rango de trabajo</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='warning stretch'
             onPress={() =>
                 Linking.openURL(manUsuario)

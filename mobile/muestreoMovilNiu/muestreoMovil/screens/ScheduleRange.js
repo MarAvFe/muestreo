@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import Network from '../constants/Network';
+import ListViewSelect from 'react-native-list-view-select';
+import _ from 'lodash';
 
 import {
+    Alert,
+    Platform,
+    TouchableHighlight,
     View,
-    DatePickerAndroid,
     Text,
     StyleSheet,
     ScrollView,
     TextInput,
-    Picker,
     Switch,
-    TouchableOpacity
+    TouchableOpacity,
+    FlatList,
+    Picker,
 } from 'react-native';
 
 import {RkButton, RkText, RkTextInput, RkChoiceGroup} from 'react-native-ui-kitten';
@@ -37,7 +42,29 @@ export class ScheduleRange extends Component {
             isEndPickerVisible: false,
             minute: 1000*60,
             times: [],
+            idUser: this.props.navigation.state.params.idUser || -1,
+            sampling: 'Seleccionar muestreo',
+            isActive: false,
+            samplings: [
+            {
+                idSampling: -1,
+                name: "Cargando..."
+            }
+        ]
         };
+        this.getMySamplings();
+        // console.log(`timz: ${this.state.times}`);
+        // console.log(`randint [1,7]: ${this.randInt(1,7)}`);
+        // console.log(`swap [0,1,2,3,4,5], 3, 4: ${this.swap([0,1,2,3,4,5],3,4)}`);
+        // console.log(`minutesInRange st, et: ${this.minutesInRange(st,et)}`);
+        // console.log(`addTime [0,1,2,3,4,5,6,7,8,9] r:3 t:1 = ${this.addTime([0,1,2,3,4,5,6,7,8,9],3,1)}`);
+        // console.log(`findFit [0,1,-1,-1,-1,5,6,7,8,9,10], 2: ${this.findFit([0,1,-1,-1,-1,5,6,7,8,9,10],2)}`);
+        // console.log(`findFit [0,1,-1,-1,-1,5,6,7,8,9,10], 7: ${this.findFit([0,1,-1,-1,-1,5,6,7,8,9,10],7)}`);
+        // console.log(`randomStartTimes st, et, 20:  ${this.randomStartTimes(st,et,20)}`);
+        // console.log(`startsToMins st, this^: ${this.startsToMins(st,this.randomStartTimes(st,et,20))}`);
+        // console.log(`randomStartTimes st, et, 20:  ${this.randomStartTimes(this.state.startTime,this.state.endTime,this.state.estimatedTime)}`);
+        // console.log(`startsToMins st, this^: ${this.startsToMins(this.state.startTime,this.randomStartTimes(this.state.startTime,this.state.endTime,this.state.estimatedTime))}`);
+
     }
 
     _showStartPicker = () => this.setState({ isStartPickerVisible: true });
@@ -60,9 +87,9 @@ export class ScheduleRange extends Component {
         this._hideEndPicker();
     };
 
-    /*
+    /* ===================================
         START RANDOM GENERATION FUNCTIONS
-    */
+       =================================== */
 
 
     randInt(lo,hi){
@@ -124,6 +151,7 @@ export class ScheduleRange extends Component {
     randomStartTimes(d1,d2,range){
     	times = [];
         inds = [];
+        if((typeof range) === 'string') range = parseInt(range);
 
         for(i = 0; i < this.minutesInRange(d1,d2); i++) times.push(i);
         while(this.findFit(times,range)){
@@ -146,18 +174,33 @@ export class ScheduleRange extends Component {
         }
         return dates;
     }
-    /*
+    /* =================================
         END RANDOM GENERATION FUNCTIONS
-    */
+       ================================= */
 
     generateTimes(){
+        if(this.state.estimatedTime <= 0){
+            Alert.alert('Error','Por favor ingrese un tiempo estimado.')
+            return false;
+        }
+        if(this.state.startTime.getTime() > this.state.endTime.getTime()){
+            Alert.alert('Error','El tiempo de inicio es posterior al de finalización.')
+            return false;
+        }
+        if(this.state.samplings[0].idSampling === -1){
+            Alert.alert('Error','No se ha seleccionado un muestreo.')
+            return false;
+        }
         times = this.startsToMins(
             this.state.startTime,
             this.randomStartTimes(this.state.startTime,this.state.endTime,this.state.estimatedTime)
         );
-        //this.setState({times});
-        console.log(`times: ${this.state.times}`);
-        for(t in times) console.log(renderHour(t));
+        this.setState({times});
+        for(t in times) {
+            console.log(`h: ${this.renderHour(times[t])}`);
+            this.insertTrail(times[t]);
+        };
+        Alert.alert('Creación de horarios','Se han creado satisfactoriamente. Vaya a la sección de "Muestrear" para consultarlos.')
         return true;
     }
 
@@ -167,8 +210,103 @@ export class ScheduleRange extends Component {
     	return `${hours}:${mins}`
     }
 
+    insertTrail(hour){
+        const str = [];
+        let parameters = {
+            pIdUser: this.state.idUser,
+            pIdSampling: this.state.idSampling,
+            pHour: (hour).toISOString().substring(0, 19).replace('T', ' '),
+        }
+        for (let p in parameters) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
+        }
+        const body = str.join("&");
+        return fetch(`http://${Network.wsIp}:${Network.wsPort}/pInsertTrail`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            withCredentials: true,
+            body: body,
+        })
+        .then((response) => {
+            const resp = response;
+            console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
+            console.log('FetchedJSON: '+ JSON.stringify(resp));
+            status = resp.status;
+            if (status < 400) {
+                let budd = JSON.parse(resp._bodyInit);
+                console.log('status: ' + JSON.stringify(status));
+                error = budd.error;
+                if(error = 'none'){
+                    return true;
+                }else{
+                    console.log(`Error registering trail ${this.renderHour(hour)}.`);
+                    return false;
+                }
+            }
+            console.log("Login unauthenticated.");
+            return false;
+        })
+        .catch(err => {
+            console.log('Error happened: '+ err);
+            return false;
+        });
+    }
+
+    getMySamplings(){
+        const str = [];
+        let parameters = {
+            pIdUser: this.state.idUser,
+        }
+        for (let p in parameters) {
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
+        }
+        const body = str.join("&");
+        return fetch(`http://${Network.wsIp}:${Network.wsPort}/getParticipatingSamplings`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            withCredentials: true,
+            body: body,
+        })
+        .then((response) => {
+            const resp = response;
+            console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
+            console.log('FetchedJSON: '+ JSON.stringify(resp));
+            status = resp.status;
+            if (status < 400) {
+                let budd = JSON.parse(resp._bodyInit);
+                console.log('status: ' + JSON.stringify(status));
+                samps = budd.data[0];
+                if(budd.error = 'none'){
+                    this.setState({ samplings: samps });
+                    return true;
+                }else{
+                    console.log(`Error getting samplings ${budd.error}.`);
+                    return false;
+                }
+            }
+            console.log("Login unauthenticated.");
+            return false;
+        })
+        .catch(err => {
+            console.log('Error happened: '+ err);
+            return false;
+        });
+    }
+
     render(){
         const { navigate } = this.props.navigation;
+
+        const srvItems = [];
+        for (var i = 0; i < this.state.samplings.length; i++) {
+            s = this.state.samplings[i].idSampling;
+            n = this.state.samplings[i].name;
+            srvItems.push(<Picker.Item key={i} value={s} label={n} />);
+        }
+
         return (
             <ScrollView
             ref={'scrollView'}
@@ -177,11 +315,17 @@ export class ScheduleRange extends Component {
 
             <View style={UtilStyles.section}>
             <View style={UtilStyles.rowContainer}>
-            <View style={{flex: 1}}>
+            <View style={UtilStyles.rowContainer,UtilStyles.container}>
 
-            <RkText rkType="large">Rango de Horario:</RkText>
+            <RkText rkType="large">Rango de horario de trabajo:</RkText>
+            <View style={UtilStyles.rowContainer}>
 
-            <RkButton onPress={() => this._showStartPicker()}>{this.renderHour(this.state.startTime)}</RkButton>
+            <RkButton rkType='info medium' style={UtilStyles.spaceH} onPress={() => this._showStartPicker()}>{this.renderHour(this.state.startTime)}</RkButton>
+            <RkText rkType="large">-</RkText>
+            <RkButton rkType='info medium' style={UtilStyles.spaceH} onPress={() => this._showEndPicker()}>{this.renderHour(this.state.endTime)}</RkButton>
+
+            </View>
+
             <DateTimePicker
               isVisible={this.state.isStartPickerVisible}
               onConfirm={this._handleStartPicked}
@@ -189,7 +333,6 @@ export class ScheduleRange extends Component {
               mode='time'
             />
 
-            <RkButton onPress={() => this._showEndPicker()}>{this.renderHour(this.state.endTime)}</RkButton>
             <DateTimePicker
               isVisible={this.state.isEndPickerVisible}
               onConfirm={this._handleEndPicked}
@@ -197,10 +340,29 @@ export class ScheduleRange extends Component {
               mode='time'
             />
 
+            <View style={UtilStyles.section,UtilStyles.rowContainer}>
+            <RkText rkType="large">Seleccione el muestreo correspondiente:</RkText>
+            </View>
+            <Picker
+            selectedValue={this.state.sampling}
+            onValueChange={ (samplings) => ( this.setState({sampling:samplings}) ) } >
+            {srvItems}
+            </Picker>
+
+
+            <View style={UtilStyles.section,UtilStyles.rowContainer}>
         <RkText rkType="large">Tiempo de recorrido, estimado en minutos:</RkText>
-        <RkTextInput onChangeText={(estimatedTime) => this.setState({estimatedTime})} autoCorrect={true} keyboardType='numeric' autoCapitalize={'none'} placeholder='' clearButtonMode='always'/>
-        <RkButton rkType='stretch' onPress={() => this.generateTimes()}>Generar horarios</RkButton>
-        <RkButton rkType='stretch success' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Continuar</RkButton>
+        <RkTextInput rkType='bordered' style={{width:'20%'}} onChangeText={(estimatedTime) => this.setState({estimatedTime})} autoCorrect={true} keyboardType='numeric' autoCapitalize={'none'} placeholder='' clearButtonMode='always'/>
+        </View>
+
+
+        <RkButton style={UtilStyles.spaceVertical} rkType='stretch' onPress={() => this.generateTimes()}>Generar horarios</RkButton>
+        <FlatList
+          data={this.state.times}
+          renderItem={({item}) => <RkText style={styles.item}>{this.renderHour(item)}</RkText>}
+        />
+
+        <RkButton style={UtilStyles.spaceVertical} rkType='stretch success' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Continuar</RkButton>
         </View>
         </View>
         </View>
@@ -208,3 +370,16 @@ export class ScheduleRange extends Component {
     );
 }
 }
+
+const styles = StyleSheet.create({
+  container: {
+   flex: 1,
+   paddingTop: 22
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+    borderBottomWidth: 1,
+  },
+})
