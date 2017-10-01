@@ -15,10 +15,10 @@ export class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cedula: '',
+            cedula: '100320253',
             status: '',
-            pUser: '',
-            pPwd: '',
+            pUser: 'mirba@gmail.com',
+            pPwd: 'qwe123',
         };
     }
 

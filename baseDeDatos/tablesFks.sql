@@ -760,6 +760,48 @@ END$$
 DELIMITER ;
 SHOW WARNINGS;
 
+
+-- -----------------------------------------------------
+-- procedure pUpdate_SamplingPreParams
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pInsert_Report`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Report`(IN pIdUser int, pComment varchar(500))
+BEGIN
+    insert into `Comment` (comment, date, User_idUser, isNotification)
+    values (pComment, CURDATE(), pIdUser, 0);
+END $$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+
+-- -----------------------------------------------------
+-- procedure pUpdate_SamplingPreParams
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pGet_UserId`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pGet_UserId`(IN pCedula varchar(255))
+BEGIN
+    SELECT idUser 
+    From User
+    WHERE cedula= pCedula;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
