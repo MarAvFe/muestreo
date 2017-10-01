@@ -15,10 +15,10 @@ export class LoginScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cedula: '',
+            cedula: '100320253',
             status: '',
-            pUser: '',
-            pPwd: '',
+            pUser: 'mirba@gmail.com',
+            pPwd: 'qwe123',
         };
     }
 
@@ -34,6 +34,7 @@ export class LoginScreen extends React.Component {
         }
         const body = str.join("&");
         console.log('access: ' + JSON.stringify(parameters));
+              console.log(JSON.stringify(body));
         return fetch(`http://${Network.wsIp}:${Network.wsPort}/auth/login`, {
             method: 'POST',
             headers: {
