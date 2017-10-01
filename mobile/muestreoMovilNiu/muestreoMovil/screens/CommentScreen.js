@@ -39,9 +39,6 @@ export class CommentScreen extends Component {
           <RkText rkType='header'>Agregar comentario</RkText>
           <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
-            <RkText rkType="large">Destinatario:</RkText>
-            <RkTextInput autoCorrect={true}
-                         autoCapitalize={'none'} placeholder='alguien@correo.com' clearButtonMode='always'/>
              <RkText rkType="large">Muestreo relacionado:</RkText>
              <Picker
              selectedValue={this.state.language}
