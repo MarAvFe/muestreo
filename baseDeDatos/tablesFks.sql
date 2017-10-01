@@ -181,7 +181,7 @@ DROP TABLE IF EXISTS `sampling`.`Trail` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Trail` (
   `idTrail` INT(11) NOT NULL AUTO_INCREMENT COMMENT '			',
-  `hour` TIME NOT NULL,
+  `hour` datetime NOT NULL,
   `Sampling_idSampling` INT(11) NOT NULL,
   `User_idUser` INT(11) NOT NULL,
   PRIMARY KEY (`idTrail`, `Sampling_idSampling`, `User_idUser`),
@@ -212,14 +212,16 @@ SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
   `idObservation` INT(11) NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
-  `hasData` BIT(1) NOT NULL,
-  `isProductive` BIT(1) NOT NULL,
-  `isCancelled` BIT(1) NOT NULL,
+  `hasData` BIT(1) NULL,
+  `isProductive` BIT(1) NULL,
+  `isCancelled` BIT(1) NULL,
   `Trail_idTrail` INT(11) NOT NULL,
   `Activity_idActivity` INT(11) NOT NULL,
-  PRIMARY KEY (`idObservation`, `Activity_idActivity`, `Trail_idTrail`),
+  `User_idUser` INT(11) NOT NULL,
+  PRIMARY KEY (`idObservation`, `Activity_idActivity`, `Trail_idTrail`, `User_idUser`),
   INDEX `fk_Observation_IdTrail_idx` (`Trail_idTrail` ASC),
   INDEX `fk_Observation_ImprodAct1_idx` (`Activity_idActivity` ASC),
+  INDEX `fk_Observation_User1_idx` (`User_idUser` ASC),
   CONSTRAINT `fk_Observation_IdTrail`
     FOREIGN KEY (`Trail_idTrail`)
     REFERENCES `sampling`.`Trail` (`idTrail`)
@@ -229,9 +231,13 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
     FOREIGN KEY (`Activity_idActivity`)
     REFERENCES `sampling`.`Activity` (`idActivity`)
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Observation_User1`
+    FOREIGN KEY (`User_idUser`)
+    REFERENCES `sampling`.`User` (`idUser`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
@@ -257,30 +263,6 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Sampling_has_User` (
   CONSTRAINT `fk_Sampling_has_User_User1`
     FOREIGN KEY (`User_idUser`)
     REFERENCES `sampling`.`User` (`idUser`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- Table `sampling`.`Schedule`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `sampling`.`Schedule` ;
-
-SHOW WARNINGS;
-CREATE TABLE IF NOT EXISTS `sampling`.`Schedule` (
-  `idSchedule` INT(11) NOT NULL,
-  `initial_hour` TIME NULL DEFAULT NULL,
-  `final_hour` TIME NULL DEFAULT NULL,
-  `Sampling_idSampling` INT(11) NOT NULL,
-  `day_number` INT(11) NULL DEFAULT NULL COMMENT 'Numero del dia en que se hace el recorrido\nej: dia 1\n',
-  PRIMARY KEY (`idSchedule`, `Sampling_idSampling`),
-  INDEX `fk_Sampling_idSampling_idx` (`Sampling_idSampling` ASC),
-  CONSTRAINT `fk_Sampling_idSampling`
-    FOREIGN KEY (`Sampling_idSampling`)
-    REFERENCES `sampling`.`Sampling` (`idSampling`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -429,6 +411,49 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- procedure getParticipatingSamplings
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getParticipatingSamplings`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getParticipatingSamplings`(pIdUser int(11))
+BEGIN
+ SELECT idSampling, name
+ from Sampling s
+	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
+ WHERE su.User_idUser = pIdUser;
+ END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getPendingTrails
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getPendingTrails`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPendingTrails`(pIdUser int(11), pIdSampling int(11))
+BEGIN
+ SELECT idTrail, hour
+ from Trail t
+	join User u on u.idUser = t.User_idUser
+    join Sampling s on s.idSampling = t.Sampling_idSampling
+ WHERE u.idUser = pIdUser and s.idSampling = pIdSampling;
+ END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- procedure getPreparam
 -- -----------------------------------------------------
 
@@ -449,21 +474,23 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure getParticipatingSamplings
+-- procedure pAddObservation
 -- -----------------------------------------------------
 
 USE `sampling`;
-DROP procedure IF EXISTS `sampling`.`getParticipatingSamplings`;
+DROP procedure IF EXISTS `sampling`.`pAddObservation`;
 SHOW WARNINGS;
 
 DELIMITER $$
 USE `sampling`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getParticipatingSamplings`(pIdUser int(11))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pAddObservation`(
+    pIdActivity int(11),
+    pIdTrail int(11),
+    pIdUser int(11)
+)
 BEGIN
- SELECT idSampling, name
- from Sampling s
-	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
- WHERE su.User_idUser = pIdUser;
+    INSERT INTO `sampling`.`Observation`(`date`,`Trail_idTrail`,`User_idUser`, `Activity_idActivity`)VALUES
+    (curdate(), pIdTrail, pIdUser, pIdActivity);
  END$$
 
 DELIMITER ;
@@ -510,6 +537,49 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- procedure pGet_UserId
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pGet_UserId`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pGet_UserId`(IN pCedula varchar(255))
+BEGIN
+    SELECT idUser
+    From User
+    WHERE cedula= pCedula;
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure pInsertTrail
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pInsertTrail`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertTrail`(
+    pHour datetime,
+    pIdSampling int(11),
+    pIdUser int
+)
+BEGIN
+    INSERT INTO `sampling`.`Trail`(`hour`,`Sampling_idSampling`,`User_idUser`)VALUES
+    (pHour, pIdSampling, pIdUser);
+ END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- procedure pInsert_Group
 -- -----------------------------------------------------
 
@@ -523,6 +593,25 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Group`(IN pname varchar(45)
 BEGIN
     insert into `Group` (name, Sampling_idSampling)
     values (pname, pid_sampling);
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure pInsert_Report
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`pInsert_Report`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Report`(IN pIdUser int, pComment varchar(500))
+BEGIN
+    insert into `Comment` (comment, date, User_idUser, isNotification)
+    values (pComment, CURDATE(), pIdUser, 0);
 END$$
 
 DELIMITER ;
@@ -752,29 +841,6 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
--- procedure pInsertTrail
--- -----------------------------------------------------
-
-USE `sampling`;
-DROP procedure IF EXISTS `sampling`.`pInsertTrail`;
-SHOW WARNINGS;
-
-DELIMITER $$
-USE `sampling`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsertTrail`(
-    pHour datetime,
-    pIdSampling int(11),
-    pIdUser int
-)
-BEGIN
-    INSERT INTO `sampling`.`Trail`(`hour`,`Sampling_idSampling`,`User_idUser`)VALUES
-    (pHour, pIdSampling, pIdUser);
- END$$
-
-DELIMITER ;
-SHOW WARNINGS;
-
--- -----------------------------------------------------
 -- procedure pUpdate_SamplingPreParams
 -- -----------------------------------------------------
 
@@ -800,63 +866,6 @@ BEGIN
 		z_preliminar = pz_preliminar
 	WHERE idSampling = pId_Sampling and description = pDescription and SamplingType_idSamplingType = pIdSamplingType;
 END$$
-
-DELIMITER ;
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- procedure pInsert_Report
--- -----------------------------------------------------
-USE `sampling`;
-DROP procedure IF EXISTS `sampling`.`pInsert_Report`;
-SHOW WARNINGS;
-
-DELIMITER $$
-USE `sampling`$$
-create DEFINER=`root`@`localhost` procedure `pInsert_Report`(IN pIdUser int, pComment varchar(500))
-BEGIN
-    insert into `Comment` (comment, date, User_idUser, isNotification)
-    values (pComment, CURDATE(), pIdUser, 0);
-END$$
-DELIMITER ;
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- procedure pGet_UserId
--- -----------------------------------------------------
-USE `sampling`;
-DROP procedure IF EXISTS `sampling`.`pGet_UserId`;
-SHOW WARNINGS;
-
-DELIMITER $$
-USE `sampling`$$
-create DEFINER=`root`@`localhost` procedure `pGet_UserId`(IN pCedula varchar(255))
-BEGIN
-    SELECT idUser
-    From User
-    WHERE cedula= pCedula;
-END $$
-DELIMITER ;
-SHOW WARNINGS;
-
--- -----------------------------------------------------
--- procedure getPendingTrails
--- -----------------------------------------------------
-
-USE `sampling`;
-DROP procedure IF EXISTS `sampling`.`getPendingTrails`;
-SHOW WARNINGS;
-
-DELIMITER $$
-USE `sampling`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPendingTrails`(pIdUser int(11), pIdSampling int(11))
-BEGIN
- SELECT idTrail, hour
- from Trail t
-	join User u on u.idUser = t.User_idUser
-    join Sampling s on s.idSampling = t.Sampling_idSampling
- WHERE u.idUser = pIdUser and s.idSampling = pIdSampling;
- END$$
 
 DELIMITER ;
 SHOW WARNINGS;

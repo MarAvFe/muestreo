@@ -77,6 +77,12 @@ export class SelectTrailScreen extends Component {
       });
   }
 
+  renderHour(date){
+      hours = (`0${date.getHours()}`).slice(-2);
+      mins = (`0${date.getMinutes()}`).slice(-2);
+      return `${hours}:${mins}`
+  }
+
   render() {
       const { navigate } = this.props.navigation;
 
@@ -84,7 +90,10 @@ export class SelectTrailScreen extends Component {
       for (var i = 0; i < this.state.trails.length; i++) {
           s = this.state.trails[i].idTrail;
           n = this.state.trails[i].hour;
-          srvItems.push(<Picker.Item key={i} value={s} label={n} />);
+          var timeZoneOffset = new Date().getTimezoneOffset();
+          a = new Date(n);
+          a.setHours(a.getHours() - timeZoneOffset/60);
+          srvItems.push(<Picker.Item key={i} value={s} label={this.renderHour(a)} />);
       }
 
     return (
@@ -108,7 +117,7 @@ export class SelectTrailScreen extends Component {
             rkType='stretch success'
             onPress={() => navigate('AddObservation', {
                 idTrail: this.state.trail,
-                idUser: this.state.sampidUser,
+                idUser: this.state.idUser,
             })}>
             Agregar observación
             </RkButton>

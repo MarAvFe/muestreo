@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {
+    Alert,
   View,
   Text,
   StyleSheet,
@@ -26,6 +27,8 @@ export class AddObservationScreen extends Component {
     this.state = {
       checked: true,
       sampledProfileName: 'Aula',
+      idUser: this.props.navigation.state.params.idUser || -1,
+      idTrail: this.props.navigation.state.params.idTrail || -1,
       activity: 0,
       activities: [{
           idActivity: -1,
@@ -70,6 +73,93 @@ export class AddObservationScreen extends Component {
                   return false;
               }
           }
+          console.log("Error de conexión.");
+          return false;
+      })
+      .catch(err => {
+          console.log('Error happened: '+ err);
+          return false;
+      });
+  }
+
+  addObservation(){
+      const str = [];
+      let parameters = {
+          pIdUser: this.state.idUser,
+          pIdTrail: this.state.idTrail,
+          pIdActivity: this.state.activity,
+      }
+      for (let p in parameters) {
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
+      }
+      const body = str.join("&");
+      return fetch(`http://${Network.wsIp}:${Network.wsPort}/pAddObservation`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          withCredentials: true,
+          body: body,
+      })
+      .then((response) => {
+          const resp = response;
+          console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
+          console.log('FetchedJSON: '+ JSON.stringify(resp));
+          status = resp.status;
+          if (status < 400) {
+              let budd = JSON.parse(resp._bodyInit);
+              console.log('status: ' + JSON.stringify(status));
+              act = budd.data[0];
+              if(budd.error = 'none'){
+                  return true;
+              }else{
+                  console.log(`Error getting activities ${budd.error}.`);
+                  return false;
+              }
+          }
+          console.log("Error de conexión.");
+          return false;
+      })
+      .catch(err => {
+          console.log('Error happened: '+ err);
+          return false;
+      });
+  }
+
+
+  authUser(){
+      const str = [];
+      let parameters = {
+          pUser: this.state.pIdUser,
+          pIdActivity: this.state.activity,
+      }
+      for (let p in parameters) {
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
+      }
+      const body = str.join("&");
+      console.log('access: ' + JSON.stringify(parameters));
+            console.log(JSON.stringify(body));
+      return fetch(`http://${Network.wsIp}:${Network.wsPort}/auth/login`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          withCredentials: true,
+          body: body,
+      })
+      .then((response) => {
+          const resp = response;
+          console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
+          console.log('FetchedJSON: '+ JSON.stringify(resp));
+          status = resp.status;
+          if (status < 400) {
+              let budd = JSON.parse(resp._bodyInit);
+              console.log('status: ' + JSON.stringify(status));
+              cedula = budd.data;
+              this.setState({cedula});
+              console.log('gotCedula: ' + cedula);
+              return true;
+          }
           console.log("Login unauthenticated.");
           return false;
       })
@@ -100,15 +190,20 @@ export class AddObservationScreen extends Component {
 
             <RkText rkType="large">Muestreando: {this.state.sampledProfileName}</RkText>
 
-            <RkText rkType="large">Actividad:</RkText>
+            <RkText style={UtilStyles.spaceVertical} rkType="large">Actividad:</RkText>
             <Picker
             selectedValue={this.state.activity}
             onValueChange={ (activities) => ( this.setState({activity:activities}) ) } >
             {srvItems}
             </Picker>
-            <RkButton style={UtilStyles.spaceVertical} rkType='stretch warning small' onPress={() => navigate('Activity', { name: 'Hackerman' })}>+</RkButton>
+            <RkButton style={UtilStyles.spaceVertical} rkType='stretch warning small' onPress={() => navigate('Activity', { name: 'Hackerman' })}>+ Nueva actividad</RkButton>
 
-            <RkButton style={UtilStyles.spaceVertical} rkType='stretch success' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Crear observación</RkButton>
+            <RkButton style={UtilStyles.spaceVertical} rkType='stretch success' onPress={() =>
+                this.addObservation().then((accepted) =>
+                accepted
+                ? navigate('Menu', { cedula: this.state.cedula })
+                : Alert.alert('Error','Ha fallado la creación de una observación.')
+            )}>Crear observación</RkButton>
 
             </View>
           </View>
