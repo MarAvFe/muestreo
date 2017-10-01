@@ -27,8 +27,7 @@ export default class App extends React.Component {
         <View style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
         <ExplorerApp />
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {Platform.OS === 'android' &&
-            <View style={styles.statusBarUnderlay} />}
+          {Platform.OS === 'android'}
         </View>
       );
     }
@@ -77,6 +76,7 @@ const ExplorerApp = StackNavigator({
   Input: {screen: Screens.InputScreen},
   Menu: {screen: Screens.MenuScreen},
   SelectSampling: {screen: Screens.SelectSamplingScreen},
+  SelectTrail: {screen: Screens.SelectTrailScreen},
   AddObservation: {screen: Screens.AddObservationScreen},
   ScheduleRange: {screen: Screens.ScheduleRange},
   Report: {screen: Screens.ReportScreen},
@@ -91,7 +91,7 @@ const ExplorerApp = StackNavigator({
 }, {
   navigationOptions: {
     headerStyle: {
-      backgroundColor: '#007777'
+      backgroundColor: '#29b6f6'
     }
   }
 });

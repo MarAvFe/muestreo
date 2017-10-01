@@ -117,12 +117,10 @@ export class MenuScreen extends Component {
             <RkText rkType='xxlarge'>Buenas tardes, {this.state.name}</RkText>
             <RkText rkType='header'>Seleccionar acción</RkText>
             <View style={UtilStyles.columnContainer}>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('SelectSampling', { name: 'Hackerman' })}>Muestrear</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch success' onPress={() => navigate('SelectSampling', { idUser: this.state.idUser })}>Muestrear</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch success' onPress={() => navigate('ScheduleRange', { idUser: this.state.idUser })}>Tiempo a trabajar</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Report', { cedula: this.props.navigation.state.params.cedula })}>Reportar</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Comment', { name: 'Hackerman' })}>Comentario</RkButton>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Activity', { name: 'Hackerman' })}>Agregar actividad</RkButton>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Agregar observacion</RkButton>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('ScheduleRange', { idUser: this.state.idUser })}>Rango de trabajo</RkButton>
             <RkButton style={UtilStyles.spaceTop} rkType='warning stretch'
             onPress={() =>
                 Linking.openURL(manUsuario)

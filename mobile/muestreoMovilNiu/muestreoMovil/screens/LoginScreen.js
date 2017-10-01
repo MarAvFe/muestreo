@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Alert, Image, ScrollView, StyleSheet, ListView, Text, View } from 'react-native';
-import {RkButton, RkText, RkTextInput} from 'react-native-ui-kitten';
+import {RkButton, RkText, RkTextInput, RkCard} from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { UtilStyles } from '../style/styles';
 import Network from '../constants/Network';
@@ -69,8 +69,9 @@ export class LoginScreen extends React.Component {
         const { navigate } = this.props.navigation;
         return (
             <View style={UtilStyles.container}>
-            <View style={{flex:1.5, backgroundColor:'red'}}>
-            </View>
+            <RkCard style={{flex:1.5}} rkType='backImg'>
+            <Image rkCardImg source={require('../img/stock/gears.jpg')}/>
+            </RkCard>
             <View style={UtilStyles.section}>
             <RkText rkType='xxlarge'>Iniciar Sesión</RkText>
             <View style={[UtilStyles.rowContainer]}>

@@ -44,7 +44,6 @@ export class ScheduleRange extends Component {
             times: [],
             idUser: this.props.navigation.state.params.idUser || -1,
             sampling: 'Seleccionar muestreo',
-            isActive: false,
             samplings: [
             {
                 idSampling: -1,
@@ -214,7 +213,7 @@ export class ScheduleRange extends Component {
         const str = [];
         let parameters = {
             pIdUser: this.state.idUser,
-            pIdSampling: this.state.idSampling,
+            pIdSampling: this.state.sampling,
             pHour: (hour).toISOString().substring(0, 19).replace('T', ' '),
         }
         for (let p in parameters) {

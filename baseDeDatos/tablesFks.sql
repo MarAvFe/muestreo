@@ -358,7 +358,7 @@ DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getActivities`()
 BEGIN
-	select name, description, type from Activity;
+	select idActivity, name, description, type from Activity;
 END$$
 
 DELIMITER ;
@@ -821,7 +821,6 @@ END$$
 DELIMITER ;
 SHOW WARNINGS;
 
-
 -- -----------------------------------------------------
 -- procedure pGet_UserId
 -- -----------------------------------------------------
@@ -837,6 +836,28 @@ BEGIN
     From User
     WHERE cedula= pCedula;
 END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getPendingTrails
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getPendingTrails`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPendingTrails`(pIdUser int(11), pIdSampling int(11))
+BEGIN
+ SELECT idTrail, hour
+ from Trail t
+	join User u on u.idUser = t.User_idUser
+    join Sampling s on s.idSampling = t.Sampling_idSampling
+ WHERE u.idUser = pIdUser and s.idSampling = pIdSampling;
+ END$$
+
 DELIMITER ;
 SHOW WARNINGS;
 

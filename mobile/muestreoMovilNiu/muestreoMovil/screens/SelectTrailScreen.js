@@ -1,41 +1,39 @@
 import React, {Component} from 'react';
-
+import Network from '../constants/Network';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TextInput,
-  Picker,
-  Switch,
-  TouchableOpacity
+  Picker
 } from 'react-native';
 
-import {RkButton, RkText, RkChoice, RkChoiceGroup} from 'react-native-ui-kitten';
+import {RkButton, RkText} from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UtilStyles} from '../style/styles';
-import Network from '../constants/Network';
 
-export class AddObservationScreen extends Component {
+export class SelectTrailScreen extends Component {
   static navigationOptions = {
-    title: 'Observaciones'
+    title: 'Seleccionar Recorrido'
   };
 
   constructor(props) {
     super(props);
     this.state = {
       checked: true,
-      sampledProfileName: 'Aula',
-      activity: 0,
-      activities: [{
-          idActivity: -1,
-          name: "Cargando...",
+      idUser: this.props.navigation.state.params.idUser || -1,
+      idSampling: this.props.navigation.state.params.idSampling || -1,
+      trail: 0,
+      trails: [{
+          idTrail: -1,
+          hour: "Cargando...",
       }],
     }
-    this.getActivities();
+    this.getMyTrails();
   }
 
-  getActivities(){
+  getMyTrails(){
       const str = [];
       let parameters = {
           pIdUser: this.state.idUser,
@@ -45,7 +43,7 @@ export class AddObservationScreen extends Component {
           str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
       }
       const body = str.join("&");
-      return fetch(`http://${Network.wsIp}:${Network.wsPort}/getActivities`, {
+      return fetch(`http://${Network.wsIp}:${Network.wsPort}/getPendingTrails`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
@@ -61,12 +59,12 @@ export class AddObservationScreen extends Component {
           if (status < 400) {
               let budd = JSON.parse(resp._bodyInit);
               console.log('status: ' + JSON.stringify(status));
-              act = budd.data[0];
+              trai = budd.data[0];
               if(budd.error = 'none'){
-                  this.setState({ activities: act });
+                  this.setState({ trails: trai });
                   return true;
               }else{
-                  console.log(`Error getting activities ${budd.error}.`);
+                  console.log(`Error getting samplings ${budd.error}.`);
                   return false;
               }
           }
@@ -83,32 +81,37 @@ export class AddObservationScreen extends Component {
       const { navigate } = this.props.navigation;
 
       const srvItems = [];
-      for (var i = 0; i < this.state.activities.length; i++) {
-          s = this.state.activities[i].idActivity;
-          n = this.state.activities[i].name;
+      for (var i = 0; i < this.state.trails.length; i++) {
+          s = this.state.trails[i].idTrail;
+          n = this.state.trails[i].hour;
           srvItems.push(<Picker.Item key={i} value={s} label={n} />);
       }
+
     return (
       <ScrollView
         ref={'scrollView'}
         automaticallyAdjustContentInsets={true}
         style={UtilStyles.container}>
+
         <View style={UtilStyles.section}>
-          <RkText rkType='header'>Agregar observación</RkText>
           <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
-
-            <RkText rkType="large">Muestreando: {this.state.sampledProfileName}</RkText>
-
-            <RkText rkType="large">Actividad:</RkText>
+            <RkText rkType='header'>Seleccionar recorrido</RkText>
             <Picker
-            selectedValue={this.state.activity}
-            onValueChange={ (activities) => ( this.setState({activity:activities}) ) } >
+            selectedValue={this.state.trail}
+            onValueChange={ (trails) => ( this.setState({trail:trails}) ) } >
             {srvItems}
             </Picker>
-            <RkButton style={UtilStyles.spaceVertical} rkType='stretch warning small' onPress={() => navigate('Activity', { name: 'Hackerman' })}>+</RkButton>
 
-            <RkButton style={UtilStyles.spaceVertical} rkType='stretch success' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Crear observación</RkButton>
+            <RkButton
+            style={UtilStyles.spaceVertical}
+            rkType='stretch success'
+            onPress={() => navigate('AddObservation', {
+                idTrail: this.state.trail,
+                idUser: this.state.sampidUser,
+            })}>
+            Agregar observación
+            </RkButton>
 
             </View>
           </View>
