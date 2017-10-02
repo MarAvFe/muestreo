@@ -28,7 +28,6 @@ export class CommentScreen extends Component {
       idUser: this.props.navigation.state.params.idUser || -1,
       error: '',
       pComment: '',
-      pIdUser: 0,
       sampling: 'Seleccionar muestreo',
       samplings: [{
           idSampling: -1,
@@ -166,11 +165,11 @@ export class CommentScreen extends Component {
                        autoCorrect={true} multiline={true} numberOfLines={5}
                        autoCapitalize={'none'} placeholder='mensaje...' clearButtonMode='always'/>
 
-             <RkButton rkType='stretch success' onPress={() =>this.getUserId().then((accepted) =>
-              accepted
-              ? navigate('Menu', { error: this.state.error })
-              //
-              : Alert.alert('Obtener id ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
+                       <RkButton rkType='stretch success' onPress={()=>
+                                     this.InsertComment().then((accepted) =>
+                                     accepted
+                                     ? navigate('Menu', { error: this.state.error })
+                                     : Alert.alert('Agregar comentario ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
 
             </View>
           </View>
@@ -178,4 +177,5 @@ export class CommentScreen extends Component {
       </ScrollView>
     );
   }
+}
 }
