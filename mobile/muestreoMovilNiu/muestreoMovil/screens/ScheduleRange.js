@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Network from '../constants/Network';
-import ListViewSelect from 'react-native-list-view-select';
 import _ from 'lodash';
 
 import {
