@@ -840,6 +840,16 @@ END$$
 DELIMITER ;
 SHOW WARNINGS;
 
+DELIMITER $$
+
+CREATE PROCEDURE pInsert_Comment(IN pIdUser int, in pComment varchar(500), in pIdSampling int)
+BEGIN
+    insert into `Comment` (comment, date, User_idUser, isNotification, Sampling_idSampling)
+    values (pComment, CURDATE(), pIdUser, 0, pIdSampling);
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
 -- -----------------------------------------------------
 -- procedure pUpdate_SamplingPreParams
 -- -----------------------------------------------------
