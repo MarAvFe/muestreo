@@ -4,6 +4,7 @@ import Network from '../constants/Network';
 import {
   View,
   Text,
+  Alert,
   StyleSheet,
   ScrollView,
   TextInput,
@@ -107,11 +108,10 @@ export class CommentScreen extends Component {
         const resp = response;
         status = resp.status;
         if (status < 400) {
-            let budd = JSON.parse(resp._bodyInit).data[0];
+            let budd = JSON.parse(resp._bodyInit);
             console.log('status: ' + JSON.stringify(status));
             error = budd.error;
-            this.setState({Error});
-            console.log('Error: ' + error);
+            this.setState({error})
             return true;
         }
         console.log("Failed adding report.");
@@ -133,7 +133,7 @@ export class CommentScreen extends Component {
         s = this.state.samplings[i].idSampling;
         n = this.state.samplings[i].name;
         srvItems.push(<Picker.Item key={i} value={s} label={n} />);
-
+  }
     return (
       <ScrollView
         ref={'scrollView'}
@@ -169,6 +169,6 @@ export class CommentScreen extends Component {
         </View>
       </ScrollView>
     );
-  }
+
 }
 }
