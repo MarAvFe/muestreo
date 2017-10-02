@@ -33,12 +33,6 @@ export class CommentScreen extends Component {
           idSampling: -1,
           name: "Cargando...",
       }],
-      samp: {
-          name: 'MNombre',
-          description: 'MDescription',
-          type: 'MCrew Balance',
-          modality: "MEn vivo",
-      }
     }
     this.getMySamplings();
   }
