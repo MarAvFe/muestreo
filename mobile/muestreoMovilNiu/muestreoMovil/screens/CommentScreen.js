@@ -71,10 +71,8 @@ export class CommentScreen extends Component {
               samps = budd.data[0];
               if(budd.error = 'none'){
                   this.setState({ samplings: samps });
-                  return true;
-              }else{
-                  console.log(`Error getting samplings ${budd.error}.`);
-                  return false;
+                  this.setState({ sampling: this.state.samplings[0].idSampling });
+                  return this.InsertComment();
               }
           }
           console.log("Login unauthenticated.");
@@ -91,14 +89,15 @@ export class CommentScreen extends Component {
   //  getUserId();
     const str = [];
     let parameters = {
-      pIdUser: this.state.pIdUser,
+      pIdUser: this.state.idUser,
       pComment: this.state.pComment,
-      pIdSampling: this.state.pIdSampling,
+      pIdSampling: this.state.sampling,
     }
 
     for(let p in parameters){
       str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
     }
+
     const body = str.join("&");
     console.log(JSON.stringify(body));
     console.log('access: ' + JSON.stringify(parameters));
@@ -166,7 +165,7 @@ export class CommentScreen extends Component {
                        autoCapitalize={'none'} placeholder='mensaje...' clearButtonMode='always'/>
 
                        <RkButton rkType='stretch success' onPress={()=>
-                                     this.InsertComment().then((accepted) =>
+                                     this.getMySamplings().then((accepted) =>
                                      accepted
                                      ? navigate('Menu', { error: this.state.error })
                                      : Alert.alert('Agregar comentario ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
