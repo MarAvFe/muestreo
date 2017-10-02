@@ -13,9 +13,9 @@ import {RkButton, RkText} from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UtilStyles} from '../style/styles';
 
-export class SelectSamplingScreen extends Component {
+export class SelectTrailScreen extends Component {
   static navigationOptions = {
-    title: 'Seleccionar Muestreo'
+    title: 'Seleccionar Recorrido'
   };
 
   constructor(props) {
@@ -23,31 +23,27 @@ export class SelectSamplingScreen extends Component {
     this.state = {
       checked: true,
       idUser: this.props.navigation.state.params.idUser || -1,
-      sampling: 'Seleccionar muestreo',
-      samplings: [{
-          idSampling: -1,
-          name: "Cargando...",
+      idSampling: this.props.navigation.state.params.idSampling || -1,
+      trail: 0,
+      trails: [{
+          idTrail: -1,
+          hour: "Cargando...",
       }],
-      samp: {
-          name: 'MNombre',
-          description: 'MDescription',
-          type: 'MCrew Balance',
-          modality: "MEn vivo",
-      }
     }
-    this.getMySamplings();
+    this.getMyTrails();
   }
 
-  getMySamplings(){
+  getMyTrails(){
       const str = [];
       let parameters = {
           pIdUser: this.state.idUser,
+          pIdSampling: this.state.idSampling,
       }
       for (let p in parameters) {
           str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
       }
       const body = str.join("&");
-      return fetch(`http://${Network.wsIp}:${Network.wsPort}/getParticipatingSamplings`, {
+      return fetch(`http://${Network.wsIp}:${Network.wsPort}/getPendingTrails`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
@@ -63,9 +59,9 @@ export class SelectSamplingScreen extends Component {
           if (status < 400) {
               let budd = JSON.parse(resp._bodyInit);
               console.log('status: ' + JSON.stringify(status));
-              samps = budd.data[0];
+              trai = budd.data[0];
               if(budd.error = 'none'){
-                  this.setState({ samplings: samps });
+                  this.setState({ trails: trai });
                   return true;
               }else{
                   console.log(`Error getting samplings ${budd.error}.`);
@@ -81,14 +77,23 @@ export class SelectSamplingScreen extends Component {
       });
   }
 
+  renderHour(date){
+      hours = (`0${date.getHours()}`).slice(-2);
+      mins = (`0${date.getMinutes()}`).slice(-2);
+      return `${hours}:${mins}`
+  }
+
   render() {
       const { navigate } = this.props.navigation;
 
       const srvItems = [];
-      for (var i = 0; i < this.state.samplings.length; i++) {
-          s = this.state.samplings[i].idSampling;
-          n = this.state.samplings[i].name;
-          srvItems.push(<Picker.Item key={i} value={s} label={n} />);
+      for (var i = 0; i < this.state.trails.length; i++) {
+          s = this.state.trails[i].idTrail;
+          n = this.state.trails[i].hour;
+          var timeZoneOffset = new Date().getTimezoneOffset();
+          a = new Date(n);
+          a.setHours(a.getHours() - timeZoneOffset/60);
+          srvItems.push(<Picker.Item key={i} value={s} label={this.renderHour(a)} />);
       }
 
     return (
@@ -100,26 +105,21 @@ export class SelectSamplingScreen extends Component {
         <View style={UtilStyles.section}>
           <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
-            <RkText rkType='header'>Seleccionar muestreo</RkText>
+            <RkText rkType='header'>Seleccionar recorrido</RkText>
             <Picker
-            selectedValue={this.state.sampling}
-            onValueChange={ (samplings) => ( this.setState({sampling:samplings}) ) } >
+            selectedValue={this.state.trail}
+            onValueChange={ (trails) => ( this.setState({trail:trails}) ) } >
             {srvItems}
             </Picker>
 
-            <RkText rkType='header'>Nombre: {this.state.samp.name}</RkText>
-            <RkText rkType='header'>Descripción: {this.state.samp.description}</RkText>
-            <RkText rkType='header'>Tipo: {this.state.samp.type}</RkText>
-            <RkText rkType='header'>Modalidad: {this.state.samp.modality}</RkText>
-
             <RkButton
             style={UtilStyles.spaceVertical}
-            rkType='stretch info'
-            onPress={() => navigate('SelectTrail', {
-                idSampling: this.state.sampling,
+            rkType='stretch success'
+            onPress={() => navigate('AddObservation', {
+                idTrail: this.state.trail,
                 idUser: this.state.idUser,
             })}>
-            Continuar
+            Agregar observación
             </RkButton>
 
             </View>

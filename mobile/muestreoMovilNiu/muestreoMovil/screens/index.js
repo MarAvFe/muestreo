@@ -2,6 +2,7 @@
 export * from './LoginScreen'
 export * from './MenuScreen'
 export * from './SelectSamplingScreen'
+export * from './SelectTrailScreen'
 export * from './AddObservationScreen'
 export * from './AddActivityScreen'
 export * from './ReportScreen'

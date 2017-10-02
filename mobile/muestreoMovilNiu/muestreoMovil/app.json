@@ -4,10 +4,10 @@
     "description": "No description",
     "slug": "muestreoMovil",
     "privacy": "public",
-    "sdkVersion": "UNVERSIONED",
+    "sdkVersion": "21.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#007777",
+    "primaryColor": "#29b6f6",
     "icon": "./assets/icons/app-icon.png",
     "notification": {
       "icon": "./assets/icons/notification-icon.png",
