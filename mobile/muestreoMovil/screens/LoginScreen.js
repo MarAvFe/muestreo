@@ -65,12 +65,24 @@ export class LoginScreen extends React.Component {
         });
     }
 
+    randInt(lo,hi){
+    	 return Math.floor((Math.random() * hi) + lo);
+    }
+
     render() {
         const { navigate } = this.props.navigation;
+
+        const validImgs = [
+            require('../img/stock/gears.jpg'),
+            require('../img/stock/buildpit.jpg'),
+            require('../img/stock/metro.jpg')
+        ]
+        const randImg = validImgs[this.randInt(0,3)];
+
         return (
             <View style={UtilStyles.container}>
             <RkCard style={{flex:1.5}} rkType='backImg'>
-            <Image rkCardImg source={require('../img/stock/gears.jpg')}/>
+            <Image rkCardImg source={randImg}/>
             </RkCard>
             <View style={UtilStyles.section}>
             <RkText rkType='xxlarge'>Iniciar Sesión</RkText>

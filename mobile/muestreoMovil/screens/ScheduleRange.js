@@ -24,7 +24,7 @@ import {UtilStyles} from '../style/styles';
 
 export class ScheduleRange extends Component {
     static navigationOptions = {
-        title: 'Rango de Horario y tiempo estimado'
+        title: 'Tiempo a trabajar'
     };
 
     constructor(props) {
@@ -33,7 +33,7 @@ export class ScheduleRange extends Component {
         et = new Date(st.getTime());
         et.setHours(st.getHours()+2);
         this.state = {
-            checked: true,
+            generated: false,
             startTime: st,
             endTime: et,
             estimatedTime: 0,
@@ -44,11 +44,11 @@ export class ScheduleRange extends Component {
             idUser: this.props.navigation.state.params.idUser || -1,
             sampling: 'Seleccionar muestreo',
             samplings: [
-            {
-                idSampling: -1,
-                name: "Cargando..."
-            }
-        ]
+                {
+                    idSampling: -1,
+                    name: "Cargando..."
+                }
+            ]
         };
         this.getMySamplings();
         // console.log(`timz: ${this.state.times}`);
@@ -86,45 +86,45 @@ export class ScheduleRange extends Component {
     };
 
     /* ===================================
-        START RANDOM GENERATION FUNCTIONS
-       =================================== */
+    START RANDOM GENERATION FUNCTIONS
+    =================================== */
 
 
     randInt(lo,hi){
-    	 return Math.floor((Math.random() * hi) + lo);
+        return Math.floor((Math.random() * hi) + lo);
     }
 
     swap(nums, x, y){
-    	var b = nums[y];
+        var b = nums[y];
         nums[y] = nums[x];
         nums[x] = b;
         return nums;
     }
 
     sort(nums){
-    	for (i = 0; i < nums.length; i++){
-        	for (k = i; k > 0 && nums[k] < nums[k-1]; k--)
-              nums = this.swap(nums,k,k-1);
+        for (i = 0; i < nums.length; i++){
+            for (k = i; k > 0 && nums[k] < nums[k-1]; k--)
+            nums = this.swap(nums,k,k-1);
         }
         return nums;
     }
 
     minutesInRange(d1,d2){
-    	if(d1>d2){
-        	return -1;
+        if(d1>d2){
+            return -1;
         }
         lapse = new Date(d2-d1).getTime();
         return lapse/this.state.minute;
     }
 
     addTime(times, range, time){
-    	// [0] : Bound crash
+        // [0] : Bound crash
         // [0] : Other time crash
         // [times] : Success
-    	if(time+range > times.length) return [0];
+        if(time+range > times.length) return [0];
         for(i = 0; i < times.length; i++){
-        	if((time <= i) && (i < time+range)){
-        	    if(times[i] == -1) return [0];
+            if((time <= i) && (i < time+range)){
+                if(times[i] == -1) return [0];
                 times[i] = -1;
             }
         }
@@ -132,28 +132,28 @@ export class ScheduleRange extends Component {
     }
 
     findFit(times, range){
-    	space = 0;
+        space = 0;
         isSpace = false;
-    	for(i = 0; i < times.length; i++){
-        	if(space > range) return true;
-        	if(times[i] != -1){
-            	space++;
+        for(i = 0; i < times.length; i++){
+            if(space > range) return true;
+            if(times[i] != -1){
+                space++;
             }else{
-            	if(space < range) isSpace = false;
-            	space = 0;
+                if(space < range) isSpace = false;
+                space = 0;
             }
         }
         return false;
     }
 
     randomStartTimes(d1,d2,range){
-    	times = [];
+        times = [];
         inds = [];
         if((typeof range) === 'string') range = parseInt(range);
 
         for(i = 0; i < this.minutesInRange(d1,d2); i++) times.push(i);
         while(this.findFit(times,range)){
-        	k = this.randInt(0,times.length);
+            k = this.randInt(0,times.length);
             tmp = this.addTime(times,range,k);
             if(tmp == 0) continue;
             times = tmp;
@@ -164,17 +164,17 @@ export class ScheduleRange extends Component {
     }
 
     startsToMins(d1,times){
-    	dates = [];
+        dates = [];
         for(i = 0; i < times.length; i++){
-        	s = new Date(d1);
+            s = new Date(d1);
             s.setMinutes(s.getMinutes()+times[i]);
-        	dates.push(s);
+            dates.push(s);
         }
         return dates;
     }
     /* =================================
-        END RANDOM GENERATION FUNCTIONS
-       ================================= */
+    END RANDOM GENERATION FUNCTIONS
+    ================================= */
 
     generateTimes(){
         if(this.state.estimatedTime <= 0){
@@ -199,13 +199,14 @@ export class ScheduleRange extends Component {
             this.insertTrail(times[t]);
         };
         Alert.alert('Creación de horarios','Se han creado satisfactoriamente. Vaya a la sección de "Muestrear" para consultarlos.')
+        this.setState({generated:true});
         return true;
     }
 
     renderHour(date){
-    	hours = (`0${date.getHours()}`).slice(-2);
-    	mins = (`0${date.getMinutes()}`).slice(-2);
-    	return `${hours}:${mins}`
+        hours = (`0${date.getHours()}`).slice(-2);
+        mins = (`0${date.getMinutes()}`).slice(-2);
+        return `${hours}:${mins}`
     }
 
     insertTrail(hour){
@@ -296,13 +297,24 @@ export class ScheduleRange extends Component {
     }
 
     render(){
-        const { navigate } = this.props.navigation;
+        const { goBack, navigate } = this.props.navigation;
 
         const srvItems = [];
         for (var i = 0; i < this.state.samplings.length; i++) {
             s = this.state.samplings[i].idSampling;
             n = this.state.samplings[i].name;
             srvItems.push(<Picker.Item key={i} value={s} label={n} />);
+        }
+
+        let genButton = "";
+        if(!this.state.generated){
+            genButton =  <RkButton style={UtilStyles.spaceVertical} rkType='stretch' onPress={() => this.generateTimes()}>
+            Generar horarios
+            </RkButton>;
+        }else{
+            genButton = <RkButton style={UtilStyles.spaceVertical, {backgroundColor: '#bbbbbb'}} rkType='stretch' onPress={() => Alert.alert('Deshabilitado','Los horarios ya han sido generados.')}>
+            Generar horarios
+            </RkButton>;
         }
 
         return (
@@ -312,72 +324,69 @@ export class ScheduleRange extends Component {
             style={UtilStyles.container}>
 
             <View style={UtilStyles.section}>
-            <View style={UtilStyles.rowContainer}>
-            <View style={UtilStyles.rowContainer,UtilStyles.container}>
 
             <RkText rkType="large">Rango de horario de trabajo:</RkText>
             <View style={UtilStyles.rowContainer}>
-
-            <RkButton rkType='info medium' style={UtilStyles.spaceH} onPress={() => this._showStartPicker()}>{this.renderHour(this.state.startTime)}</RkButton>
-            <RkText rkType="large">-</RkText>
-            <RkButton rkType='info medium' style={UtilStyles.spaceH} onPress={() => this._showEndPicker()}>{this.renderHour(this.state.endTime)}</RkButton>
-
+            <View style={{flex:1}}>
+            <RkButton rkType='stretch clear outline medium' style={UtilStyles.spaceH} onPress={() => this._showStartPicker()}>Desde {this.renderHour(this.state.startTime)}</RkButton>
+            </View>
+            <View style={{flex:1}}>
+            <RkButton rkType='stretch clear outline medium' style={UtilStyles.spaceH} onPress={() => this._showEndPicker()}>hasta {this.renderHour(this.state.endTime)}</RkButton>
+            </View>
             </View>
 
             <DateTimePicker
-              isVisible={this.state.isStartPickerVisible}
-              onConfirm={this._handleStartPicked}
-              onCancel={this._hideStartPicker}
-              mode='time'
+            isVisible={this.state.isStartPickerVisible}
+            onConfirm={this._handleStartPicked}
+            onCancel={this._hideStartPicker}
+            mode='time'
             />
 
             <DateTimePicker
-              isVisible={this.state.isEndPickerVisible}
-              onConfirm={this._handleEndPicked}
-              onCancel={this._hideEndPicker}
-              mode='time'
+            isVisible={this.state.isEndPickerVisible}
+            onConfirm={this._handleEndPicked}
+            onCancel={this._hideEndPicker}
+            mode='time'
             />
 
             <View style={UtilStyles.section,UtilStyles.rowContainer}>
-            <RkText rkType="large">Seleccione el muestreo correspondiente:</RkText>
+            <RkText rkType="large">Seleccione un muestreo:</RkText>
             </View>
+            <View style={UtilStyles.spaceTop, UtilStyles.picker}>
             <Picker
             selectedValue={this.state.sampling}
             onValueChange={ (samplings) => ( this.setState({sampling:samplings}) ) } >
             {srvItems}
             </Picker>
+            </View>
 
+            <View style={UtilStyles.section,UtilStyles.columnContainer}>
+            <RkText rkType="large">Tiempo de recorrido (minutos):</RkText>
+            <RkTextInput rkType='bordered' style={{borderWidth:1}} onChangeText={(estimatedTime) => this.setState({estimatedTime})} autoCorrect={true} keyboardType='numeric' autoCapitalize={'none'} placeholder='' clearButtonMode='always'/>
+            </View>
 
-            <View style={UtilStyles.section,UtilStyles.rowContainer}>
-        <RkText rkType="large">Tiempo de recorrido, estimado en minutos:</RkText>
-        <RkTextInput rkType='bordered' style={{width:'20%'}} onChangeText={(estimatedTime) => this.setState({estimatedTime})} autoCorrect={true} keyboardType='numeric' autoCapitalize={'none'} placeholder='' clearButtonMode='always'/>
-        </View>
+            {genButton}
+            <FlatList
+            data={this.state.times}
+            renderItem={({item}) => <RkText style={styles.item}>{this.renderHour(item)}</RkText>}
+            />
 
-
-        <RkButton style={UtilStyles.spaceVertical} rkType='stretch' onPress={() => this.generateTimes()}>Generar horarios</RkButton>
-        <FlatList
-          data={this.state.times}
-          renderItem={({item}) => <RkText style={styles.item}>{this.renderHour(item)}</RkText>}
-        />
-
-        <RkButton style={UtilStyles.spaceVertical} rkType='stretch success' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Continuar</RkButton>
-        </View>
-        </View>
-        </View>
-        </ScrollView>
-    );
-}
+            <RkButton style={UtilStyles.spaceVertical} rkType='clear outline' onPress={() => goBack(null)}><RkText style={{color:'#000000'}}>Volver</RkText></RkButton>
+            </View>
+            </ScrollView>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-   flex: 1,
-   paddingTop: 22
-  },
-  item: {
-    padding: 10,
-    fontSize: 18,
-    height: 44,
-    borderBottomWidth: 1,
-  },
+    container: {
+        flex: 1,
+        paddingTop: 22
+    },
+    item: {
+        padding: 10,
+        fontSize: 18,
+        height: 44,
+        borderBottomWidth: 1,
+    },
 })

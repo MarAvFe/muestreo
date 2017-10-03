@@ -117,21 +117,46 @@ export class MenuScreen extends Component {
             <RkText rkType='xxlarge'>Buenas tardes, {this.state.name}</RkText>
             <RkText rkType='header'>Seleccionar acción</RkText>
             <View style={UtilStyles.columnContainer}>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch success' onPress={() => navigate('SelectSampling', { idUser: this.state.idUser })}>Muestrear</RkButton>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch success' onPress={() => navigate('ScheduleRange', { idUser: this.state.idUser })}>Tiempo a trabajar</RkButton>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Report', { cedula: this.props.navigation.state.params.cedula })}>Reportar</RkButton>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('Comment', {  idUser: this.state.idUser  })}>Comentario</RkButton>
-            <RkButton style={UtilStyles.spaceTop} rkType='warning stretch'
-            onPress={() =>
-                Linking.openURL(manUsuario)
-                .catch(err => console.error('An error occurred', err))}>
-                Manual de Usuario</RkButton>
-            <RkButton style={UtilStyles.spaceTop} rkType='stretch danger' onPress={() =>
-                this.logout().then((accepted) =>
-                accepted
-                ? navigate('Home')
-                : Alert.alert('Final de sesión','Ha habido un error en el cierre de sesión.')
-            )}>Cerrar sesión</RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('SelectSampling', { idUser: this.state.idUser })}>
+            <Icon name="pencil-square-o" size={20} color="#ffffff" />  Muestrear
+            </RkButton>
+            <RkButton style={UtilStyles.spaceTop} rkType='stretch' onPress={() => navigate('ScheduleRange', { idUser: this.state.idUser })}>
+                <Icon name="clock-o" size={20} color="#ffffff" />  Tiempo a trabajar
+            </RkButton>
+
+            <View style={UtilStyles.row}>
+            <View style={{flex:1}}>
+                <RkButton style={UtilStyles.spaceAround} rkType='stretch medium info' onPress={() => navigate('Report', { cedula: this.props.navigation.state.params.cedula })}>
+                <Icon name="users" size={20} color="#ffffff" />Reportar anomalía
+                </RkButton>
+                </View>
+            <View style={{flex:1}}>
+                <RkButton style={UtilStyles.spaceAround} rkType='stretch medium info' onPress={() => navigate('Comment', {  idUser: this.state.idUser  })}>
+                <Icon name="comment-o" size={20} color="#ffffff" /> Comentario
+                </RkButton>
+                </View>
+                </View>
+            <View style={UtilStyles.row}>
+            <View style={{flex:1}}>
+                <RkButton style={UtilStyles.spaceAround} rkType='stretch rounded warning'
+                onPress={() =>
+                    Linking.openURL(manUsuario)
+                    .catch(err => console.error('An error occurred', err))}>
+                    <Icon name="book" size={20} color="#ffffff" />Manual de Usuario
+                </RkButton>
+                </View>
+                <View style={{flex:1}}>
+
+                <RkButton style={UtilStyles.spaceAround} rkType='stretch rounded danger' onPress={() =>
+                    this.logout().then((accepted) =>
+                    accepted
+                    ? navigate('Home')
+                    : Alert.alert('Final de sesión','Ha habido un error en el cierre de sesión.')
+                )}>
+                    <Icon name="sign-out" size={20} color="#ffffff" /> Cerrar sesión
+                </RkButton>
+        </View>
+    </View>
                 </View>
                 </View>
                 </ScrollView>

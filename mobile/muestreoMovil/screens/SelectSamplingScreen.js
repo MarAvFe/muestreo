@@ -101,16 +101,21 @@ export class SelectSamplingScreen extends Component {
           <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
             <RkText rkType='header'>Seleccionar muestreo</RkText>
+
+            <View style={UtilStyles.spaceTop, UtilStyles.picker}>
             <Picker
             selectedValue={this.state.sampling}
             onValueChange={ (samplings) => ( this.setState({sampling:samplings}) ) } >
             {srvItems}
             </Picker>
+            </View>
 
+            <View style={UtilStyles.section}>
             <RkText rkType='header'>Nombre: {this.state.samp.name}</RkText>
             <RkText rkType='header'>Descripción: {this.state.samp.description}</RkText>
             <RkText rkType='header'>Tipo: {this.state.samp.type}</RkText>
             <RkText rkType='header'>Modalidad: {this.state.samp.modality}</RkText>
+            </View>
 
             <RkButton
             style={UtilStyles.spaceVertical}

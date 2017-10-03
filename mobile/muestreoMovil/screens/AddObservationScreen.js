@@ -170,7 +170,7 @@ export class AddObservationScreen extends Component {
   }
 
   render() {
-      const { navigate } = this.props.navigation;
+      const { goBack, navigate } = this.props.navigation;
 
       const srvItems = [];
       for (var i = 0; i < this.state.activities.length; i++) {
@@ -185,28 +185,34 @@ export class AddObservationScreen extends Component {
         style={UtilStyles.container}>
         <View style={UtilStyles.section}>
           <RkText rkType='header'>Agregar observación</RkText>
-          <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
 
-            <RkText rkType="large">Muestreando: {this.state.sampledProfileName}</RkText>
+                <RkText style={UtilStyles.spaceVertical} rkType="large">Muestreando: {this.state.sampledProfileName}</RkText>
+                <RkText style={UtilStyles.spaceVertical} rkType="large">Actividad:</RkText>
+                <View style={UtilStyles.row}>
+                    <View style={{flex:1}}>
+                        <View style={UtilStyles.picker}>
+                            <Picker
+                            selectedValue={this.state.activity}
+                            onValueChange={ (activities) => ( this.setState({activity:activities}) ) } >
+                            {srvItems}
+                            </Picker>
+                        </View>
+                    </View>
+                    <View style={UtilStyles.spaceAround}>
+                        <RkButton rkType=' large info' style={{width: 50, height: 50}} onPress={() => navigate('Activity', { name: 'Hackerman' })}>
+                        <Icon name="plus" size={20} color="#ffffff" />
+                        </RkButton>
+                    </View>
+                </View>
 
-            <RkText style={UtilStyles.spaceVertical} rkType="large">Actividad:</RkText>
-            <Picker
-            selectedValue={this.state.activity}
-            onValueChange={ (activities) => ( this.setState({activity:activities}) ) } >
-            {srvItems}
-            </Picker>
-            <RkButton style={UtilStyles.spaceVertical} rkType='stretch warning small' onPress={() => navigate('Activity', { name: 'Hackerman' })}>+ Nueva actividad</RkButton>
-
-            <RkButton style={UtilStyles.spaceVertical} rkType='stretch success' onPress={() =>
-                this.addObservation().then((accepted) =>
-                accepted
-                ? navigate('Menu', { cedula: this.state.cedula })
-                : Alert.alert('Error','Ha fallado la creación de una observación.')
-            )}>Crear observación</RkButton>
-
+                <RkButton style={UtilStyles.spaceVertical} rkType='stretch rounded success' onPress={() =>
+                    this.addObservation().then((accepted) =>
+                    accepted
+                    ? goBack('SelectSampling') 
+                    : Alert.alert('Error','Ha fallado la creación de una observación.')
+                )}>Crear observación</RkButton>
             </View>
-          </View>
         </View>
       </ScrollView>
     );

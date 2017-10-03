@@ -106,11 +106,13 @@ export class SelectTrailScreen extends Component {
           <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
             <RkText rkType='header'>Seleccionar recorrido</RkText>
+            <View style={UtilStyles.spaceTop, UtilStyles.picker}>
             <Picker
             selectedValue={this.state.trail}
             onValueChange={ (trails) => ( this.setState({trail:trails}) ) } >
             {srvItems}
             </Picker>
+            </View>
 
             <RkButton
             style={UtilStyles.spaceVertical}

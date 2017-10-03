@@ -146,14 +146,17 @@ export class CommentScreen extends Component {
             <View style={{flex: 1}}>
              <RkText rkType="large">Muestreo relacionado:</RkText>
 
+             <View style={UtilStyles.picker}>
              <Picker
              selectedValue={this.state.sampling}
              onValueChange={ (samplings) => ( this.setState({sampling:samplings}) ) } >
              {srvItems}
              </Picker>
+             </View>
 
-              <RkText rkType="large">Mensaje:</RkText>
+              <RkText style={UtilStyles.spaceTop} rkType="large">Mensaje:</RkText>
              <RkTextInput
+                    style={UtilStyles.picker}
                        onChangeText={(pComment) => this.setState({pComment})}
                        autoCorrect={true} multiline={true} numberOfLines={5}
                        autoCapitalize={'none'} placeholder='mensaje...' clearButtonMode='always'/>

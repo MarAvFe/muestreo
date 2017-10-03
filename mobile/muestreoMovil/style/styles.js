@@ -8,7 +8,12 @@ import {
 export const UtilStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor :'white'
+    backgroundColor: '#d2dfed',
+  },
+  picker:{
+      borderRadius: 5,
+      borderColor: "#999999",
+      borderWidth: 1,
   },
   titleText: {
     fontSize: 20,

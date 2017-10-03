@@ -133,6 +133,7 @@ InsertReport(){
             <View style={{flex: 1}}>
             <RkText rkType="large">Mensaje:</RkText>
              <RkTextInput
+                        style={UtilStyles.picker}
                           onChangeText={(pComment) => this.setState({pComment})}
                           autoCorrect={true} multiline={true} numberOfLines={5}
                           autoCapitalize={'none'} placeholder='mensaje...' clearButtonMode='always'/>

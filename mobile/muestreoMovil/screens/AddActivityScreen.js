@@ -98,13 +98,14 @@ export class AddActivityScreen extends Component {
                     autoCapitalize={'none'} placeholder='' clearButtonMode='always'/>
            <RkText rkType="large">Descripcion:</RkText>
               <RkTextInput
+                    style={UtilStyles.picker}
                     rkType='rounded'
-                    autoCorrect={true}
+                    autoCorrect={true} multiline={true} numberOfLines={5}
                     onChangeText={(description) => this.setState({description})}
                     autoCapitalize={'none'} placeholder='descripcion...' clearButtonMode='always'/>
 
-
               <RkText rkType="large">Tipo de actividad:</RkText>
+                    <View style={UtilStyles.picker}>
                     <Picker
                     selectedValue={this.state.type}
                     onValueChange={(type) => this.setState({type})}>
@@ -112,12 +113,16 @@ export class AddActivityScreen extends Component {
                     <Picker.Item label="Improductiva" value="1" />
                     <Picker.Item label="Colaborativa" value="2" />
                     </Picker>
+                    </View>
 
-                <RkButton rkType='stretch success' onPress={()=>
+                <RkButton
+                style={UtilStyles.spaceTop} rkType='rounded stretch success' onPress={()=>
                     this.createActivity().then((accepted) =>
                     accepted
-                    ? navigate('Menu', { error: this.state.error })
-                    : Alert.alert('Agregar actividad ha fallado','Los datos ingresados no son válidos.'))}>Agregar Actividad</RkButton>
+                    ? goBack(null)
+                    : Alert.alert('Agregar actividad ha fallado','Los datos ingresados no son válidos.'))}>
+                    <Icon name="plus" size={20} color="#ffffff" />  Agregar Actividad
+                    </RkButton>
               </View>
             </View>
           </View>
