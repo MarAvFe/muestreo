@@ -25,9 +25,7 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={{ flex: 1, marginTop: StatusBar.currentHeight }}>
-        <ExplorerApp style={{
-            backgroundColor: '#929fad', /* Old browsers */
-        }} />
+        <ExplorerApp />
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           {Platform.OS === 'android'}
         </View>
@@ -93,7 +91,7 @@ const ExplorerApp = StackNavigator({
 }, {
   navigationOptions: {
     headerStyle: {
-      backgroundColor: '#29b6f6'
+      backgroundColor: '#929fad'
     }
   }
 });

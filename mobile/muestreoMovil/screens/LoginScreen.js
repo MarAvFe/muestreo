@@ -1,10 +1,11 @@
 import React from 'react';
 
-import {Alert, Image, ScrollView, StyleSheet, ListView, Text, View } from 'react-native';
-import {RkButton, RkText, RkTextInput, RkCard} from 'react-native-ui-kitten';
+import {Alert, Image, Keyboard, ScrollView, StyleSheet, ListView, Text, View } from 'react-native';
+import {RkAvoidKeyboard, RkButton, RkText, RkTextInput, RkCard} from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { UtilStyles } from '../style/styles';
 import Network from '../constants/Network';
+import MyAvoidKeyboard from '../components/myAvoidKeyboard/myAvoidKeyboard';
 
 export class LoginScreen extends React.Component {
 
@@ -19,6 +20,7 @@ export class LoginScreen extends React.Component {
             status: '',
             pUser: 'mirba@gmail.com',
             pPwd: 'qwe123',
+            chosenImg: this.randInt(0,3),
         };
     }
 
@@ -77,13 +79,14 @@ export class LoginScreen extends React.Component {
             require('../img/stock/buildpit.jpg'),
             require('../img/stock/metro.jpg')
         ]
-        const randImg = validImgs[this.randInt(0,3)];
+        const randImg = validImgs[this.state.chosenImg];
 
         return (
             <View style={UtilStyles.container}>
             <RkCard style={{flex:1.5}} rkType='backImg'>
             <Image rkCardImg source={randImg}/>
             </RkCard>
+            <MyAvoidKeyboard>
             <View style={UtilStyles.section}>
             <RkText rkType='xxlarge'>Iniciar Sesión</RkText>
             <View style={[UtilStyles.rowContainer]}>
@@ -91,6 +94,7 @@ export class LoginScreen extends React.Component {
             <RkTextInput
                 rkType='rounded'
                 onChangeText={(pUser) => this.setState({pUser})}
+                onSubmitEditing={Keyboard.dismiss}
                 label={<Icon style={UtilStyles.inputIcon} name='user'/>}
                 placeholder='Usuario'
             />
@@ -115,6 +119,7 @@ export class LoginScreen extends React.Component {
             <RkText rkType='warning'>Olvidé mi contraseña</RkText>
             </RkButton>
             </View>
+            </MyAvoidKeyboard>
             </View>
         );
     }
