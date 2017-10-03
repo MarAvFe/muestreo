@@ -4,10 +4,10 @@ import {Image} from 'react-native'
 export class ImageIcon extends Component {
 
   static images = {
-    plus: <Image source={require('../img/icons/plus.png')}/>,
-    heart: <Image source={require('../img/icons/plus.png')}/>,
-    phone: <Image source={require('../img/icons/phone.png')}/>,
-    user: <Image source={require('../img/icons/user.png')}/>,
+    heart: <Image source={require('./heart.png')}/>,
+    plus: <Image source={require('./plus.png')}/>,
+    phone: <Image source={require('./phone.png')}/>,
+    user: <Image source={require('./user.png')}/>,
   };
 
   render() {

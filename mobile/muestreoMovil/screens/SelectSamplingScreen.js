@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import Network from '../constants/Network';
 import {
   View,
   Text,
@@ -21,12 +21,76 @@ export class SelectSamplingScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: true
-    };
+      checked: true,
+      idUser: this.props.navigation.state.params.idUser || -1,
+      sampling: 'Seleccionar muestreo',
+      samplings: [{
+          idSampling: -1,
+          name: "Cargando...",
+      }],
+      samp: {
+          name: 'MNombre',
+          description: 'MDescription',
+          type: 'MCrew Balance',
+          modality: "MEn vivo",
+      }
+    }
+    this.getMySamplings();
+  }
+
+  getMySamplings(){
+      const str = [];
+      let parameters = {
+          pIdUser: this.state.idUser,
+      }
+      for (let p in parameters) {
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
+      }
+      const body = str.join("&");
+      return fetch(`http://${Network.wsIp}:${Network.wsPort}/getParticipatingSamplings`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          withCredentials: true,
+          body: body,
+      })
+      .then((response) => {
+          const resp = response;
+          console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
+          console.log('FetchedJSON: '+ JSON.stringify(resp));
+          status = resp.status;
+          if (status < 400) {
+              let budd = JSON.parse(resp._bodyInit);
+              console.log('status: ' + JSON.stringify(status));
+              samps = budd.data[0];
+              if(budd.error = 'none'){
+                  this.setState({ samplings: samps });
+                  return true;
+              }else{
+                  console.log(`Error getting samplings ${budd.error}.`);
+                  return false;
+              }
+          }
+          console.log("Login unauthenticated.");
+          return false;
+      })
+      .catch(err => {
+          console.log('Error happened: '+ err);
+          return false;
+      });
   }
 
   render() {
       const { navigate } = this.props.navigation;
+
+      const srvItems = [];
+      for (var i = 0; i < this.state.samplings.length; i++) {
+          s = this.state.samplings[i].idSampling;
+          n = this.state.samplings[i].name;
+          srvItems.push(<Picker.Item key={i} value={s} label={n} />);
+      }
+
     return (
       <ScrollView
         ref={'scrollView'}
@@ -38,50 +102,26 @@ export class SelectSamplingScreen extends Component {
             <View style={{flex: 1}}>
             <RkText rkType='header'>Seleccionar muestreo</RkText>
             <Picker
-            selectedValue={this.state.language}
-            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-            <Picker.Item label="MT037" value="11" />
-            <Picker.Item label="MT038" value="12" />
-            <Picker.Item label="CB021" value="13" />
-            <Picker.Item label="FM032" value="14" />
-            <Picker.Item label="MT039" value="15" />
+            selectedValue={this.state.sampling}
+            onValueChange={ (samplings) => ( this.setState({sampling:samplings}) ) } >
+            {srvItems}
             </Picker>
-            <RkText rkType='header'>Seleccionar grupo</RkText>
-            <Picker
-            selectedValue={this.state.language}
-            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-            <Picker.Item label="Cuadrilla 1" value="11" />
-            <Picker.Item label="Cuadrilla 2" value="12" />
-            <Picker.Item label="Aulas 3" value="12" />
-            </Picker>
-            <RkText rkType='header'>Seleccionar recorrido</RkText>
-            <Picker
-            selectedValue={this.state.language}
-            onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-            <Picker.Item label="8:00" value="11" />
-            <Picker.Item label="10:23" value="12" />
-            <Picker.Item label="12:03" value="13" />
-            <Picker.Item label="16:09" value="14" />
-            <Picker.Item label="17:30" value="15" />
-            </Picker>
-            <RkText rkType="large">Cantidad de trabajadores</RkText>
-            <RkText rkType="medium">40</RkText>
 
-            <RkText rkType="large">Tipo:</RkText>
-            <RkText rkType="medium">Crew Balance</RkText>
+            <RkText rkType='header'>Nombre: {this.state.samp.name}</RkText>
+            <RkText rkType='header'>Descripción: {this.state.samp.description}</RkText>
+            <RkText rkType='header'>Tipo: {this.state.samp.type}</RkText>
+            <RkText rkType='header'>Modalidad: {this.state.samp.modality}</RkText>
 
-            <RkText rkType="large">Observaciones estimadas:</RkText>
-            <RkText rkType="medium">30</RkText>
+            <RkButton
+            style={UtilStyles.spaceVertical}
+            rkType='stretch info'
+            onPress={() => navigate('SelectTrail', {
+                idSampling: this.state.sampling,
+                idUser: this.state.idUser,
+            })}>
+            Continuar
+            </RkButton>
 
-            <RkText rkType="large">Descripción:</RkText>
-            <RkText rkType="medium">Establecido para la construcción del segundo piso del edificio financiero, sector eléctrico.</RkText>
-
-            <RkText rkType="large">Precisión absoluta:</RkText>
-            <RkText rkType="medium">0.3</RkText>
-
-            <RkText rkType="large">Precisión relativa:</RkText>
-            <RkText rkType="medium">0.3</RkText>
-            <RkButton rkType='stretch success' onPress={() => navigate('AddObservation', { name: 'Hackerman' })}>Continuar</RkButton>
             </View>
           </View>
         </View>

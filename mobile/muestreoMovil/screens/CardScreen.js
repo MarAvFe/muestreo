@@ -43,7 +43,7 @@ export class CardScreen extends React.Component {
                 <RkText rkType='subtitle'>Subtitle</RkText>
               </View>
             </View>
-            <Image rkCardImg source={require('../img/post1.png')}/>
+            <Image rkCardImg source={require('../img/avatar1.png')}/>
             <View rkCardContent>
               <RkText rkType='cardText'>Far far away, behind the word mountains, far from the countries Vokalia and
                 Consonantia, there live the blind texts.</RkText>
@@ -71,7 +71,7 @@ export class CardScreen extends React.Component {
                 <RkText rkType='subtitle'>Subtitle</RkText>
               </View>
             </View>
-            <Image rkCardImg source={require('../img/post2.png')}/>
+                <Image rkCardImg source={require('../img/avatar1.png')}/>
             <View rkCardContent>
               <RkText rkType='cardText'>Far far away, behind the word mountains, far from the countries Vokalia and
                 Consonantia, there live the blind texts.</RkText>

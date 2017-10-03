@@ -1,5 +1,27 @@
 {
   "expo": {
-    "sdkVersion": "20.0.0"
+    "name": "muestreoMovil",
+    "description": "No description",
+    "slug": "muestreoMovil",
+    "privacy": "public",
+    "sdkVersion": "21.0.0",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#29b6f6",
+    "icon": "./assets/icons/app-icon.png",
+    "notification": {
+      "icon": "./assets/icons/notification-icon.png",
+      "color": "#000000"
+    },
+    "loading": {
+      "icon": "./assets/icons/loading-icon.png"
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf"]
+    },
+    "ios": {
+      "bundleIdentifier": "com.sk3vy.new-project-template",
+      "supportsTablet": true
+    }
   }
 }

@@ -125,7 +125,7 @@ export class ImageScreen extends Component {
             <View style={[UtilStyles.rowContainer, {paddingLeft: 2}]}>
               <RkModalImg style={{width: this.imgSize, height: this.imgSize}} source={require('../img/animal.jpeg')}/>
               <RkModalImg style={{width: this.imgSize, height: this.imgSize}} source={require('../img/clock.jpg')}/>
-              <RkModalImg style={{width: this.imgSize, height: this.imgSize}} source={require('../img/post2.png')}/>
+              <RkModalImg style={{width: this.imgSize, height: this.imgSize}} source={require('../img/avatar1.png')}/>
             </View>
           </View>
           <View style={[UtilStyles.section, UtilStyles.bordered, styles.imagesContainer]}>
@@ -135,7 +135,7 @@ export class ImageScreen extends Component {
                           renderHeader={this._renderHeader}
                           renderFooter={this._renderFooter}
                           headerContentStyle={{backgroundColor: 'red'}}
-                          source={require('../img/post1.png')}/>
+                          source={require('../img/avatar1.png')}/>
               <RkModalImg style={{width: this.imgSize, height: this.imgSize}}
                           renderHeader={this._renderHeader}
                           renderFooter={this._renderFooter}
