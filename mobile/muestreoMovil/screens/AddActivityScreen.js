@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 
 import {
+    Alert,
   View,
   Text,
   StyleSheet,
@@ -28,7 +29,7 @@ export class AddActivityScreen extends Component {
       name: '',
       error: '',
       description: '',
-      type: -1,
+      type: 0,
     };
   }
 
@@ -79,7 +80,7 @@ export class AddActivityScreen extends Component {
 
 
     render(){
-        const { navigate } = this.props.navigation;
+        const { goBack, navigate } = this.props.navigation;
       return (
         <ScrollView
           ref={'scrollView'}
@@ -119,7 +120,7 @@ export class AddActivityScreen extends Component {
                 style={UtilStyles.spaceTop} rkType='rounded stretch success' onPress={()=>
                     this.createActivity().then((accepted) =>
                     accepted
-                    ? goBack(null)
+                    ? (Alert.alert('Éxito','Se ha agregado correctamente la actividad.'), goBack(null))
                     : Alert.alert('Agregar actividad ha fallado','Los datos ingresados no son válidos.'))}>
                     <Icon name="plus" size={20} color="#ffffff" />  Agregar Actividad
                     </RkButton>

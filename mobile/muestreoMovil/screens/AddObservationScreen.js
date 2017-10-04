@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import _ from 'lodash';
 import {
     Alert,
   View,
@@ -12,7 +12,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-import {RkButton, RkText, RkChoice, RkChoiceGroup} from 'react-native-ui-kitten';
+import {RkButton, RkText, RkTextInput, RkChoice, RkChoiceGroup} from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UtilStyles} from '../style/styles';
 import Network from '../constants/Network';
@@ -34,8 +34,17 @@ export class AddObservationScreen extends Component {
           idActivity: -1,
           name: "Cargando...",
       }],
+      actsToShow: [{
+          idActivity: -1,
+          name: "Cargando...",
+      }]
     }
-    this.getActivities();
+  }
+
+  componentWillMount(){
+      console.log('lulx');
+      this.getActivities();
+
   }
 
   getActivities(){
@@ -67,6 +76,7 @@ export class AddObservationScreen extends Component {
               act = budd.data[0];
               if(budd.error = 'none'){
                   this.setState({ activities: act });
+                  this.setState({ actsToShow: act });
                   return true;
               }else{
                   console.log(`Error getting activities ${budd.error}.`);
@@ -169,13 +179,26 @@ export class AddObservationScreen extends Component {
       });
   }
 
+  _filter(text) {
+      let pattern = new RegExp(text, 'i');
+      if (text !== '') {
+          let activities = _.filter(this.state.activities, (act) => {
+              if (act.name.search(pattern) != -1)
+              return act;
+          });
+          this.setState({ actsToShow: activities });
+      }else{
+          this.setState({ actsToShow: this.state.activities });
+      }
+  }
+
   render() {
       const { goBack, navigate } = this.props.navigation;
 
       const srvItems = [];
-      for (var i = 0; i < this.state.activities.length; i++) {
-          s = this.state.activities[i].idActivity;
-          n = this.state.activities[i].name;
+      for (var i = 0; i < this.state.actsToShow.length; i++) {
+          s = this.state.actsToShow[i].idActivity;
+          n = this.state.actsToShow[i].name;
           srvItems.push(<Picker.Item key={i} value={s} label={n} />);
       }
     return (
@@ -189,6 +212,12 @@ export class AddObservationScreen extends Component {
 
                 <RkText style={UtilStyles.spaceVertical} rkType="large">Muestreando: {this.state.sampledProfileName}</RkText>
                 <RkText style={UtilStyles.spaceVertical} rkType="large">Actividad:</RkText>
+                <RkTextInput autoCapitalize='none'
+                autoCorrect={false}
+                onChange={(event) => this._filter(event.nativeEvent.text)}
+                label={<RkText><Icon name="search" size={20} color="#777777" /></RkText>}
+                rkType='row'
+                placeholder='Filtro'/>
                 <View style={UtilStyles.row}>
                     <View style={{flex:1}}>
                         <View style={UtilStyles.picker}>
@@ -209,7 +238,7 @@ export class AddObservationScreen extends Component {
                 <RkButton style={UtilStyles.spaceVertical} rkType='stretch rounded success' onPress={() =>
                     this.addObservation().then((accepted) =>
                     accepted
-                    ? goBack('SelectSampling') 
+                    ? (Alert.alert('Éxito','Se ha agregado la observación.'), goBack(null) )
                     : Alert.alert('Error','Ha fallado la creación de una observación.')
                 )}>Crear observación</RkButton>
             </View>
