@@ -126,7 +126,7 @@ export class MenuScreen extends Component {
 
             <View style={UtilStyles.row}>
             <View style={{flex:1}}>
-                <RkButton style={UtilStyles.spaceAround} rkType='stretch medium info' onPress={() => navigate('Report', { cedula: this.props.navigation.state.params.cedula })}>
+                <RkButton style={UtilStyles.spaceAround} rkType='stretch medium info' onPress={() => navigate('Report', { idUser: this.state.idUser })}>
                 <Icon name="users" size={20} color="#ffffff" />Reportar anomalía
                 </RkButton>
                 </View>

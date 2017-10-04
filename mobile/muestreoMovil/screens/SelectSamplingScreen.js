@@ -66,6 +66,7 @@ export class SelectSamplingScreen extends Component {
               samps = budd.data[0];
               if(budd.error = 'none'){
                   this.setState({ samplings: samps });
+                  this.setState({ sampling: this.state.samplings[0].idSampling });
                   return true;
               }else{
                   console.log(`Error getting samplings ${budd.error}.`);

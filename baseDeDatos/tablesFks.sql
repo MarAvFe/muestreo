@@ -603,15 +603,14 @@ SHOW WARNINGS;
 -- -----------------------------------------------------
 
 USE `sampling`;
-DROP procedure IF EXISTS `sampling`.`pInsert_Report`;
-SHOW WARNINGS;
+DROP procedure IF EXISTS `pInsert_Report`;
 
 DELIMITER $$
 USE `sampling`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Report`(IN pIdUser int, pComment varchar(500))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pInsert_Report`(IN pIdUser int,in pComment varchar(500), in pIdSampling int)
 BEGIN
-    insert into `Comment` (comment, date, User_idUser, isNotification)
-    values (pComment, CURDATE(), pIdUser, 0);
+    insert into `Comment` (comment, date, User_idUser, isNotification, Sampling_idSampling)
+    values (pComment, CURDATE(), pIdUser, 0, pIdSampling );
 END$$
 
 DELIMITER ;

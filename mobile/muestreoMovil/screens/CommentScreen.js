@@ -16,6 +16,8 @@ import {
 import {RkButton, RkText, RkTextInput, RkChoiceGroup} from 'react-native-ui-kitten';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UtilStyles} from '../style/styles';
+import MyAvoidKeyboard from '../components/myAvoidKeyboard/myAvoidKeyboard';
+
 
 export class CommentScreen extends Component {
   static navigationOptions = {
@@ -67,7 +69,7 @@ export class CommentScreen extends Component {
               if(budd.error = 'none'){
                   this.setState({ samplings: samps });
                   this.setState({ sampling: this.state.samplings[0].idSampling });
-                  return this.InsertComment();
+                  return true;
               }
           }
           console.log("Login unauthenticated.");
@@ -111,10 +113,10 @@ export class CommentScreen extends Component {
             let budd = JSON.parse(resp._bodyInit);
             console.log('status: ' + JSON.stringify(status));
             error = budd.error;
-            this.setState({error})
+            this.setState({error});
             return true;
         }
-        console.log("Failed adding report.");
+        console.log("Failed adding comment.");
         return false;
     })
     .catch(err => {
@@ -139,13 +141,12 @@ export class CommentScreen extends Component {
         ref={'scrollView'}
         automaticallyAdjustContentInsets={true}
         style={UtilStyles.container}>
-
+        <MyAvoidKeyboard>
         <View style={UtilStyles.section}>
-          <RkText rkType='header'>Agregar comentario</RkText>
+          <RkText rkType='header'>Agregar Comentario</RkText>
           <View style={UtilStyles.rowContainer}>
             <View style={{flex: 1}}>
              <RkText rkType="large">Muestreo relacionado:</RkText>
-
              <View style={UtilStyles.picker}>
              <Picker
              selectedValue={this.state.sampling}
@@ -161,17 +162,17 @@ export class CommentScreen extends Component {
                        autoCorrect={true} multiline={true} numberOfLines={5}
                        autoCapitalize={'none'} placeholder='mensaje...' clearButtonMode='always'/>
 
-                       <RkButton rkType='stretch success' onPress={()=>
-                                     this.getMySamplings().then((accepted) =>
-                                     accepted
-                                     ? navigate('Menu', { error: this.state.error })
-                                     : Alert.alert('Agregar comentario ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
+               <RkButton rkType='stretch success' onPress={()=>
+                       this.InsertComment().then((accepted) =>
+                       accepted
+                       ? navigate('Menu', { error: this.state.error })
+                       : Alert.alert('Agregar comentario ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
 
             </View>
-          </View>
+              </View>
         </View>
+          </MyAvoidKeyboard>
       </ScrollView>
     );
-
-}
+  }
 }

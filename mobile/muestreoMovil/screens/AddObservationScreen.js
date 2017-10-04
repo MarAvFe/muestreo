@@ -67,6 +67,7 @@ export class AddObservationScreen extends Component {
               act = budd.data[0];
               if(budd.error = 'none'){
                   this.setState({ activities: act });
+                  this.setState({ activity: this.state.activities[0].ididActivity });
                   return true;
               }else{
                   console.log(`Error getting activities ${budd.error}.`);
@@ -209,7 +210,7 @@ export class AddObservationScreen extends Component {
                 <RkButton style={UtilStyles.spaceVertical} rkType='stretch rounded success' onPress={() =>
                     this.addObservation().then((accepted) =>
                     accepted
-                    ? goBack('SelectSampling') 
+                    ? goBack('SelectSampling')
                     : Alert.alert('Error','Ha fallado la creación de una observación.')
                 )}>Crear observación</RkButton>
             </View>

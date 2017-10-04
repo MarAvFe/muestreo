@@ -62,6 +62,7 @@ export class SelectTrailScreen extends Component {
               trai = budd.data[0];
               if(budd.error = 'none'){
                   this.setState({ trails: trai });
+                  this.setState({ trail: this.state.trails[0].idTrail})
                   return true;
               }else{
                   console.log(`Error getting samplings ${budd.error}.`);
