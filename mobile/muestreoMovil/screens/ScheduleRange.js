@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import Network from '../constants/Network';
+import MyAvoidKeyboard from '../components/myAvoidKeyboard/myAvoidKeyboard';
 import _ from 'lodash';
 
 import {
@@ -281,6 +282,7 @@ export class ScheduleRange extends Component {
                 samps = budd.data[0];
                 if(budd.error = 'none'){
                     this.setState({ samplings: samps });
+                    this.setState({ sampling: this.state.samplings[0].idSampling });
                     return true;
                 }else{
                     console.log(`Error getting samplings ${budd.error}.`);
@@ -348,7 +350,7 @@ export class ScheduleRange extends Component {
             onCancel={this._hideEndPicker}
             mode='time'
             />
-
+            <MyAvoidKeyboard>
             <View style={UtilStyles.section,UtilStyles.rowContainer}>
             <RkText rkType="large">Seleccione un muestreo:</RkText>
             </View>
@@ -372,7 +374,10 @@ export class ScheduleRange extends Component {
             />
 
             <RkButton style={UtilStyles.spaceVertical} rkType='clear outline' onPress={() => goBack(null)}><RkText style={{color:'#000000'}}>Volver</RkText></RkButton>
+            </MyAvoidKeyboard>
+
             </View>
+
             </ScrollView>
         );
     }

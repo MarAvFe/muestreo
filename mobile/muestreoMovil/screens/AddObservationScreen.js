@@ -77,6 +77,7 @@ export class AddObservationScreen extends Component {
               if(budd.error = 'none'){
                   this.setState({ activities: act });
                   this.setState({ actsToShow: act });
+                  this.setState({ activity: this.state.activities[0].ididActivity });
                   return true;
               }else{
                   console.log(`Error getting activities ${budd.error}.`);
