@@ -422,9 +422,11 @@ DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getParticipatingSamplings`(pIdUser int(11))
 BEGIN
- SELECT idSampling, name
+ SELECT idSampling, s.name as `name`, s.description as `description`, live as modality, st.name as `type`, sp.name as `sampled`
  from Sampling s
 	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
+    join SamplingType st on st.idSamplingType = s.SamplingType_idSamplingType
+    join SampledProfile sp on sp.idSampledProfile = s.SampledProfile_idSampledProfile
  WHERE su.User_idUser = pIdUser;
  END$$
 
@@ -912,7 +914,7 @@ DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pGet_UserId`(IN pCedula varchar(255))
 BEGIN
-    SELECT idUser 
+    SELECT idUser
     From User
     WHERE cedula= pCedula;
 END $$

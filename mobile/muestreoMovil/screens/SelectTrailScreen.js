@@ -23,7 +23,7 @@ export class SelectTrailScreen extends Component {
     this.state = {
       checked: true,
       idUser: this.props.navigation.state.params.idUser || -1,
-      idSampling: this.props.navigation.state.params.idSampling || -1,
+      sampling: this.props.navigation.state.params.sampling || -1,
       trail: 0,
       trails: [{
           idTrail: -1,
@@ -37,7 +37,7 @@ export class SelectTrailScreen extends Component {
       const str = [];
       let parameters = {
           pIdUser: this.state.idUser,
-          pIdSampling: this.state.idSampling,
+          pIdSampling: this.state.sampling.idSampling,
       }
       for (let p in parameters) {
           str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
@@ -121,6 +121,7 @@ export class SelectTrailScreen extends Component {
             onPress={() => navigate('AddObservation', {
                 idTrail: this.state.trail,
                 idUser: this.state.idUser,
+                sampling: this.state.sampling,
             })}>
             Agregar observación
             </RkButton>

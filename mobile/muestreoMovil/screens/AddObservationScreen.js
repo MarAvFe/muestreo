@@ -29,14 +29,25 @@ export class AddObservationScreen extends Component {
       sampledProfileName: 'Aula',
       idUser: this.props.navigation.state.params.idUser || -1,
       idTrail: this.props.navigation.state.params.idTrail || -1,
+      sampling: this.props.navigation.state.params.sampling || {},
       activity: 0,
       activities: [{
           idActivity: -1,
           name: "Cargando...",
+          description: '',
+          type: '',
       }],
       actsToShow: [{
           idActivity: -1,
           name: "Cargando...",
+          description: '',
+          type: '',
+      }],
+      act: [{
+          idActivity: -1,
+          name: "Cargando...",
+          description: '',
+          type: '',
       }]
     }
   }
@@ -77,7 +88,7 @@ export class AddObservationScreen extends Component {
               if(budd.error = 'none'){
                   this.setState({ activities: act });
                   this.setState({ actsToShow: act });
-                  this.setState({ activity: this.state.activities[0].ididActivity });
+                  this.setState({ activity: this.state.activities[0].idActivity });
                   return true;
               }else{
                   console.log(`Error getting activities ${budd.error}.`);
@@ -137,49 +148,6 @@ export class AddObservationScreen extends Component {
       });
   }
 
-
-  authUser(){
-      const str = [];
-      let parameters = {
-          pUser: this.state.pIdUser,
-          pIdActivity: this.state.activity,
-      }
-      for (let p in parameters) {
-          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]));
-      }
-      const body = str.join("&");
-      console.log('access: ' + JSON.stringify(parameters));
-            console.log(JSON.stringify(body));
-      return fetch(`http://${Network.wsIp}:${Network.wsPort}/auth/login`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          withCredentials: true,
-          body: body,
-      })
-      .then((response) => {
-          const resp = response;
-          console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
-          console.log('FetchedJSON: '+ JSON.stringify(resp));
-          status = resp.status;
-          if (status < 400) {
-              let budd = JSON.parse(resp._bodyInit);
-              console.log('status: ' + JSON.stringify(status));
-              cedula = budd.data;
-              this.setState({cedula});
-              console.log('gotCedula: ' + cedula);
-              return true;
-          }
-          console.log("Login unauthenticated.");
-          return false;
-      })
-      .catch(err => {
-          console.log('Error happened: '+ err);
-          return false;
-      });
-  }
-
   _filter(text) {
       let pattern = new RegExp(text, 'i');
       if (text !== '') {
@@ -191,6 +159,27 @@ export class AddObservationScreen extends Component {
       }else{
           this.setState({ actsToShow: this.state.activities });
       }
+  }
+
+  getActivityObj(activity){
+      let i = 0;
+      for (; i < this.state.actsToShow.length; i++) {
+          if(this.state.actsToShow[i].idActivity === activity){
+              return {
+                  name: this.state.actsToShow[i].name,
+                  description: this.state.actsToShow[i].description,
+                  type: this.state.actsToShow[i].type,
+              }
+          }
+      }
+      return {};
+  }
+
+  updateInfo(selected){
+      this.setState({activity:selected});
+      const a = this.getActivityObj(selected);
+      a.type = a.type !== 0 ? a.type !== 1 ? 'Improductiva' : 'Colaborativa' : 'Productiva';
+      this.setState({act: a});
   }
 
   render() {
@@ -211,7 +200,8 @@ export class AddObservationScreen extends Component {
           <RkText rkType='header'>Agregar observación</RkText>
             <View style={{flex: 1}}>
 
-                <RkText style={UtilStyles.spaceVertical} rkType="large">Muestreando: {this.state.sampledProfileName}</RkText>
+            <RkText style={UtilStyles.spaceTop} rkType='header'>Muestreo de:</RkText><RkText type='small'> {this.state.sampling.sampled}</RkText>
+
                 <RkText style={UtilStyles.spaceVertical} rkType="large">Actividad:</RkText>
                 <RkTextInput autoCapitalize='none'
                 autoCorrect={false}
@@ -224,7 +214,7 @@ export class AddObservationScreen extends Component {
                         <View style={UtilStyles.picker}>
                             <Picker
                             selectedValue={this.state.activity}
-                            onValueChange={ (activities) => ( this.setState({activity:activities}) ) } >
+                            onValueChange={ (activity) => this.updateInfo(activity) } >
                             {srvItems}
                             </Picker>
                         </View>
@@ -234,6 +224,11 @@ export class AddObservationScreen extends Component {
                         <Icon name="plus" size={20} color="#ffffff" />
                         </RkButton>
                     </View>
+                </View>
+
+                <View style={UtilStyles.section}>
+                <RkText style={UtilStyles.spaceTop} rkType='header'>Descripción:</RkText><RkText type='small'> {this.state.act.description}</RkText>
+                <RkText style={UtilStyles.spaceTop} rkType='header'>Tipo:</RkText><RkText type='small'> {this.state.act.type}</RkText>
                 </View>
 
                 <RkButton style={UtilStyles.spaceVertical} rkType='stretch rounded success' onPress={() =>
