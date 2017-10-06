@@ -44,8 +44,17 @@ export class ProfileService {
         .catch(this.handleError);
     }
 
-    getBasicSamplings(): Promise<BasicSampling[]> {
-        return this.http.post('http://localhost:2828/Sampling/get', '', this.options )
+    getMySamplings(cedula): Promise<BasicSampling[]> {
+        const body = this.toQueryString({ pIdUser: cedula });
+        return this.http.post('http://localhost:2828/getMySamplings', body, this.options )
+        .toPromise()
+        .then(response => response.json().data as BasicSampling[])
+        .catch(this.handleError);
+    }
+
+    getThemSamplings(cedula): Promise<BasicSampling[]> {
+        const body = this.toQueryString({ pIdUser: cedula });
+        return this.http.post('http://localhost:2828/getThemSamplings', body, this.options )
         .toPromise()
         .then(response => response.json().data as BasicSampling[])
         .catch(this.handleError);

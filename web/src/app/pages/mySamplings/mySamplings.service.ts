@@ -50,6 +50,14 @@ export class MySamplingsService {
         .catch(this.handleError);
     }
 
+    getMySamplings(cedula): Promise<SamplingName[]> {
+        const body = this.toQueryString({ pIdUser: cedula });
+        return this.http.post('http://localhost:2828/getMySamplings', body, this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as SamplingName[])
+        .catch(this.handleError);
+    }
+
     getSamplingName(): Promise<SamplingName[]> {
         return this.http.post('http://localhost:2828/getSamplingName', '', this.options )
         .toPromise()
@@ -83,7 +91,6 @@ export class MySamplingsService {
         .then(response => response.json().data[0] as PreParam[])
         .catch(this.handleError);
     }
-
 
     // hace un update de los parámetros definitivos
     editDefParam(data): Promise<Feedback> {

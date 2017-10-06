@@ -4,6 +4,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { RenderBitComponent } from './customComponents/renderBit.component';
 import { NgUploaderOptions } from 'ngx-uploader';
 import { ToastsManager, Toast } from 'ng2-toastr';
+import { Router, ActivatedRoute } from '@angular/router';
 import { SamplingName } from './objects/SamplingName';
 import { SamplingId } from './objects/SamplingId';
 import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
@@ -19,15 +20,9 @@ export class MySamplingsComponent implements OnInit {
     heads: any;
     sampleInfo: any;
     query: string = '';
+    cedula: string = '';
     sampName: SamplingName[];
     colaborators: Colaborator[];
-
-    getNames(service: MySamplingsService): void {
-        this.service.getSamplingName().then(sampName => {
-            this.sampName = sampName;
-            this.loadSamplingInfo(this.sampName[0].name);
-        });
-    }
 
     campostabladefi = {
         hideSubHeader: true,
@@ -140,7 +135,8 @@ export class MySamplingsComponent implements OnInit {
     sourceDefParam: LocalDataSource = new LocalDataSource();
     sourcePreParam: LocalDataSource = new LocalDataSource();
 
-    constructor(public toastr: ToastsManager, vcr: ViewContainerRef, protected service: MySamplingsService) {
+    constructor(private route: ActivatedRoute, private router: Router,
+        public toastr: ToastsManager, vcr: ViewContainerRef, protected service: MySamplingsService) {
         this.toastr.setRootViewContainerRef(vcr);
     }
 
@@ -150,7 +146,17 @@ export class MySamplingsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getNames(this.service);
+        this.cedula = localStorage.getItem('cedula');
+        if (this.cedula !== null) {
+            this.service.getMySamplings(this.cedula)
+            .then(data => {
+                this.sampName = data;
+                this.loadSamplingInfo(this.sampName[0].name);
+            })
+            .catch( this.handleError );
+        } else {
+            this.router.navigate(['/logout']);
+        }
     }
 
     loadSamplingInfo(sampName): void {

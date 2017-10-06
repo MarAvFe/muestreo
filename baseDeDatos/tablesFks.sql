@@ -427,7 +427,53 @@ BEGIN
 	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
     join SamplingType st on st.idSamplingType = s.SamplingType_idSamplingType
     join SampledProfile sp on sp.idSampledProfile = s.SampledProfile_idSampledProfile
- WHERE su.User_idUser = pIdUser;
+ WHERE (su.User_idUser = pIdUser) or (su.User_idUser = idFromCedula(pIdUser));
+ END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getMySamplings
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getMySamplings`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getMySamplings`(pIdUser int(11))
+BEGIN
+ SELECT idSampling, s.name as `name`, s.description as `description`, live as modality, st.name as `type`, sp.name as `sampled`
+ from Sampling s
+	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
+    join SamplingType st on st.idSamplingType = s.SamplingType_idSamplingType
+    join SampledProfile sp on sp.idSampledProfile = s.SampledProfile_idSampledProfile
+ WHERE (su.User_idUser = pIdUser) or (su.User_idUser = idFromCedula(pIdUser)) and (su.isAdmin = 1);
+ END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getThemSamplings
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getThemSamplings`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getThemSamplings`(pIdUser int(11))
+BEGIN
+ SELECT idSampling, s.name as `name`, u.name as `duenio`
+ from Sampling s
+	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
+    join SamplingType st on st.idSamplingType = s.SamplingType_idSamplingType
+    join User u on u.idUser = su.User_idUser
+ WHERE (su.User_idUser = pIdUser) or (su.User_idUser = idFromCedula(pIdUser)) and (su.isAdmin = 0);
  END$$
 
 DELIMITER ;
@@ -734,6 +780,25 @@ BEGIN
 		q_preliminar = pq_preliminar,
 		n_preliminar = pn_preliminar
 	WHERE idSampling = pId_Sampling AND description = pDescription AND SamplingType_idSamplingType =  pIdSamplingType;
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- function idFromCedula
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP function IF EXISTS `sampling`.`idFromCedula`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` FUNCTION `idFromCedula`( pCedula varchar(12) ) RETURNS int(11)
+BEGIN
+	select idUser into @cedula from User where cedula = pCedula;
+RETURN @cedula;
 END$$
 
 DELIMITER ;

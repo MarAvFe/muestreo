@@ -21,8 +21,8 @@
                     <tbody>
                         <tr *ngFor="let sampling of samplings">
                             <td name="pName" ><a href="#">{{sampling.name}}</a></td>
-                            <td name="pSamplingType_idSamplingType" >{{sampling.SamplingType_idSamplingType}}</td>
-                            <td name="pLive" >{{sampling.live.data[0] == 0 ? "Presencial" : "Video" }}</td>
+                            <td name="pSamplingType_idSamplingType" >{{sampling.type}}</td>
+                            <td name="pLive" >{{sampling.modality.data[0] === 0 ? "Presencial" : "Video" }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -35,26 +35,14 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th class="table-id">#</th>
-                            <th>Identificador</th>
+                            <th>Dueño</th>
                             <th>Nombre</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><a href="#">CB134</a></td>
-                            <td>Aulas de Diseño Industrial marzo</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><a href="#">FMR16</a></td>
-                            <td>Ampliación Enfermería junio</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><a href="#">MT72</a></td>
-                            <td>Construcción de Biblioteca II</td>
+                        <tr *ngFor="let sampling of themSamplings">
+                            <td name="description" >{{sampling.duenio}}</td>
+                            <td name="name" ><a href="#">{{sampling.name}}</a></td>
                         </tr>
                     </tbody>
                 </table>

@@ -13,6 +13,7 @@ import { User } from './objects/User';
 })
 export class ProfileComponent implements OnInit {
     samplings: any;
+    themSamplings: any;
     query: string = '';
 
     settings = {
@@ -86,8 +87,13 @@ export class ProfileComponent implements OnInit {
                 .then( user => this.user = user as User)
                 .catch( this.handleError );
 
-                this._profileService.getBasicSamplings()
-                .then(data => this.samplings = data)
+                this._profileService.getMySamplings(this.cedula)
+                .then(data => this.samplings = data[0])
+                .catch( this.handleError );
+
+                this.themSamplings = [{ name: '-', duenio: '-' }];
+                this._profileService.getThemSamplings(this.cedula)
+                .then(data => this.themSamplings = data[0] )
                 .catch( this.handleError );
             } else {
                 this.router.navigate(['/logout']);
