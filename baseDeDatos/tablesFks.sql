@@ -371,6 +371,52 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- procedure assignColaborator
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`assignColaborator`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `assignColaborator`(
+	in pIdSampling int(11),
+    in pCedulaUser int(11),
+    in pIsAdmin int(11)
+)
+BEGIN
+ INSERT INTO `sampling`.`Sampling_has_User`(`Sampling_idSampling`,`User_idUser`,`isAdmin`)VALUES
+ (pIdSampling, idFromCedula(pCedulaUser), ifnull(pIsAdmin,0));
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure unassignColaborator
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`unassignColaborator`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `unassignColaborator`(
+	in pIdSampling int(11),
+    in pCedulaUser int(11)
+)
+BEGIN
+ DELETE FROM `sampling`.`Sampling_has_User`
+ WHERE Sampling_idSampling = pIdSampling and User_idUser = idFromCedula(pCedulaUser);
+
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- procedure getDefParam
 -- -----------------------------------------------------
 
@@ -474,6 +520,27 @@ BEGIN
     join SamplingType st on st.idSamplingType = s.SamplingType_idSamplingType
     join User u on u.idUser = su.User_idUser
  WHERE (su.User_idUser = pIdUser) or (su.User_idUser = idFromCedula(pIdUser)) and (su.isAdmin = 0);
+ END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getNonColaborators
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`getNonColaborators`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getNonColaborators`(pIdSampling int(11))
+BEGIN
+ SELECT concat(u.name, ' ', u.lastname) as `name`, u.cedula as `cedula`
+ from User u
+   join Sampling_has_User su
+ where su.Sampling_idSampling = pIdSampling and u.idUser <> su.User_idUser;
  END$$
 
 DELIMITER ;

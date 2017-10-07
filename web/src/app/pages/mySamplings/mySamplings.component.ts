@@ -89,7 +89,11 @@ export class MySamplingsComponent implements OnInit {
             },
         },
     };
-    settings = {
+    settingsUsers = {
+        actions: {
+            edit: false,
+            create: false,
+        },
         add: {
             addButtonContent: '<i hidden="" class="ion-ios-plus-outline"></i>',
             createButtonContent: '<i class="ion-checkmark"></i>',
@@ -105,35 +109,20 @@ export class MySamplingsComponent implements OnInit {
             confirmDelete: true,
         },
         columns: {
-            id: {
-                title: 'ID',
-                type: 'number',
-            },
-            firstName: {
-                title: 'First Name',
+            cedula: {
+                title: 'Identificación',
                 type: 'string',
             },
-            lastName: {
-                title: 'Last Name',
+            name: {
+                title: 'Nombre',
                 type: 'string',
-            },
-            username: {
-                title: 'Username',
-                type: 'string',
-            },
-            email: {
-                title: 'E-mail',
-                type: 'string',
-            },
-            age: {
-                title: 'Age',
-                type: 'number',
             },
         },
     };
 
     sourceDefParam: LocalDataSource = new LocalDataSource();
     sourcePreParam: LocalDataSource = new LocalDataSource();
+    sourceUsers: LocalDataSource = new LocalDataSource();
 
     constructor(private route: ActivatedRoute, private router: Router,
         public toastr: ToastsManager, vcr: ViewContainerRef, protected service: MySamplingsService) {
@@ -159,6 +148,62 @@ export class MySamplingsComponent implements OnInit {
         }
     }
 
+    onDeleteConfirm(event) {
+        console.debug(`eventData: ${JSON.stringify(event.data)}`);
+        const choice = window.prompt(`Escriba 'admin' en el cuadro para asignar a ${event.data.name} como administrador.`);
+        if (choice !== null) {
+            let params;
+            if (choice === 'admin') {
+                console.debug('Adding as admin');
+                params = {
+                    pIdSampling: this.sampleInfo.pId_Sampling,
+                    pCedulaUser: event.data.cedula,
+                    pIsAdmin: 1,
+                };
+            } else {
+                console.debug('Adding as notAdmin');
+                params = {
+                    pIdSampling: this.sampleInfo.pId_Sampling,
+                    pCedulaUser: event.data.cedula,
+                    pIsAdmin: 0,
+                };
+            }
+            console.debug(`rcvPars: ${JSON.stringify(params)}`);
+            this.service.assignColaborator(params)
+            .then(res => {
+                 if (res.error === 'none') {
+                     event.confirm.resolve();
+                 }else {
+                     this.toastr.error('Por favor, compruebe los parámetros.');
+                     console.debug(JSON.stringify(res));
+                     event.confirm.reject();
+                 }
+             }).catch(this.handleError);
+        } else {
+            event.confirm.reject();
+        }
+    }
+
+    unassignColaborator(cedula) {
+        if (window.confirm(`Desea desasignar al usuario con la identificación ${cedula}.`)) {
+            const params = {
+                pIdSampling: this.sampleInfo.pId_Sampling,
+                pCedulaUser: cedula,
+            };
+            this.service.unassignColaborator(params)
+            .then(res => {
+                 if (res.error === 'none') {
+                     this.toastr.success('Desasignación exitosa.');
+                 }else {
+                     this.toastr.error('Por favor, compruebe los parámetros.');
+                     console.debug(JSON.stringify(res));
+                 }
+             }).catch(this.handleError);
+        } else {
+            this.toastr.info('No se han ejecutado cambios.');
+        }
+    }
+
     loadSamplingInfo(sampName): void {
         // se cargan los parámetros preeliminares
         this.service.getIdSampDescIdSampType(sampName).then( data => {
@@ -167,6 +212,11 @@ export class MySamplingsComponent implements OnInit {
                 pDescription : data[0].description,
                 pIdSamplingType : data[0].SamplingType_idSamplingType,
             };
+
+            // se cargan usuarios que no pertenecen al muestreo
+            this.service.getUsers({ pIdSampling: this.sampleInfo.pId_Sampling }).then((dataz) => {
+                this.sourceUsers.load(dataz);
+            }).catch(err => console.debug('Error al cargar los usuarios.'));
 
             // se cargan parámetros preliminares
             this.service.getPreParam(this.sampleInfo).then((dataz) => {

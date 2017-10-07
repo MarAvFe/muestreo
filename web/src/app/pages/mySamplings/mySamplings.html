@@ -20,12 +20,12 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let colab of colaborators">
-                            <td>{{colab.admin.data[0]!=0?"No":"Si"}}</td>
+                            <td>{{colab.admin.data[0]!=1?"No":"Si"}}</td>
                             <td><a href="#">{{colab.cedula}}</a></td>
                             <td>{{colab.name}}</td>
                             <td>
                                 <div class="button-wrapper">
-                                    <button type="button" class="btn btn-danger btn-default  btn-xs">Desasignar</button>
+                                    <button (click)='unassignColaborator(colab.cedula)' type="button" class="btn btn-danger btn-default  btn-xs">Desasignar</button>
                                 </div>
                             </td>
                         </tr>
@@ -34,8 +34,8 @@
 
             </ba-card>
             <ba-card cardTitle="Asignar colaboradores" baCardClass="with-scroll">
-                <ng2-smart-table [settings]="settings"
-                [source]="source"
+                <ng2-smart-table [settings]="settingsUsers"
+                [source]="sourceUsers"
                 (deleteConfirm)="onDeleteConfirm($event)">
             </ng2-smart-table>
         </ba-card>

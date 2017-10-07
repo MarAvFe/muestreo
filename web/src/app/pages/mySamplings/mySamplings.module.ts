@@ -25,6 +25,6 @@ import { routing } from './mySamplings.routing';
     ],
     providers: [
         MySamplingsService,
-    ]
+    ],
 })
 export class MySamplingsModule {}

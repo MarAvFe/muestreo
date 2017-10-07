@@ -32,6 +32,24 @@ export class MySamplingsService {
         return Promise.reject(error.message || error);
     }
 
+    // desasigna un colaborador de un muestreo
+    unassignColaborator(data): Promise<Feedback> {
+        const body = this.toQueryString(data);
+        return this.http.post('http://localhost:2828/unassignColaborator', body, this.options )
+        .toPromise()
+        .then(response => response.json())
+        .catch(this.handleError);
+    }
+
+    // asigna un colaborador a un muestreo
+    assignColaborator(data): Promise<Feedback> {
+        const body = this.toQueryString(data);
+        return this.http.post('http://localhost:2828/assignColaborator', body, this.options )
+        .toPromise()
+        .then(response => response.json())
+        .catch(this.handleError);
+    }
+
     // devuelve el id del muestreo seleccionado
     getColaborators(data): Promise<Colaborator[]> {
         const body = this.toQueryString({ pNameSampling : data });
@@ -80,6 +98,16 @@ export class MySamplingsService {
         return this.http.post('http://localhost:2828/getIdSampDescIdSampType', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as SamplingDescIdSamp[])
+        .catch(this.handleError);
+    }
+
+    // carga los usuarios no colaboradores
+    getUsers(data): Promise<Colaborator[]> {
+        const body = this.toQueryString(data);
+        console.debug(`bodUsers: ${body} and ${JSON.stringify(data)}`);
+        return this.http.post('http://localhost:2828/getNonColaborators', body, this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as Colaborator[])
         .catch(this.handleError);
     }
 
