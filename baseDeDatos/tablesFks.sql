@@ -1053,6 +1053,54 @@ END $$
 DELIMITER ;
 SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- procedure getSampledObjInfo
+-- -----------------------------------------------------
+USE `sampling`;
+DROP procedure IF EXISTS `getSampledObjInfo`;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getSampledObjInfo`(pIdSampling int)
+BEGIN
+	select s.name as samplName, s.description as samDesc, s.SamplingType_idSamplingType, sp.name as ObjName, sp.description as ObjDesc
+	from SampledProfile sp
+		join Sampling s on s.SampledProfile_idSampledProfile = sp.idSampledProfile
+	where s.idSampling = pIdSampling;
+END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+
+-- -----------------------------------------------------
+-- procedure pUpdate_SamplingDetails
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `pUpdate_SamplingDetails`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdate_SamplingDetails`(IN pId_Sampling int, IN pSampName varchar(255), pSampDescription varchar(1000),
+	pSamplingType int,
+	pObjectName varchar(45),
+	pObjectDescription varchar(255))
+BEGIN
+	UPDATE Sampling sa
+    INNER JOIN SampledProfile sp ON sa.SampledProfile_idSampledProfile = sp.idSampledProfile
+    SET sa.name = pSampName,
+		sa.description = pSampDescription,
+		sa.SamplingType_idSamplingType = pSamplingType,
+		sp.name = pObjectName,
+		sp.description = pObjectDescription
+	WHERE idSampling = pId_Sampling;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
