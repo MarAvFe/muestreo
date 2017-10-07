@@ -1,5 +1,5 @@
-<div class="widgets">
 
+<div class="widgets">
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
@@ -43,31 +43,31 @@
             <div class="col-md-12">
                 <ba-card cardTitle="Sampling Details" baCardClass="with-scroll">
                     <div class="form-group">
-                        <label for="input11" translate>{{'Name'}}</label>
-                        <input type="text" class="form-control" id="input11" placeholder="">
+                        <label for="SamplingNameInput" translate>{{'Name'}}</label>
+                        <input type="text" class="form-control" id="SamplingNameInput" [(ngModel)]="samplingName" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="input11" translate>{{'Description'}}</label>
-                        <input type="text" class="form-control" id="input11" placeholder="">
+                        <input type="text" class="form-control" id="input11" [(ngModel)]="samplingDescription" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="exampleSelect1">Type</label>
-                        <select class="form-control" id="exampleSelect1">
-                            <option>Muestreo del Trabajo</option>
-                            <option>Work Sampling</option>
-                            <option>Five minute</option>
-                            <option>Crew Balance</option>
+                        <select class="form-control" id="exampleSelect1" [(ngModel)]="samplingType">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="input18" translate>Objeto muestreado</label>
-                        <input type="text" class="form-control" id="input18" placeholder="">
+                        <input type="text" class="form-control" id="input18" [(ngModel)]="objectName" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="input19" translate>Descripción del objeto</label>
-                        <input type="text" class="form-control" id="input19" placeholder="">
+                        <input type="text" class="form-control" id="input19" [(ngModel)]="objectDescription" placeholder="">
                     </div>
-                    <button type="submit" class="btn btn-warning" (click)="console.log('Not implemented editing yet.')">Editar</button>
+                    <button type="submit" class="btn btn-warning" (click)="onEditSamplingDetails()">Editar</button>
                 </ba-card>
             </div>
         </div>
@@ -92,5 +92,4 @@
             </div>
         </ba-card>
     </div>
-
 </div>

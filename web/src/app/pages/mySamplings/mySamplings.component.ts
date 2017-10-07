@@ -7,6 +7,7 @@ import { ToastsManager, Toast } from 'ng2-toastr';
 import { SamplingName } from './objects/SamplingName';
 import { SamplingId } from './objects/SamplingId';
 import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
+import { SampledObjInfo } from './objects/SampledObjInfo';
 import { Colaborator } from './objects/Colaborator';
 
 @Component({
@@ -17,15 +18,23 @@ import { Colaborator } from './objects/Colaborator';
 export class MySamplingsComponent implements OnInit {
     data: any;
     heads: any;
+    samplingName: string;
+    samplingDescription: string;
+    objectName: string;
+    objectDescription: string;
+    samplingType: number;
     sampleInfo: any;
+    sampledObjInfo: any;
     query: string = '';
     sampName: SamplingName[];
     colaborators: Colaborator[];
+
 
     getNames(service: MySamplingsService): void {
         this.service.getSamplingName().then(sampName => {
             this.sampName = sampName;
             this.loadSamplingInfo(this.sampName[0].name);
+          //  this.loadSamplingDetails(this.sampName[0].name);
         });
     }
 
@@ -177,12 +186,40 @@ export class MySamplingsComponent implements OnInit {
                 this.colaborators = dataz;
             }).catch(err => console.debug('Error al cargar los colaboradores.'));
         });
+
+        this.service.getSamplingId(sampName).then(samplingId => {
+          this.service.getSampledObjInfo(samplingId[0].idSampling).then(data => {
+            this.samplingName = data[0].samplName;
+            this.samplingDescription = data[0].samDesc;
+            this.samplingType = data[0].SamplingType_idSamplingType;
+            //seria tuanis que se pueda ver el nombre del tipo de muestreo en el select
+            this.objectName = data[0].ObjName;
+
+            this.objectDescription = data[0].ObjDesc;
+          });
+        }).catch(this.handleError);
+
     }
 
+    onEditSamplingDetails(): void{
+      const params = {pId_Sampling:this.sampleInfo.pId_Sampling, pSampName: this.samplingName,
+         pSampDescription: this.samplingDescription, pSamplingType: this.samplingType,
+          pObjectName: this.objectName, pObjectDescription: this.objectDescription}
+
+        this.service.editSamplingDetails(params).then(res => {
+          if (res.error === 'none') {
+              console.log("exito");
+              this.getNames(this.service);
+          }else {
+              this.toastr.error('Por favor, compruebe los parámetros.');
+              console.debug('EditSamplingDetails' + JSON.stringify(res));
+          }
+        }).catch(this.handleError);
+  }
+
+
+
     onEditConfirmPreParam(event): void {
-        console.debug("hola" + JSON.stringify(this.sampleInfo));
-        console.debug("new Data" +  JSON.stringify(event.newData));
-        console.debug("funcion" +JSON.stringify(this.service.createComposePre(this.sampleInfo, event.newData)));
         this.service.editPreParam(this.service.createComposePre(this.sampleInfo, event.newData))
         .then(res => {
             if (res.error === 'none') {
