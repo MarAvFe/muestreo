@@ -9,6 +9,7 @@ import { Feedback } from './objects/Feedback';
 import { SamplingName } from './objects/SamplingName';
 import { SamplingId } from './objects/SamplingId';
 import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
+import { SampledObjInfo } from './objects/SampledObjInfo';
 import { BaThemeConfigProvider } from '../../theme';
 
 @Injectable()
@@ -49,6 +50,16 @@ export class MySamplingsService {
         .then(response => response.json())
         .catch(this.handleError);
     }
+
+   //devuelve el nombre y descripcion del objeto muestreado
+   getSampledObjInfo(data): Promise<SampledObjInfo[]> {
+       const body = this.toQueryString({ pIdSampling : data });
+       console.log(JSON.stringify(body));
+       return this.http.post('http://localhost:2828/getSampledObjInfo', body, this.options )
+       .toPromise()
+       .then(response => response.json().data[0] as SampledObjInfo[])
+       .catch(this.handleError);
+   }
 
     // devuelve el id del muestreo seleccionado
     getColaborators(data): Promise<Colaborator[]> {
@@ -120,6 +131,14 @@ export class MySamplingsService {
         .catch(this.handleError);
     }
 
+    //hace un update en la tabla de Sampling y la de SampledProfile
+    editSamplingDetails(data): Promise<Feedback> {
+        const body = this.toQueryString(data);
+        return this.http.post('http://localhost:2828/pUpdate_SamplingDetails', body, this.options )
+        .toPromise()
+        .then(response => response.json());
+    }
+
     // hace un update de los parámetros definitivos
     editDefParam(data): Promise<Feedback> {
         const body = this.toQueryString(data);
@@ -136,6 +155,15 @@ export class MySamplingsService {
         .then(response => response.json());
     }
 
+    createComposeSampDetails(info, bodyParams): Object {
+      return {pId_Sampling: info.pId_Sampling,
+             pSampName: bodyParams.pSampName,
+             pSampDescription: bodyParams.pSampDescription,
+             pSamplingType: bodyParams.pSamplingType,
+             pObjectName: bodyParams.pObjectName,
+             pObjectDescription: bodyParams.pObjectDescription,
+         };
+    }
     // hace un compuesto del idsampling, description, idsamplingtype mas los parámetros que ingresa el usuario
     createComposeDef(info, bodyParams ): Object {
         return {pId_Sampling: info.pId_Sampling,
