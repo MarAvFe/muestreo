@@ -263,7 +263,7 @@ export class MySamplingsComponent implements OnInit {
         this.service.editSamplingDetails(params).then(res => {
           if (res.error === 'none') {
               console.log("exito");
-              this.getNames(this.service);
+              //this.getNames(this.service);
           }else {
               this.toastr.error('Por favor, compruebe los parámetros.');
               console.debug('EditSamplingDetails' + JSON.stringify(res));
