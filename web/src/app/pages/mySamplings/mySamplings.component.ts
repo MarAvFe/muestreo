@@ -246,7 +246,6 @@ export class MySamplingsComponent implements OnInit {
             this.samplingName = data[0].samplName;
             this.samplingDescription = data[0].samDesc;
             this.samplingType = data[0].SamplingType_idSamplingType;
-            //seria tuanis que se pueda ver el nombre del tipo de muestreo en el select
             this.objectName = data[0].ObjName;
 
             this.objectDescription = data[0].ObjDesc;
@@ -255,23 +254,30 @@ export class MySamplingsComponent implements OnInit {
 
     }
 
-    onEditSamplingDetails(): void{
-      const params = {pId_Sampling:this.sampleInfo.pId_Sampling, pSampName: this.samplingName,
-         pSampDescription: this.samplingDescription, pSamplingType: this.samplingType,
-          pObjectName: this.objectName, pObjectDescription: this.objectDescription}
+    onEditSamplingDetails(): void {
+      const params = {
+          pId_Sampling: this.sampleInfo.pId_Sampling,
+          pSampName: this.samplingName,
+          pSampDescription: this.samplingDescription,
+          pSamplingType: this.samplingType,
+          pObjectName: this.objectName,
+          pObjectDescription: this.objectDescription,
+      };
 
         this.service.editSamplingDetails(params).then(res => {
           if (res.error === 'none') {
-              console.log("exito");
-              //this.getNames(this.service);
+              console.debug('exito');
+              this.service.getMySamplings(this.cedula)
+              .then(data => {
+                  this.sampName = data;
+              })
+              .catch( this.handleError );
           }else {
               this.toastr.error('Por favor, compruebe los parámetros.');
-              console.debug('EditSamplingDetails' + JSON.stringify(res));
+              console.debug(`EditSamplingDetails ${JSON.stringify(res)}`);
           }
         }).catch(this.handleError);
   }
-
-
 
     onEditConfirmPreParam(event): void {
         this.service.editPreParam(this.service.createComposePre(this.sampleInfo, event.newData))
