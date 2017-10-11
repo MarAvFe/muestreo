@@ -7,6 +7,7 @@ import { Colaborator } from './objects/Colaborator';
 import { PreParam } from './objects/PreParam';
 import { Feedback } from './objects/Feedback';
 import { SamplingName } from './objects/SamplingName';
+import { SamplingType } from './objects/SamplingType';
 import { SamplingId } from './objects/SamplingId';
 import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
 import { SampledObjInfo } from './objects/SampledObjInfo';
@@ -109,6 +110,13 @@ export class MySamplingsService {
         return this.http.post('http://localhost:2828/getIdSampDescIdSampType', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as SamplingDescIdSamp[])
+        .catch(this.handleError);
+    }
+
+    getSamplingTypes(): Promise<SamplingType[]> {
+        return this.http.post('http://localhost:2828/SamplingType/get', '', this.options )
+        .toPromise()
+        .then(response => response.json().data as SamplingType[])
         .catch(this.handleError);
     }
 

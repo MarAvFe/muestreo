@@ -22,10 +22,8 @@ export class AnalyzeComponent {
     query: string = '';
 
     settings = {
-        add: {
-            addButtonContent: '<i class="ion-ios-plus-outline"></i>',
-            createButtonContent: '<i class="ion-checkmark"></i>',
-            cancelButtonContent: '<i class="ion-close"></i>',
+        actions: {
+            add: false,
         },
         edit: {
             editButtonContent: '<i class="ion-edit"></i>',
@@ -37,29 +35,22 @@ export class AnalyzeComponent {
             confirmDelete: true,
         },
         columns: {
-            id: {
-                title: 'ID',
-                type: 'number',
+            date: {
+                title: 'Fecha',
+                type: 'string',
+                width: '20px',
             },
-            firstName: {
-                title: 'First Name',
+            colaborator: {
+                title: 'Colaborador',
                 type: 'string',
             },
-            lastName: {
-                title: 'Last Name',
+            type: {
+                title: 'Tipo',
                 type: 'string',
             },
-            username: {
-                title: 'Username',
+            activity: {
+                title: 'Actividad',
                 type: 'string',
-            },
-            email: {
-                title: 'E-mail',
-                type: 'string',
-            },
-            age: {
-                title: 'Age',
-                type: 'number',
             },
         },
     };

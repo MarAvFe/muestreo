@@ -10,6 +10,7 @@ import { SamplingId } from './objects/SamplingId';
 import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
 import { SampledObjInfo } from './objects/SampledObjInfo';
 import { Colaborator } from './objects/Colaborator';
+import { SamplingType } from './objects/SamplingType';
 
 @Component({
     selector: 'mySamplings',
@@ -24,6 +25,7 @@ export class MySamplingsComponent implements OnInit {
     objectName: string;
     objectDescription: string;
     samplingType: number;
+    samplingTypes: SamplingType[];
     sampleInfo: any;
     sampledObjInfo: any;
     query: string = '';
@@ -150,6 +152,7 @@ export class MySamplingsComponent implements OnInit {
                 this.loadSamplingInfo(this.sampName[0].name);
             })
             .catch( this.handleError );
+            this.getSamplingTypes();
         } else {
             this.router.navigate(['/logout']);
         }
@@ -291,6 +294,15 @@ export class MySamplingsComponent implements OnInit {
             }
         }).catch(this.handleError);
     }
+
+      getSamplingTypes(): void {
+          this.service.getSamplingTypes()
+          .then(types => {
+              console.debug(`TypesGot: ${JSON.stringify(types)}`);
+              this.samplingTypes = types;
+          })
+          .catch(this.handleError);
+      }
 
     onEditConfirmDefParam(event): void {
         this.service.editDefParam(this.service.createComposeDef(this.sampleInfo, event.newData))

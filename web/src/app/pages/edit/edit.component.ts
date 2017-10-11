@@ -14,6 +14,11 @@ import { RenderBitComponent } from './customComponents/renderBit.component';
 export class EditComponent {
 
     query: string = '';
+    activityTypes = [
+        { value: 0, title: 'Productiva' },
+        { value: 1, title: 'Improductiva' },
+        { value: 2, title: 'Colaborativa' },
+    ];
 
     settings = {
         add: {
@@ -44,15 +49,18 @@ export class EditComponent {
             type: {
                 title: 'Tipo',
                 type: 'custom',
+                filter: {
+                    type: 'list',
+                    config: {
+                        selectText: 'Todos',
+                        list: this.activityTypes,
+                    },
+                },
                 renderComponent: RenderBitComponent,
                 editor: {
                     type: 'list',
                     config: {
-                        list: [
-                            { value: 0, title: 'Productiva' },
-                            { value: 1, title: 'Improductiva' },
-                            { value: 2, title: 'Colaborativa' },
-                        ],
+                        list: this.activityTypes,
                     },
                 },
             },
