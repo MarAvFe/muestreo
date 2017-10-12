@@ -6,9 +6,14 @@ import 'rxjs/add/operator/toPromise';
 import { BaThemeConfigProvider } from '../../theme';
 
 import { Titles } from './Titles';
+import { BasicSampling } from './objects/BasicSampling';
+import { SamplingType } from './objects/SamplingType';
 
 @Injectable()
 export class AnalyzeService {
+
+    options: any;
+    heads: any;
 
     private titlesUrl = 'assets/titles.json';
 
@@ -79,6 +84,22 @@ export class AnalyzeService {
     };
 
     constructor(private _baConfig: BaThemeConfigProvider, private http: Http) {
+        this.options = { headers : this.heads, withCredentials : true };
+    }
+
+    getMySamplings(cedula): Promise<BasicSampling[]> {
+        const body = this.toQueryString({ pIdUser: cedula });
+        return this.http.post('http://localhost:2828/getMySamplings', body, this.options )
+        .toPromise()
+        .then(response => response.json().data as BasicSampling[])
+        .catch(this.handleError);
+    }
+
+    getSamplingTypes(): Promise<SamplingType[]> {
+        return this.http.post('http://localhost:2828/SamplingType/get', '', this.options )
+        .toPromise()
+        .then(response => response.json().data as SamplingType[])
+        .catch(this.handleError);
     }
 
     getAll() {
@@ -119,5 +140,23 @@ export class AnalyzeService {
                 },
             }],
         ];
+    }
+
+    private toQueryString(jsonBody: Object) {
+        // Receives some json and returns it in ws query format:
+        // {"name": "nombre","description": "descrip."} -> name=nombre&description=descrip
+        const keys = Object.keys(jsonBody).map(key => {
+            /* If boolean */
+            if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
+                jsonBody[key] = jsonBody[key] === 'true' ? 1 : 0;
+            }
+            /* If bit {"type": "Buffer","data": [1]} */
+            if (jsonBody[key].type ) {
+                jsonBody[key] = jsonBody[key].data[0];
+            }
+            return [key, jsonBody[key]].join('=');
+        });
+        const str = keys.join('&');
+        return str;
     }
 }

@@ -1,8 +1,8 @@
 <section class="analyze">
     <div class="form-group">
       <h2 translate>{{'analyze.selectSampling'}}</h2>
-      <select class="form-control">
-        <option *ngFor="let title of titles">{{title.val}}</option>
+      <select (change)="loadSamplingInfo(selectedSampName.value)" #selectedSampName class="form-control">
+        <option *ngFor="let sampling of samplings" value="{{sampling.idSampling}}">{{sampling.name}}</option>
       </select>
     </div>
     <div class="row">
@@ -19,7 +19,12 @@
                 <traffic-chart></traffic-chart>
             </ba-card>
             <ba-card translate cardTitle="{{'analyze.details'}}" baCardClass="with-scroll">
-                Detalles...
+                <h4>Nombre</h4><p>{{selectedSampling.name}}</p>
+                <h4>Descripción</h4><p>{{selectedSampling.description}}</p>
+                <h4>Modalidad</h4><p>{{selectedSampling.modality.data[0] === 0 ? "Presencial" : "Video" }}</p>
+                <h4>Tipo</h4><p>{{selectedSampling.type}}</p>
+                <hr>
+                <h4>Entidad muestreada:</h4><p>{{selectedSampling.sampled}}</p>
             </ba-card>
         </div>
         <div class="col-md-12 ">
