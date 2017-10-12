@@ -53,9 +53,7 @@ export class AddObservationScreen extends Component {
   }
 
   componentWillMount(){
-      console.log('lulx');
       this.getActivities();
-
   }
 
   getActivities(){
@@ -78,12 +76,12 @@ export class AddObservationScreen extends Component {
       })
       .then((response) => {
           const resp = response;
-          console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
-          console.log('FetchedJSON: '+ JSON.stringify(resp));
+          // console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
+          // console.log('FetchedJSON: '+ JSON.stringify(resp));
           status = resp.status;
           if (status < 400) {
               let budd = JSON.parse(resp._bodyInit);
-              console.log('status: ' + JSON.stringify(status));
+              // console.log('status: ' + JSON.stringify(status));
               act = budd.data[0];
               if(budd.error = 'none'){
                   this.setState({ activities: act });
@@ -125,12 +123,12 @@ export class AddObservationScreen extends Component {
       })
       .then((response) => {
           const resp = response;
-          console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
-          console.log('FetchedJSON: '+ JSON.stringify(resp));
+          // console.log('Fetched: '+ JSON.stringify(resp._bodyInit));
+          // console.log('FetchedJSON: '+ JSON.stringify(resp));
           status = resp.status;
           if (status < 400) {
               let budd = JSON.parse(resp._bodyInit);
-              console.log('status: ' + JSON.stringify(status));
+              // console.log('status: ' + JSON.stringify(status));
               act = budd.data[0];
               if(budd.error = 'none'){
                   return true;
@@ -220,8 +218,15 @@ export class AddObservationScreen extends Component {
                         </View>
                     </View>
                     <View style={UtilStyles.spaceAround}>
-                        <RkButton rkType=' large info' style={{width: 50, height: 50}} onPress={() => navigate('Activity', { name: 'Hackerman' })}>
+                        <RkButton rkType='large info' style={{width: 50, height: 50}} onPress={() => navigate('Activity', { name: 'Hackerman' })}>
                         <Icon name="plus" size={20} color="#ffffff" />
+                        </RkButton>
+                    </View>
+                    <View style={UtilStyles.spaceAround}>
+                        <RkButton rkType='large success' style={{width: 50, height: 50}} onPress={() => {
+                            this.getActivities();
+                        }}>
+                        <Icon name="refresh" size={20} color="#ffffff" />
                         </RkButton>
                     </View>
                 </View>
