@@ -7,6 +7,7 @@ import { BasicSampling } from './objects/BasicSampling';
 import { SamplingType } from './objects/SamplingType';
 import { Observation } from './objects/Observation';
 import { SamplingId } from './objects/SamplingId';
+import { Comments } from './objects/Comments';
 import { RenderBitComponent } from './customComponents/renderBit.component';
 
 
@@ -43,7 +44,7 @@ export class AnalyzeComponent implements OnInit {
         sampled: '',
     };
 
-    settings = {
+    settingsObserv = {
         actions: {
             add: false,
         },
@@ -96,13 +97,50 @@ export class AnalyzeComponent implements OnInit {
         },
     };
 
-    source: LocalDataSource = new LocalDataSource();
+
+    settingsComment = {
+      actions: {
+          add: false,
+      },
+      edit: {
+          editButtonContent: '<i class="ion-edit"></i>',
+          saveButtonContent: '<i class="ion-checkmark"></i>',
+          cancelButtonContent: '<i class="ion-close"></i>',
+          confirmSave: true,
+      },
+      delete: {
+          deleteButtonContent: '<i class="ion-trash-a"></i>',
+          confirmDelete: true,
+      },
+      columns: {
+          date: {
+              title: 'Fecha',
+              type: 'string',
+          },
+          comment: {
+            title: 'Comentario',
+            type: 'string',
+          },
+
+          username: {
+              title: 'Autor',
+              type: 'string',
+          },
+        },
+    };
+
+    sourceObserv: LocalDataSource = new LocalDataSource();
+    sourceComment: LocalDataSource = new LocalDataSource();
+
 
     constructor(public toastr: ToastsManager, vcr: ViewContainerRef,private _analyzeService: AnalyzeService) {
 
         this._analyzeService.getData().then((data) => {
-            this.source.load(data);
+            this.sourceObserv.load(data);
       });
+      this._analyzeService.getData().then((data) => {
+          this.sourceComment.load(data);
+    });
     //    this.toastr.setRootViewContainerRef(vcr);
 
     }
@@ -124,6 +162,7 @@ export class AnalyzeComponent implements OnInit {
             console.debug(`selectedSmapling: ${JSON.stringify(this.selectedSampling)}`);
             console.debug(JSON.stringify(`segfsdsfdgfsdng: ${JSON.stringify(this.selectedSampling.idSampling)}`));
             this.loadObservations(this.selectedSampling.idSampling);
+            this.loadComments(this.selectedSampling.idSampling);
         })
         .catch( this.handleError );
     }
@@ -133,11 +172,20 @@ export class AnalyzeComponent implements OnInit {
      console.debug(`Idsampling: ${JSON.stringify(samplingId)}`);
      console.debug('kikiikikik');
      this._analyzeService.getObservation(samplingId).then((dataz) => {
-        this.source.load(dataz);
+        this.sourceObserv.load(dataz);
     }).catch(err => console.debug('Error al cargar las observaciones.'));
-
   }
 
+
+  loadComments(idSampling): void {
+   const samplingId = this.selectedSampling.idSampling;
+   console.debug(`IdsamplingComment: ${JSON.stringify(samplingId)}`);
+   console.debug('kikiikikik');
+   this._analyzeService.getComments(samplingId).then((data) => {
+     this.sourceComment.load(data);
+  }).catch(err => console.debug('Error al cargar los comentarios.'));
+
+}
     //carga los nombres del muestreo en el picker superior
     loadSamplingInfo(idSampling): void {
         const updatedSampling = this.getSamplingById(idSampling);
@@ -146,6 +194,7 @@ export class AnalyzeComponent implements OnInit {
             this.selectedSampling = updatedSampling;
             console.debug('aaaaaaaaaaa');
             this.loadObservations(this.selectedSampling.idSampling);
+            this.loadComments(this.selectedSampling.idSampling);
       // Actualizar datos de observaciones
         } catch (e) {
             console.debug('Error actualizando muestreo seleccionado.');

@@ -33,9 +33,9 @@ INSERT INTO sampling.Sampling(description,live,name,SamplingType_idSamplingType,
     ('Agregado especialmente para Miranda', 1, 'NuNombre',1,15,20,3);
 
 -- Inserción Comment
-INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification)VALUES
-    ('Feriado Anexión de Guanacaste','2015-07-25',1,1),
-    ('Feriado 02 de Agosto','2016-08-02',3,0);
+INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification,Sampling_idSampling)VALUES
+    ('Feriado Anexión de Guanacaste','2015-07-25',1,1,1),
+    ('Feriado 02 de Agosto','2016-08-02',3,0,2);
 
 -- -- Insercion en catalogo trail
 -- INSERT INTO sampling.Trail(hour, Sampling_idSampling)VALUES

@@ -1188,35 +1188,30 @@ END $$
 DELIMITER ;
 SHOW WARNINGS;
 
-
 -- -----------------------------------------------------
--- procedure pDeleteObservation
+-- procedure getComments
 -- -----------------------------------------------------
 
 USE `sampling`;
-DROP procedure IF EXISTS `pDeleteObservation`;
+DROP procedure IF EXISTS `getComments`;
 
 
 DELIMITER $$
 USE `sampling` $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pDeleteObservation`(pIdSampling int, pDate datetime, pUsername varchar(45), pCedula varchar(12))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getComments`(pIdSampling int)
 BEGIN
-
-   DECLARE id INT;
- 
-   SELECT id = (SELECT idObservation FROM Observation o
-			inner join Trail t
-			on t.idTrail = o.Trail_idTrail
-			inner join Sampling s
-			on t.Sampling_idSampling = s.idSampling
-			inner join User u
-			on u.idUser = o.User_idUser
-			where s.idSampling = pIdSampling and o.date = pDate and u.name = pUsername and u.cedula = pCedula);
-            
-            DELETE FROM Observation b WHERE idObservation = id;
+    select c.date, c.comment, u.name as username
+    from Comment c
+    inner join User u
+    on c.User_idUser = u.idUser
+    where c.Sampling_idSampling = pIdSampling;
 END $$
 DELIMITER ;
 SHOW WARNINGS;
+
+
+
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

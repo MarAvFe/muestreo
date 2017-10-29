@@ -11,6 +11,7 @@ import { SamplingType } from './objects/SamplingType';
 import { Observation } from './objects/Observation';
 import { SamplingId } from './objects/SamplingId';
 import { Feedback } from './objects/Feedback';
+import { Comments } from './objects/Comments';
 import { ObservationID } from './objects/ObservationID';
 
 @Injectable()
@@ -97,6 +98,17 @@ export class AnalyzeService {
         .then(response => response.json().data[0] as SamplingId[])
         .catch(this.handleError);
     }
+
+     //lista los comentario pertenecientes a un muestreo
+     getComments(data): Promise<Comments[]> {
+         const body = this.toQueryString( { pIdSampling: data });
+        console.debug(JSON.stringify('body comment'));
+         console.debug(JSON.stringify(body));
+         return this.http.post('http://localhost:2828/getComments', body, this.options )
+         .toPromise()
+         .then(response => response.json().data[0] as Comments[])
+         .catch(this.handleError);
+     }
 
     //lista las observaciones pertenecientes a un muestreo
     getObservation(data): Promise<Observation[]> {
