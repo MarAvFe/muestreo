@@ -269,7 +269,8 @@ export class MySamplingsComponent implements OnInit {
 
         this.service.editSamplingDetails(params).then(res => {
           if (res.error === 'none') {
-              console.debug('exito');
+              console.debug('éxito');
+                  this.toastr.success('Edición exitosa.');
               this.service.getMySamplings(this.cedula)
               .then(data => {
                   this.sampName = data;

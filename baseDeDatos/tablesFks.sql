@@ -305,6 +305,7 @@ SHOW WARNINGS;
 DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `createBasicSampling`(
+  in pCedula int(11),
 	in pDescription varchar(1000),
 	in pName varchar(255),
 	in pLive bit,
@@ -321,8 +322,16 @@ BEGIN
     where name = pSampleProfileName and description = pSampleProfileDescription
     limit 1;
 
+	select idUser into @idUser
+    from User
+    where cedula = pCedula
+    limit 1;
+
 	INSERT INTO `sampling`.`Sampling`(`description`,`live`,`name`,`SamplingType_idSamplingType`,`SampledProfile_idSampledProfile`)VALUES
     (pDescription, pLive, pName, pSamplingType_idSamplingType, @pNew);
+
+  INSERT INTO `sampling`.`Sampling_has_User`(`Sampling_idSampling`,`User_idUser`,`isAdmin`)VALUES
+    (@pNew, @idUser, 1);
 END$$
 
 DELIMITER ;

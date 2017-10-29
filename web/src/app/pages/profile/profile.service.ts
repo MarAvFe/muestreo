@@ -28,7 +28,8 @@ export class ProfileService {
         return Promise.reject(error.message || error);
     }
 
-    createBasicSampling(data): Promise<Feedback> {
+    createBasicSampling(cedula, data): Promise<Feedback> {
+        data.pCedula = cedula;
         const body = this.toQueryString(data);
         return this.http.post('http://localhost:2828/createBasicSampling', body, this.options )
         .toPromise()

@@ -33,7 +33,8 @@ export class CreateSamplingModal implements OnInit {
         onSubmit() { this.submitted = true; }
 
         createSampling() {
-            this._profileService.createBasicSampling(this.model)
+          const cedula = localStorage.getItem('cedula');
+            this._profileService.createBasicSampling(cedula, this.model)
             .then(res => {
                 if (res.error === 'none') {
                     this.toastr.success('Se ha agregado el muestreo satisfactoriamente.');
