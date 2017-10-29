@@ -19,6 +19,7 @@ INSERT INTO sampling.Activity(name,description,type)VALUES
     ('WC','El trabajador se encuentra ausento por utilización del servicio sanitario.',0),
     ('Caminando','El trabajador se desplaza de un lado a otro.',2);
 
+
 -- Inserción SampledProfile
 INSERT INTO `sampling`.`SampledProfile`(`name`,`description`)VALUES
     ('Cuadrilla','Contratados bajo estándares de calidad elevados.'),
@@ -48,6 +49,12 @@ INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification)VALUES
 --     ('2015-05-21',0,0,0,1,3,1),
 --     ('2015-10-09',1,0,0,2,1,3),
 --     ('2016-07-15',0,0,0,3,2,3);
+
+INSERT INTO Trail(hour, Sampling_idSampling, User_idUser)
+VALUES(CURDATE(),1,1);
+
+insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
+VALUES(NOW(), 1, 1, 2);
 
 -- Inserción Sampling_has_User
 INSERT INTO sampling.Sampling_has_User(Sampling_idSampling, User_idUser, isAdmin)VALUES

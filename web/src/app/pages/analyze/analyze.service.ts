@@ -8,6 +8,10 @@ import { BaThemeConfigProvider } from '../../theme';
 import { Titles } from './Titles';
 import { BasicSampling } from './objects/BasicSampling';
 import { SamplingType } from './objects/SamplingType';
+import { Observation } from './objects/Observation';
+import { SamplingId } from './objects/SamplingId';
+import { Feedback } from './objects/Feedback';
+import { ObservationID } from './objects/ObservationID';
 
 @Injectable()
 export class AnalyzeService {
@@ -73,19 +77,60 @@ export class AnalyzeService {
                 return value;
             },
         },
-        observationsData: [
-            {
-                date: '3-oct-2017',
-                colaborator: 'Marco Tulio',
-                type: 'Improductiva',
-                activity: 'Comiendo',
-            },
-        ],
+
     };
 
     constructor(private _baConfig: BaThemeConfigProvider, private http: Http) {
-        this.options = { headers : this.heads, withCredentials : true };
+      this.heads = new Headers();
+      this.heads.append('Content-Type', 'application/x-www-form-urlencoded');
+      this.heads.append('Access-Control-Allow-Origin', '*');
+      this.heads.append('Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
+      this.options = { headers : this.heads, withCredentials : true };
     }
+
+    // devuelve el id del muestreo seleccionado
+    getSamplingId(data): Promise<SamplingId[]> {
+        const body = this.toQueryString({ pName : data });
+        return this.http.post('http://localhost:2828/getSamplingId', body, this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as SamplingId[])
+        .catch(this.handleError);
+    }
+
+    //lista las observaciones pertenecientes a un muestreo
+    getObservation(data): Promise<Observation[]> {
+        const body = this.toQueryString( { pIdSampling: data });
+        console.debug(JSON.stringify(body));
+        return this.http.post('http://localhost:2828/getObservations', body, this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as Observation[])
+        .catch(this.handleError);
+    }
+    //edita una observacion
+    editObservation(data): Promise<Feedback> {
+        const body = this.toQueryString(data);
+        console.debug(JSON.stringify(body));
+        return this.http.post('http://localhost:2828/pUpdateObservation', body, this.options )
+        .toPromise()
+        .then(response => response.json());
+    }
+    //elimina una observacion
+    deleteObservation(data): Promise<Feedback> {
+        const body = this.toQueryString(data);
+        return this.http.post('http://localhost:2828/pDeleteObservation', body, this.options )
+        .toPromise()
+        .then(response => response.json());
+    }
+
+    getObservationId(data): Promise<ObservationID[]> {
+        const body = this.toQueryString(data);
+        return this.http.post('http://localhost:2828/getObservationId', body, this.options )
+        .toPromise()
+        .then(response => response.json().data as ObservationID[])
+        .catch(this.handleError);
+    }
+
 
     getMySamplings(cedula): Promise<BasicSampling[]> {
         const body = this.toQueryString({ pIdUser: cedula });
@@ -109,7 +154,7 @@ export class AnalyzeService {
     getData(): Promise<any> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(this._data.observationsData);
+            //    resolve(this._data.observationsData);
             }, 2000);
         });
     }
@@ -142,9 +187,30 @@ export class AnalyzeService {
         ];
     }
 
+    createComposeEditObservation(info, bodyParams): Object {
+      return {pIdSampling: info,
+             pDate: bodyParams.date,
+             pUsername: bodyParams.username,
+             pCedula: bodyParams.cedula,
+             pActivityType: bodyParams.type,
+             pActivityName: bodyParams.activityname,
+         };
+    }
+
+    createComposeDeleteObservation(info, bodyParams): Object {
+      return {pIdSampling: info,
+             pDate: bodyParams.date,
+             pUsername: bodyParams.username,
+             pCedula: bodyParams.cedula,
+             pActivityType: bodyParams.type,
+             pActivityName: bodyParams.activityname,
+         };
+    }
+
     private toQueryString(jsonBody: Object) {
         // Receives some json and returns it in ws query format:
         // {"name": "nombre","description": "descrip."} -> name=nombre&description=descrip
+        console.debug(jsonBody);
         const keys = Object.keys(jsonBody).map(key => {
             /* If boolean */
             if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
