@@ -48,20 +48,8 @@ export const routes: Routes = [
                 loadChildren: './mySamplings/mySamplings.module#MySamplingsModule',
             },
             {
-                path: 'admin/create',
-                loadChildren: './create/create.module#CreateModule',
-            },
-            {
-                path: 'admin/edit',
+                path: 'admin',
                 loadChildren: './edit/edit.module#EditModule',
-            },
-            {
-                path: 'admin/delete',
-                loadChildren: './delete/delete.module#DeleteModule',
-            },
-            {
-                path: 'admin/consult',
-                loadChildren: './consult/consult.module#ConsultModule',
             },
             {
                 path: 'analyze',

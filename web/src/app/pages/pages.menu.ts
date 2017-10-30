@@ -37,44 +37,27 @@ export const PAGES_MENU = [
                         order: 100,
                     }
                 },
-                children: [
-                    {
-                        path: 'create',
-                        data: {
-                            menu: {
-                                title: 'general.menu.create',
-                                icon: 'ion-plus-circled'
-                            }
-                        }
-                    },
-                    {
-                        path: 'edit',
-                        data: {
-                            menu: {
-                                title: 'general.menu.edit',
-                                icon: 'ion-android-create'
-                            }
-                        }
-                    },
-                    {
-                        path: 'delete',
-                        data: {
-                            menu: {
-                                title: 'general.menu.delete',
-                                icon: 'ion-trash-b'
-                            }
-                        }
-                    },
-                    {
-                        path: 'consult',
-                        data: {
-                            menu: {
-                                title: 'general.menu.consult',
-                                icon: 'ion-ios-eye'
-                            }
-                        }
-                    },
-                ]
+                // children: [
+                //     {
+                //         path: 'edit',
+                //         data: {
+                //             menu: {
+                //                 title: 'general.menu.edit',
+                //                 icon: 'ion-android-create'
+                //             }
+                //         }
+                //     },
+                //
+                //     {
+                //         path: 'consult',
+                //         data: {
+                //             menu: {
+                //                 title: 'general.menu.consult',
+                //                 icon: 'ion-ios-eye'
+                //             }
+                //         }
+                //     },
+                // ]
             },
             {
                 path: 'analyze',
