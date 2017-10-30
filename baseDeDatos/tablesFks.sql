@@ -1143,7 +1143,7 @@ DELIMITER $$
 USE `sampling` $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdateObservation`(pIdSampling int, pDate date, pUsername varchar(45), pCedula varchar(12) , pActivityType int, pActivityName  varchar(45))
 BEGIN
-    	UPDATE Observation o 
+    	UPDATE Observation o
     inner join Trail t
     on t.idTrail = o.Trail_idTrail
     inner join Sampling s
@@ -1174,7 +1174,7 @@ DELIMITER $$
 USE `sampling` $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getObservationId`(pIdSampling int, pDate date)
 BEGIN
-    select o.idObservation 
+    select o.idObservation
     from Observation o inner join Trail t
     on t.idTrail = o.Trail_idTrail
     inner join Sampling s
@@ -1209,10 +1209,45 @@ END $$
 DELIMITER ;
 SHOW WARNINGS;
 
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pDeleteObservation`(pIdSampling int, pcedula varchar(12), pdate datetime)
+BEGIN
 
+set @idObs = (select idObservation
+from Observation o
+inner join Trail t
+on t.idTrail = o.Trail_idTrail
+inner join Sampling s
+on s.idSampling = t.Sampling_idSampling
+inner join User u
+on u.idUser = o.User_idUser
+where s.idSampling = pIdSampling and u.cedula = pcedula and o.date = pdate);
 
+delete from Observation
+where idObservation = @idObs;
 
+END
+DELIMITER ;
+SHOW WARNINGS;
 
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getCollaborationAct`(pIdSampling int)
+BEGIN
+select a.name, count(1) as cant
+from Activity a
+inner join Observation o
+on a.idActivity = o.Activity_idActivity
+inner join Trail t
+on o.Trail_idTrail = t.idTrail
+inner join Sampling s
+on t.Sampling_idSampling = s.idSampling
+where s.idSampling = pIdSampling and a.type = 2
+group by a.name;
+END
+
+DELIMITER ;
+SHOW WARNINGS;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
