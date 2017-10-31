@@ -6,68 +6,72 @@ import { EmailValidator, EqualPasswordsValidator } from '../../theme/validators'
 import { RegisterService } from './register.service';
 
 @Component({
-    selector: 'register',
-    templateUrl: './register.html',
-    styleUrls: ['./register.scss'],
+  selector: 'register',
+  templateUrl: './register.html',
+  styleUrls: ['./register.scss'],
 })
 export class Register {
 
-    form: FormGroup;
-    pName: AbstractControl;
-    pLastname: AbstractControl;
-    pEmail: AbstractControl;
-    passwords: FormGroup;
-    pPwd: AbstractControl;
-    repeatPassword: AbstractControl;
-    pCedula: AbstractControl;
-    pPhone: AbstractControl;
+  form: FormGroup;
+  pName: AbstractControl;
+  pLastname: AbstractControl;
+  pEmail: AbstractControl;
+  passwords: FormGroup;
+  pPwd: AbstractControl;
+  repeatPassword: AbstractControl;
+  pCedula: AbstractControl;
+  pPhone: AbstractControl;
 
-    submitted: boolean = false;
+  submitted: boolean = false;
 
-    constructor(fb: FormBuilder, protected registerService: RegisterService, private router: Router,
-        public toastr: ToastsManager, vcr: ViewContainerRef) {
-            this.toastr.setRootViewContainerRef(vcr);
-            this.form = fb.group({
-                'pName': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-                'pLastname': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-                'pEmail': ['', Validators.compose([Validators.required, EmailValidator.validate])],
-                'passwords': fb.group({
-                    'pPwd': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-                    'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
-                }, { validator: EqualPasswordsValidator.validate('pPwd', 'repeatPassword') }),
-                'pCedula': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
-                'pPhone': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
-            });
+  constructor(fb: FormBuilder, protected registerService: RegisterService, private router: Router,
+    public toastr: ToastsManager, vcr: ViewContainerRef) {
+      this.toastr.setRootViewContainerRef(vcr);
+      this.form = fb.group({
+        'pName': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+        'pLastname': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+        'pEmail': ['', Validators.compose([Validators.required, EmailValidator.validate])],
+        'passwords': fb.group({
+          'pPwd': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+          'repeatPassword': ['', Validators.compose([Validators.required, Validators.minLength(6)])],
+        }, { validator: EqualPasswordsValidator.validate('pPwd', 'repeatPassword') }),
+        'pCedula': ['', Validators.compose([Validators.required, Validators.minLength(4)])],
+        'pPhone': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+      });
 
-            this.pName = this.form.controls['pName'];
-            this.pLastname = this.form.controls['pLastname'];
-            this.pEmail = this.form.controls['pEmail'];
-            this.passwords = <FormGroup> this.form.controls['passwords'];
-            this.pPwd = this.passwords.controls['pPwd'];
-            this.repeatPassword = this.passwords.controls['repeatPassword'];
-            this.pCedula = this.form.controls['pCedula'];
-            this.pPhone = this.form.controls['pPhone'];
-        }
-
-        onSubmit(values: Object): void {
-            this.submitted = true;
-            console.debug(`Values: ${JSON.stringify(values)}`);
-            if (this.form.valid) {
-                this.registerService.registerUser(values)
-                .then(data => {
-                    console.debug('Registro.');
-                    this.toastr.error(`Se ha registrado satisfactoriamente a ${this.pName}.`);
-                    this.router.navigate(['/']);
-                })
-                .catch(err => {
-                    if (err.status === 401) {
-                        this.toastr.error('Los datos ingresados no coinciden con ningún usuario o son incorrectos.');
-                        console.debug('Fallo.');
-                    } else {
-                        this.toastr.error('Ha ocurrido un error de conexión. Por favor intente nuevamente.');
-                        console.debug('Fallo.');
-                    }
-                });
-            }
-        }
+      this.pName = this.form.controls['pName'];
+      this.pLastname = this.form.controls['pLastname'];
+      this.pEmail = this.form.controls['pEmail'];
+      this.passwords = <FormGroup> this.form.controls['passwords'];
+      this.pPwd = this.passwords.controls['pPwd'];
+      this.repeatPassword = this.passwords.controls['repeatPassword'];
+      this.pCedula = this.form.controls['pCedula'];
+      this.pPhone = this.form.controls['pPhone'];
     }
+
+    onSubmit(values: Object): void {
+      this.submitted = true;
+      console.debug(`Values: ${JSON.stringify(values)}`);
+      if (this.form.valid) {
+        this.registerService.registerUser(values)
+        .then(data => {
+          console.debug('Registro.');
+          this.toastr.onClickToast()
+          .subscribe( toast => {
+                this.router.navigate(['/']);
+          });
+          this.toastr.success(`Se ha registrado satisfactoriamente a ${JSON.stringify(this.pName)}.`,
+          'Éxito', { dismiss: 'click' });
+        })
+        .catch(err => {
+          if (err.status === 401) {
+            this.toastr.error('No tiene autorización para ejecutar esta acción.');
+            console.debug('(401) Fallo.');
+          } else {
+            this.toastr.error('Ha ocurrido un error de conexión. Por favor intente nuevamente.');
+            console.debug(`Fallo: ${err}`);
+          }
+        });
+      }
+    }
+  }

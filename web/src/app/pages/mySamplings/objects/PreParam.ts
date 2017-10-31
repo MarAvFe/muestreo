@@ -1,5 +1,5 @@
 export class PreParam {
-    p_preliminar: number ;
-    q_preliminar: number ;
+    error_preliminar: number ;
+    confianza: number ;
     n_preliminar: number;
   }
