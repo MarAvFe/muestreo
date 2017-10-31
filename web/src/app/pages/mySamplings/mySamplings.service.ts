@@ -193,7 +193,8 @@ export class MySamplingsService {
             pId_Sampling: info.pId_Sampling,
             pDescription: info.pDescription,
             pIdSamplingType: info.pIdSamplingType,
-            perror_preliminar: bodyParams.error_preliminar,
+            pp_preliminar: bodyParams.p_preliminar,
+            pq_preliminar: bodyParams.q_preliminar,
             pn_preliminar: bodyParams.n_preliminar,
         };
     }

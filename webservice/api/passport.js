@@ -54,6 +54,7 @@ module.exports = function() {
                 if (err)
                 return done(err);
                 if (rows.length) {
+                    console.log("rows: " + JSON.stringify(rows));
                     return done(null, false);
                 } else {
                     // if there is no user with that username
@@ -75,13 +76,8 @@ module.exports = function() {
                         newUser.pPhone,
                         newUser.pPwd,
                     ],function(err, rows) {
-                      if (!err) {
-                        console.log('nUs'+ JSON.stringify(rows));
                         newUser.id = rows.insertId;
                         return done(null, newUser);
-                      }
-                      console.log("ERR: passport.js. " + err);
-                      return done(null, false);
                     });
                 }
             });

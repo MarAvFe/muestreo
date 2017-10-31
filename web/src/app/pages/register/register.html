@@ -37,7 +37,7 @@
 
                 <div class="col-sm-10">
                     <input value="123456" [formControl]="repeatPassword" type="password" class="form-control" id="inputPassword4" placeholder="{{'register.repeat' | translate}}">
-                    <span *ngIf="!passwords.valid && (pPwd.touched || repeatPassword.touched)" class="help-block sub-little-text" translate>{{'register.difPwd'}}</span>
+                    <span *ngIf="!passwords.valid && (pPwd.touched || repeatPassword.touched)" class="help-block sub-little-text">{{'register.difPwd'}}</span>
                 </div>
             </div>
 

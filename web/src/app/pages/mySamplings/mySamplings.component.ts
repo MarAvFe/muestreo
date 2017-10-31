@@ -11,7 +11,6 @@ import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
 import { SampledObjInfo } from './objects/SampledObjInfo';
 import { Colaborator } from './objects/Colaborator';
 import { SamplingType } from './objects/SamplingType';
-import { PreParam } from './objects/PreParam';
 
 @Component({
     selector: 'mySamplings',
@@ -87,14 +86,15 @@ export class MySamplingsComponent implements OnInit {
                 title: 'n',
                 type: 'number',
             },
-            confianza: {
-                title: 'Confianza',
+            p_preliminar: {
+                title: 'p',
                 type: 'number',
                 editable: false,
             },
-            error_preliminar: {
-                title: 'Error',
+            q_preliminar: {
+                title: 'q',
                 type: 'number',
+                editable: false,
             },
         },
     };
@@ -160,8 +160,7 @@ export class MySamplingsComponent implements OnInit {
 
     onDeleteConfirm(event) {
         console.debug(`eventData: ${JSON.stringify(event.data)}`);
-        const choice = window.prompt(`Escriba 'admin' en el cuadro para asignar a ${event.data.name}
-        como administrador.`);
+        const choice = window.prompt(`Escriba 'admin' en el cuadro para asignar a ${event.data.name} como administrador.`);
         if (choice !== null) {
             let params;
             if (choice === 'admin') {
@@ -231,16 +230,7 @@ export class MySamplingsComponent implements OnInit {
 
             // se cargan parámetros preliminares
             this.service.getPreParam(this.sampleInfo).then((dataz) => {
-                const processed: PreParam[] = [];
-                for (const c of dataz) {
-                  const tmp: any = {
-                    n_preliminar : c.n_preliminar,
-                    error_preliminar : c.error_preliminar,
-                    confianza : 100 - c.error_preliminar,
-                  };
-                  processed.push(tmp as PreParam);
-                }
-                this.sourcePreParam.load(processed);
+                this.sourcePreParam.load(dataz);
             }).catch(err => console.debug('Error al cargar los datos preliminares.'));
 
             // se cargan parámetros definitivos
@@ -288,6 +278,7 @@ export class MySamplingsComponent implements OnInit {
               .catch( this.handleError );
           }else {
               this.toastr.error('Por favor, compruebe los parámetros.');
+              console.debug(`EditSamplingDetails ${JSON.stringify(res)}`);
           }
         }).catch(this.handleError);
   }
@@ -299,7 +290,7 @@ export class MySamplingsComponent implements OnInit {
                 event.confirm.resolve();
             }else {
                 this.toastr.error('Por favor, compruebe los parámetros.');
-                console.debug(`editConfirmPreParam ${JSON.stringify(res)}`);
+                console.debug('editConfirmPreParam' + JSON.stringify(res));
                 event.confirm.reject();
             }
         }).catch(this.handleError);
