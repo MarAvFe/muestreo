@@ -1,10 +1,3 @@
--- Inserción en catálogo de SamplingType
-INSERT INTO sampling.SamplingType(name,initials)VALUES
-    ('Crew Balance','CB'),
-    ('5 Minute Rating','FMR'),
-    ('Muestreo del Trabajo','MT'),
-    ('Work Sampling','WS');
-
 -- Inserción en catálogo User
 INSERT INTO sampling.User(cedula,name,lastname,email,phone,pwd)VALUES
     ('106720123','Michael','Mena','mikemena@gmail.com','84572163','mikem25'),

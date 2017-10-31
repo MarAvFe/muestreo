@@ -76,8 +76,13 @@ module.exports = function() {
                         newUser.pPhone,
                         newUser.pPwd,
                     ],function(err, rows) {
+                      if (!err) {
+                        console.log('nUs'+ JSON.stringify(rows));
                         newUser.id = rows.insertId;
                         return done(null, newUser);
+                      }
+                      console.log("ERR: passport.js. " + err);
+                      return done(null, false);
                     });
                 }
             });

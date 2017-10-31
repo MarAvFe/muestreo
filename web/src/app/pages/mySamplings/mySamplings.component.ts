@@ -11,6 +11,7 @@ import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
 import { SampledObjInfo } from './objects/SampledObjInfo';
 import { Colaborator } from './objects/Colaborator';
 import { SamplingType } from './objects/SamplingType';
+import { PreParam } from './objects/PreParam';
 
 @Component({
     selector: 'mySamplings',
@@ -86,13 +87,13 @@ export class MySamplingsComponent implements OnInit {
                 title: 'n',
                 type: 'number',
             },
-            p_preliminar: {
-                title: 'p',
-                type: 'number',
-                editable: false,
+            confianza: {
+              title: 'Confianza',
+              type: 'number',
+              editable: false,
             },
-            q_preliminar: {
-                title: 'q',
+            error_preliminar: {
+                title: 'Error',
                 type: 'number',
                 editable: false,
             },
@@ -230,7 +231,16 @@ export class MySamplingsComponent implements OnInit {
 
             // se cargan parámetros preliminares
             this.service.getPreParam(this.sampleInfo).then((dataz) => {
-                this.sourcePreParam.load(dataz);
+              const processed: PreParam[] = [];
+              for (const c of dataz) {
+                const tmp: any = {
+                  n_preliminar : c.n_preliminar,
+                  error_preliminar : c.error_preliminar,
+                  confianza : 100 - c.error_preliminar,
+                };
+                processed.push(tmp as PreParam);
+              }
+              this.sourcePreParam.load(processed);
             }).catch(err => console.debug('Error al cargar los datos preliminares.'));
 
             // se cargan parámetros definitivos

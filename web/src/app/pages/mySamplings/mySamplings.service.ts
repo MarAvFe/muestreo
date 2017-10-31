@@ -177,8 +177,6 @@ export class MySamplingsService {
         return {pId_Sampling: info.pId_Sampling,
             pDescription: info.pDescription,
             pIdSamplingType: info.pIdSamplingType,
-            pp_definitive: bodyParams.p_definitive,
-            pq_definitive: bodyParams.q_definitive,
             perror_definitive: bodyParams.error_definitive,
             pn_definitive: bodyParams.n_definitive,
             pz_definitive: bodyParams.z_definitive,
