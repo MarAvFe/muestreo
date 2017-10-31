@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { AnalyzeService } from './analyze.service';
 import { LocalDataSource } from 'ng2-smart-table';
-
+import { ToastsManager, Toast } from 'ng2-toastr';
 import { Titles } from './Titles';
 import { BasicSampling } from './objects/BasicSampling';
 import { SamplingType } from './objects/SamplingType';
+import { Observation } from './objects/Observation';
+import { SamplingId } from './objects/SamplingId';
+import { Comments } from './objects/Comments';
+import { RenderBitComponent } from './customComponents/renderBit.component';
+
 
 @Component({
     selector: 'analyze',
     templateUrl: './analyze.html',
+    styleUrls: ['./smartTables.scss']
 })
 export class AnalyzeComponent implements OnInit {
 
@@ -22,6 +27,11 @@ export class AnalyzeComponent implements OnInit {
     }
 
     query: string = '';
+    activityTypes = [
+        { value: 0, title: 'Productiva' },
+        { value: 1, title: 'Improductiva' },
+        { value: 2, title: 'Colaborativa' },
+    ];
     cedula: string = '';
     samplings: any;
     selectedSampling: any = {
@@ -34,7 +44,7 @@ export class AnalyzeComponent implements OnInit {
         sampled: '',
     };
 
-    settings = {
+    settingsObserv = {
         actions: {
             add: false,
         },
@@ -42,6 +52,7 @@ export class AnalyzeComponent implements OnInit {
             editButtonContent: '<i class="ion-edit"></i>',
             saveButtonContent: '<i class="ion-checkmark"></i>',
             cancelButtonContent: '<i class="ion-close"></i>',
+            confirmSave: true,
         },
         delete: {
             deleteButtonContent: '<i class="ion-trash-a"></i>',
@@ -53,27 +64,85 @@ export class AnalyzeComponent implements OnInit {
                 type: 'string',
                 width: '20px',
             },
-            colaborator: {
+            username: {
                 title: 'Colaborador',
                 type: 'string',
             },
+            cedula:{
+              title: 'Cédula',
+              type: 'string',
+            },
             type: {
                 title: 'Tipo',
-                type: 'string',
+                type: 'custom',
+                filter: {
+                    type: 'list',
+                    config: {
+                        selectText: 'Todos',
+                        list: this.activityTypes,
+                    },
+                },
+                renderComponent: RenderBitComponent,
+                editor: {
+                    type: 'list',
+                    config: {
+                        list: this.activityTypes,
+                    },
+                },
             },
-            activity: {
+            activityname: {
                 title: 'Actividad',
                 type: 'string',
             },
         },
     };
 
-    source: LocalDataSource = new LocalDataSource();
 
-    constructor(private _analyzeService: AnalyzeService) {
+    settingsComment = {
+      actions: {
+          add: false,
+      },
+      edit: {
+          editButtonContent: '<i class="ion-edit"></i>',
+          saveButtonContent: '<i class="ion-checkmark"></i>',
+          cancelButtonContent: '<i class="ion-close"></i>',
+          confirmSave: true,
+      },
+      delete: {
+          deleteButtonContent: '<i class="ion-trash-a"></i>',
+          confirmDelete: true,
+      },
+      columns: {
+          date: {
+              title: 'Fecha',
+              type: 'string',
+          },
+          comment: {
+            title: 'Comentario',
+            type: 'string',
+          },
+
+          username: {
+              title: 'Autor',
+              type: 'string',
+          },
+        },
+    };
+
+    sourceObserv: LocalDataSource = new LocalDataSource();
+    sourceComment: LocalDataSource = new LocalDataSource();
+
+
+    constructor(public toastr: ToastsManager, vcr: ViewContainerRef,private _analyzeService: AnalyzeService) {
+
         this._analyzeService.getData().then((data) => {
-            this.source.load(data);
-        });
+            this.sourceObserv.load(data);
+      });
+      this._analyzeService.getData().then((data) => {
+          this.sourceComment.load(data);
+    });
+    //    this.toastr.setRootViewContainerRef(vcr);
+
     }
 
     private handleError(error: any): Promise<any> {
@@ -82,25 +151,51 @@ export class AnalyzeComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.cedula = localStorage.getItem('cedula');
         this.data = this._analyzeService.getAll();
         this.getTitles();
-
+        console.debug('perro');
         this._analyzeService.getMySamplings(this.cedula)
         .then(data => {
             this.samplings = data[0];
             this.selectedSampling = this.samplings[0];
             console.debug(`selectedSmapling: ${JSON.stringify(this.selectedSampling)}`);
+            console.debug(JSON.stringify(`segfsdsfdgfsdng: ${JSON.stringify(this.selectedSampling.idSampling)}`));
+            this.loadObservations(this.selectedSampling.idSampling);
+            this.loadComments(this.selectedSampling.idSampling);
         })
         .catch( this.handleError );
     }
 
+    loadObservations(idSampling): void {
+     const samplingId = this.selectedSampling.idSampling;
+     console.debug(`Idsampling: ${JSON.stringify(samplingId)}`);
+     console.debug('kikiikikik');
+     this._analyzeService.getObservation(samplingId).then((dataz) => {
+        this.sourceObserv.load(dataz);
+    }).catch(err => console.debug('Error al cargar las observaciones.'));
+  }
+
+
+  loadComments(idSampling): void {
+   const samplingId = this.selectedSampling.idSampling;
+   console.debug(`IdsamplingComment: ${JSON.stringify(samplingId)}`);
+   console.debug('kikiikikik');
+   this._analyzeService.getComments(samplingId).then((data) => {
+     this.sourceComment.load(data);
+  }).catch(err => console.debug('Error al cargar los comentarios.'));
+
+}
+    //carga los nombres del muestreo en el picker superior
     loadSamplingInfo(idSampling): void {
         const updatedSampling = this.getSamplingById(idSampling);
         try {
             const modality = updatedSampling.modality.data[0]; // Verifica que la estructura retornada sea correcta
             this.selectedSampling = updatedSampling;
-
-            // Actualizar datos de observaciones
+            console.debug('aaaaaaaaaaa');
+            this.loadObservations(this.selectedSampling.idSampling);
+            this.loadComments(this.selectedSampling.idSampling);
+      // Actualizar datos de observaciones
         } catch (e) {
             console.debug('Error actualizando muestreo seleccionado.');
         }
@@ -119,11 +214,33 @@ export class AnalyzeComponent implements OnInit {
         return this._analyzeService.getResponsive(padding, offset);
     }
 
+    onEditConfirm(event): void {
+        console.debug('entro a editar');
+        const idSamp = this.selectedSampling.idSampling;
+        console.debug(this.selectedSampling.idSampling);
+        this._analyzeService.editObservation(this._analyzeService.createComposeEditObservation(idSamp, event.newData))
+        .then(res => {
+            if (res.error === 'none') {
+                event.confirm.resolve();
+            }else {
+                this.toastr.error('Por favor, compruebe los parámetros.');
+                console.debug(`: ${JSON.stringify(res)}`);
+                event.confirm.reject();
+            }
+        }).catch(this.handleError);
+    }
+
     onDeleteConfirm(event): void {
-        if (window.confirm('Are you sure you want to delete?')) {
-            event.confirm.resolve();
-        } else {
-            event.confirm.reject();
-        }
+      const idSamp = this.selectedSampling.idSampling;
+      this._analyzeService.deleteObservation(this._analyzeService.createComposeDeleteObservation(idSamp, event.newData))
+      .then(res => {
+          if (res.error === 'none') {
+              event.confirm.resolve();
+          }else {
+              this.toastr.error('Por favor, compruebe los parámetros.');
+              console.debug(`: ${JSON.stringify(res)}`);
+              event.confirm.reject();
+          }
+      }).catch(this.handleError);
     }
 }

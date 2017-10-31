@@ -31,12 +31,15 @@ CREATE TABLE IF NOT EXISTS `sampling`.`Activity` (
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(255) NOT NULL,
   `type` TINYINT(4) NOT NULL,
+  `ActivityType_idActivityType` INT(11) ,
   PRIMARY KEY (`idActivity`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8;
 
 SHOW WARNINGS;
+
+
 
 -- -----------------------------------------------------
 -- Table `sampling`.`User`
@@ -1109,8 +1112,151 @@ END $$
 DELIMITER ;
 SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- procedure pGetObservations
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `getObservations`;
 
 
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getObservations`(pIdSampling int)
+
+BEGIN
+    select o.date, u.name as username, u.cedula, a.type, a.name as activityname
+    from Sampling s inner join Trail t
+    on s.idSampling = t.Sampling_idSampling
+    inner join Observation o
+    on t.idTrail = o.Trail_idTrail
+    inner join User u
+    on u.idUser = o.User_idUser
+    inner join Activity a
+    on a.idActivity = o.Activity_idActivity
+    where s.idSampling = pIdSampling;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+
+-- -----------------------------------------------------
+-- procedure pUpdateObservation
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `pUpdateObservation`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdateObservation`(pIdSampling int, pDate date, pUsername varchar(45), pCedula varchar(12) , pActivityType int, pActivityName  varchar(45))
+BEGIN
+    	UPDATE Observation o
+    inner join Trail t
+    on t.idTrail = o.Trail_idTrail
+    inner join Sampling s
+    on t.Sampling_idSampling = s.idSampling
+    inner join User u
+    on u.idUser = o.User_idUser
+    inner join Activity a
+    on a.idActivity = o.Activity_idActivity
+    SET o.date = pDate,
+    u.name = pUsername,
+    u.cedula = pCedula,
+    a.type = pActivityType,
+    a.name = pActivityName
+    where s.idSampling = pIdSampling;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getObservationId
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `getObservationId`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getObservationId`(pIdSampling int, pDate date)
+BEGIN
+    select o.idObservation
+    from Observation o inner join Trail t
+    on t.idTrail = o.Trail_idTrail
+    inner join Sampling s
+    on t.Sampling_idSampling = s.idSampling
+    inner join User u
+    on u.idUser = o.User_idUser
+    inner join Activity a
+    on a.idActivity = o.Activity_idActivity
+    where s.idSampling = pIdSampling and o.Date = pDate;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure getComments
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `getComments`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getComments`(pIdSampling int)
+BEGIN
+    select c.date, c.comment, u.name as username
+    from Comment c
+    inner join User u
+    on c.User_idUser = u.idUser
+    where c.Sampling_idSampling = pIdSampling;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pDeleteObservation`(pIdSampling int, pcedula varchar(12), pdate datetime)
+BEGIN
+
+set @idObs = (select idObservation
+from Observation o
+inner join Trail t
+on t.idTrail = o.Trail_idTrail
+inner join Sampling s
+on s.idSampling = t.Sampling_idSampling
+inner join User u
+on u.idUser = o.User_idUser
+where s.idSampling = pIdSampling and u.cedula = pcedula and o.date = pdate);
+
+delete from Observation
+where idObservation = @idObs;
+
+END
+DELIMITER ;
+SHOW WARNINGS;
+
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getCollaborationAct`(pIdSampling int)
+BEGIN
+select a.name, count(1) as cant
+from Activity a
+inner join Observation o
+on a.idActivity = o.Activity_idActivity
+inner join Trail t
+on o.Trail_idTrail = t.idTrail
+inner join Sampling s
+on t.Sampling_idSampling = s.idSampling
+where s.idSampling = pIdSampling and a.type = 2
+group by a.name;
+END
+
+DELIMITER ;
+SHOW WARNINGS;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

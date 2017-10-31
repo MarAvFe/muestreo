@@ -29,9 +29,20 @@
         </div>
         <div class="col-md-12 ">
             <ba-card translate cardTitle="{{'analyze.observations'}}" baCardClass="with-scroll">
-            <ng2-smart-table [settings]="settings"
-                [source]="source"
+            <ng2-smart-table [settings]="settingsObserv"
+                [source]="sourceObserv"
+                (editConfirm) = "onEditConfirm($event)"
                 (deleteConfirm)="onDeleteConfirm($event)">
+            </ng2-smart-table>
+        </ba-card>
+        </div>
+
+        <div class="col-md-12 ">
+            <ba-card cardTitle="Comentarios"  baCardClass="with-scroll">
+            <ng2-smart-table [settings]="settingsComment"
+                [source]="sourceComment"
+                (editConfirm) = "onEditConfirmReport($event)"
+                (deleteConfirm)="onDeleteConfirmReport($event)">
             </ng2-smart-table>
         </ba-card>
         </div>
