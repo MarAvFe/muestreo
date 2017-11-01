@@ -1,5 +1,5 @@
 const Network = {
-    wsIp: '192.168.1.9',
+    wsIp: '172.20.10.6',
     wsPort: '2828',
 }
 export default Network;

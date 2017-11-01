@@ -271,6 +271,7 @@ export class AnalyzeComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.cedula = localStorage.getItem('cedula');
         this.data = this._analyzeService.getAll();
         this.getTitles();
@@ -280,6 +281,8 @@ export class AnalyzeComponent implements OnInit {
             this.selectedSampling = this.samplings[0];
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
+            localStorage.setItem('idSampling', this.selectedSampling.idSampling);
+
         })
         .catch( this.handleError );
     }
@@ -333,6 +336,8 @@ export class AnalyzeComponent implements OnInit {
             this.selectedSampling = updatedSampling;
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
+
+            localStorage.setItem('idSampling', this.selectedSampling.idSampling);
       // Actualizar datos de observaciones
         } catch (e) {
             console.debug(`Error actualizando muestreo seleccionado: ${e} `);
@@ -369,9 +374,9 @@ export class AnalyzeComponent implements OnInit {
 
     onDeleteConfirm(event): void {
       const idSamp = this.selectedSampling.idSampling;
-      console.debug('Entre a borrar');
-      console.debug(idSamp);
-      this._analyzeService.deleteObservation(this._analyzeService.createComposeDeleteObservation(idSamp, event.data))
+
+      this._analyzeService.deleteObservation(this._analyzeService.createComposeDeleteObservation(idSamp, '301480674',
+      '2017-10-30'))
       .then(res => {
           if (res.error === 'none') {
               event.confirm.resolve();
