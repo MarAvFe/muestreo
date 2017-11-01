@@ -130,6 +130,8 @@ export class AnalyzeService {
     //elimina una observacion
     deleteObservation(data): Promise<Feedback> {
         const body = this.toQueryString(data);
+              console.debug(JSON.stringify('eliminadno body'));
+              console.debug(JSON.stringify(body));
         return this.http.post('http://localhost:2828/pDeleteObservation', body, this.options )
         .toPromise()
         .then(response => response.json());
@@ -209,19 +211,17 @@ export class AnalyzeService {
          };
     }
 
-    createComposeDeleteObservation(info, bodyParams): Object {
+    createComposeDeleteObservation(info, bodyParams, bodyParams1): Object {
       return {pIdSampling: info,
-             pDate: bodyParams.date,
-             pUsername: bodyParams.username,
-             pCedula: bodyParams.cedula,
-             pActivityType: bodyParams.type,
-             pActivityName: bodyParams.activityname,
+             pcedula: bodyParams,
+             pdate: bodyParams1,
          };
     }
 
     private toQueryString(jsonBody: Object) {
         // Receives some json and returns it in ws query format:
         // {"name": "nombre","description": "descrip."} -> name=nombre&description=descrip
+          console.debug('hhhhhhhhhhhhhhhhhhhhhhhh');
         console.debug(jsonBody);
         const keys = Object.keys(jsonBody).map(key => {
             /* If boolean */

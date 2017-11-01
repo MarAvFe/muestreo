@@ -143,6 +143,7 @@ export class AnalyzeComponent implements OnInit {
     });
     //    this.toastr.setRootViewContainerRef(vcr);
 
+
     }
 
     private handleError(error: any): Promise<any> {
@@ -151,6 +152,7 @@ export class AnalyzeComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.cedula = localStorage.getItem('cedula');
         this.data = this._analyzeService.getAll();
         this.getTitles();
@@ -161,8 +163,11 @@ export class AnalyzeComponent implements OnInit {
             this.selectedSampling = this.samplings[0];
             console.debug(`selectedSmapling: ${JSON.stringify(this.selectedSampling)}`);
             console.debug(JSON.stringify(`segfsdsfdgfsdng: ${JSON.stringify(this.selectedSampling.idSampling)}`));
+
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
+            localStorage.setItem('idSampling', this.selectedSampling.idSampling);
+
         })
         .catch( this.handleError );
     }
@@ -195,6 +200,8 @@ export class AnalyzeComponent implements OnInit {
             console.debug('aaaaaaaaaaa');
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
+
+            localStorage.setItem('idSampling', this.selectedSampling.idSampling);
       // Actualizar datos de observaciones
         } catch (e) {
             console.debug('Error actualizando muestreo seleccionado.');
@@ -232,7 +239,9 @@ export class AnalyzeComponent implements OnInit {
 
     onDeleteConfirm(event): void {
       const idSamp = this.selectedSampling.idSampling;
-      this._analyzeService.deleteObservation(this._analyzeService.createComposeDeleteObservation(idSamp, event.newData))
+
+      this._analyzeService.deleteObservation(this._analyzeService.createComposeDeleteObservation(idSamp, '301480674',
+      '2017-10-30'))
       .then(res => {
           if (res.error === 'none') {
               event.confirm.resolve();

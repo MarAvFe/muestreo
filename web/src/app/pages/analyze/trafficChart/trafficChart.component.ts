@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { TrafficChartService } from './trafficChart.service';
 import * as Chart from 'chart.js';
+import { ChartActivity } from './Objects/ChartActivity';
 
 @Component({
   selector: 'traffic-chart',
@@ -13,11 +14,24 @@ export class TrafficChart {
 
   doughnutData: {};
   totalActivities;
-
+  resultado: any;
 
   constructor(private trafficChartService: TrafficChartService) {
-    this.doughnutData = trafficChartService.getData().samples;
-    this.totalActivities = trafficChartService.getData().totalActivities;
+    const idSamp = localStorage.getItem('idSampling');
+    console.debug('que pereza');
+    console.debug(idSamp);
+  /*  this.trafficChartService.getData(idSamp).then(data => {
+      this.doughnutData = data.samples;
+      this.totalActivities = data.totalActivities;
+      this._loadDoughnutCharts();
+    })
+    .catch(this.handleError );
+  }*/
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
   }
 
   ngAfterViewInit() {

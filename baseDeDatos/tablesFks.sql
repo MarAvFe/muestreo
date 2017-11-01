@@ -1209,6 +1209,61 @@ END $$
 DELIMITER ;
 SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- procedure getImproductiveAct
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `getImproductiveAct`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getImproductiveAct`(pIdSampling int)
+BEGIN
+    select count(*) as num, act.name
+    from Sampling s inner join Trail t
+    on s.idSampling = t.Sampling_idSampling
+    inner join Observation o
+    on t.idTrail = o.Trail_idTrail
+    inner join Activity act
+    on act.idActivity = o.Activity_idActivity
+    where s.idSampling = pIdSampling and act.type = 1
+    GROUP BY act.name;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
+-- procedure pDeleteObservation
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `pDeleteObservation`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pDeleteObservation`(pIdSampling int, pcedula varchar(12), pdate datetime)
+BEGIN
+
+set @idObs = (select idObservation
+from Observation o
+inner join Trail t
+on t.idTrail = o.Trail_idTrail
+inner join Sampling s 
+on s.idSampling = t.Sampling_idSampling
+inner join User u
+on u.idUser = o.User_idUser
+where s.idSampling = pIdSampling and u.cedula = pcedula and o.date = pdate);
+
+delete from Observation  
+where idObservation = @idObs;
+
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
 
 
 
