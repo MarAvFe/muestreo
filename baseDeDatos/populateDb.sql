@@ -10,10 +10,8 @@ INSERT INTO sampling.Activity(name,description,type)VALUES
     ('Esperando','El trabajador se encuentra esperando por algún recurso.',1),
     ('Comiendo','El trabajador está haciendo uso del tiempo para comer.',0),
     ('WC','El trabajador se encuentra ausento por utilización del servicio sanitario.',0),
-    ('Caminando','El trabajador se desplaza de un lado a otro.',2);
-
-    insert into Activity(name, description, type)
-    values('Sosteniendo escalera', 'El trabajador se encuentra ayudando a un compañero a sostener su escalera', 2)
+    ('Caminando','El trabajador se desplaza de un lado a otro.',2),
+    ('Sosteniendo escalera', 'El trabajador se encuentra ayudando a un compañero a sostener su escalera', 2);
 
 
 
@@ -51,19 +49,12 @@ INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification,Sampling_id
 INSERT INTO Trail(hour, Sampling_idSampling, User_idUser)
 VALUES(CURDATE(),1,1);
 
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(CURDATE(), 1, 1, 2);
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(CURDATE(), 1, 1, 2)
-
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(CURDATE(), 1, 4, 1)
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(CURDATE(), 1, 4, 2)
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(CURDATE(), 1, 5, 2)
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(CURDATE(), 1, 5, 3)
+insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)VALUES
+    (CURDATE(), 1, 1, 2),
+    (CURDATE(), 1, 1, 2),
+    (CURDATE(), 1, 4, 1),
+    (CURDATE(), 1, 4, 2),
+    (CURDATE(), 1, 5, 2);
 
 -- Inserción Sampling_has_User
 INSERT INTO sampling.Sampling_has_User(Sampling_idSampling, User_idUser, isAdmin)VALUES

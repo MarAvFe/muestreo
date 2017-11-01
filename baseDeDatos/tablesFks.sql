@@ -1231,7 +1231,7 @@ where s.idSampling = pIdSampling and u.cedula = pcedula and o.date = pdate);
 delete from Observation
 where idObservation = @idObs;
 
-END
+END $$
 DELIMITER ;
 SHOW WARNINGS;
 
@@ -1249,7 +1249,7 @@ inner join Sampling s
 on t.Sampling_idSampling = s.idSampling
 where s.idSampling = pIdSampling and a.type = 2
 group by a.name;
-END
+END $$
 
 DELIMITER ;
 SHOW WARNINGS;
