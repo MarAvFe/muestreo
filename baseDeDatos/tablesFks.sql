@@ -214,7 +214,7 @@ DROP TABLE IF EXISTS `sampling`.`Observation` ;
 SHOW WARNINGS;
 CREATE TABLE IF NOT EXISTS `sampling`.`Observation` (
   `idObservation` INT(11) NOT NULL AUTO_INCREMENT,
-  `date` DATE NOT NULL,
+  `date` DATETIME NOT NULL,
   `hasData` BIT(1) NULL,
   `isProductive` BIT(1) NULL,
   `isCancelled` BIT(1) NULL,
@@ -1214,7 +1214,16 @@ END $$
 DELIMITER ;
 SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- procedure delete observation
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `pDeleteObservation`;
+
+
 DELIMITER $$
+USE `sampling` $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pDeleteObservation`(pIdSampling int, pcedula varchar(12), pdate datetime)
 BEGIN
 
@@ -1235,8 +1244,16 @@ END $$
 DELIMITER ;
 SHOW WARNINGS;
 
-DELIMITER $$
+-- -----------------------------------------------------
+-- procedure delete observation
+-- -----------------------------------------------------
 
+USE `sampling`;
+DROP procedure IF EXISTS `pGetCollaborationAct`;
+
+
+DELIMITER $$
+USE `sampling` $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getCollaborationAct`(pIdSampling int)
 BEGIN
 select a.name, count(1) as cant

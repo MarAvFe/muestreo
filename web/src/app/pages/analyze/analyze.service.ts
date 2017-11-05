@@ -110,6 +110,7 @@ export class AnalyzeService {
     //lista las observaciones pertenecientes a un muestreo
     getObservation(data): Promise<Observation[]> {
         const body = this.toQueryString( { pIdSampling: data });
+        console.debug('getObservation');
         console.debug(JSON.stringify(body));
         return this.http.post('http://localhost:2828/getObservations', body, this.options )
         .toPromise()
@@ -127,7 +128,8 @@ export class AnalyzeService {
     //elimina una observacion
     deleteObservation(data): Promise<Feedback> {
         const body = this.toQueryString(data);
-        console.debug(JSON.stringify(body));
+        console.debug('lalalaallala');
+          console.debug(JSON.stringify(body));
         return this.http.post('http://localhost:2828/pDeleteObservation', body, this.options )
         .toPromise()
         .then(response => response.json());
@@ -269,6 +271,7 @@ export class AnalyzeService {
     private toQueryString(jsonBody: Object) {
         // Receives some json and returns it in ws query format:
         // {"name": "nombre","description": "descrip."} -> name=nombre&description=descrip
+        console.debug('holaadasfsdf');
         console.debug(jsonBody);
         const keys = Object.keys(jsonBody).map(key => {
             /* If boolean */

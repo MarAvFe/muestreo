@@ -296,7 +296,20 @@ export class AnalyzeComponent implements OnInit {
     }).catch(err => console.debug(`Error al cargar las observaciones: ${err}`));
   }
 
-
+  renderHour(pdate) {
+      const date = new Date(pdate);
+    //10/31/2017, 10:59:22 PM
+      const month = (`0${date.getMonth() + 1}`).slice(-2);
+      const day = (`0${date.getDate()}`).slice(-2);
+      const year = (`${date.getFullYear()}`);
+      const hours = (`0${date.getHours()}`).slice(-2);
+      const mins = (`0${date.getMinutes()}`).slice(-2);
+      const secs = (`0${date.getSeconds()}`).slice(-2);
+      return `${year}-${month}-${day} ${hours}:${mins}:${secs}`
+  }
+// 2017-10-03 11:35:26
+// 2017-11-03 11:35:26
+// 2017-11-01 17:35:26
   loadComments(idSampling): void {
    const samplingId = this.selectedSampling.idSampling;
    console.debug(`IdsamplingComment: ${JSON.stringify(samplingId)}`);
@@ -349,7 +362,9 @@ export class AnalyzeComponent implements OnInit {
 
     onDeleteConfirm(event): void {
       const idSamp = this.selectedSampling.idSampling;
-      this._analyzeService.deleteObservation(this._analyzeService.createComposeDeleteObservation(idSamp, event.newData))
+      console.debug('Entre a borrar');
+      console.debug(idSamp);
+      this._analyzeService.deleteObservation(this._analyzeService.createComposeDeleteObservation(idSamp, event.data))
       .then(res => {
           if (res.error === 'none') {
               event.confirm.resolve();
