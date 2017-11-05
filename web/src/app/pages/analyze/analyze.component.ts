@@ -293,12 +293,21 @@ export class AnalyzeComponent implements OnInit {
         this.lineChart.valueAxes[0].guides[0].value = this.dataAverage();
         this.lineChart.valueAxes[0].guides[0].label = Math.floor(this.dataAverage());
         this.lineChart.validateNow(true);
+
+        for (let i = 0; i < dataz.length; i++) {
+            const n = dataz[i].date;
+            const timeZoneOffset = new Date().getTimezoneOffset();
+            const b = new Date(n);
+           dataz[i].date = this.renderDate(b.toLocaleString());
+        }
+
+        this.sourceObserv.load(dataz);
     }).catch(err => console.debug(`Error al cargar las observaciones: ${err}`));
   }
 
-  renderHour(pdate) {
+  // le da formato a la fecha
+  renderDate(pdate) {
       const date = new Date(pdate);
-    //10/31/2017, 10:59:22 PM
       const month = (`0${date.getMonth() + 1}`).slice(-2);
       const day = (`0${date.getDate()}`).slice(-2);
       const year = (`${date.getFullYear()}`);
@@ -307,9 +316,7 @@ export class AnalyzeComponent implements OnInit {
       const secs = (`0${date.getSeconds()}`).slice(-2);
       return `${year}-${month}-${day} ${hours}:${mins}:${secs}`
   }
-// 2017-10-03 11:35:26
-// 2017-11-03 11:35:26
-// 2017-11-01 17:35:26
+
   loadComments(idSampling): void {
    const samplingId = this.selectedSampling.idSampling;
    console.debug(`IdsamplingComment: ${JSON.stringify(samplingId)}`);
