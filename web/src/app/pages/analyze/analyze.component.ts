@@ -96,7 +96,7 @@ export class AnalyzeComponent implements OnInit {
           color: this.layoutColors.defaultText,
           axisColor: this.layoutColors.defaultText,
           title: 'Productividad (%)',
-          precision: 2,
+          precision: 0,
           guides: [{
             value: this.dataAverage(),
             lineAlpha: 100,
@@ -128,10 +128,10 @@ export class AnalyzeComponent implements OnInit {
         },
       ],
       chartCursor: {
-        categoryBalloonDateFormat: 'MMM YYYY',
+        categoryBalloonDateFormat: 'DD MMM YYYY',
         categoryBalloonColor: '#4285F4',
         categoryBalloonAlpha: 0.8,
-        categoryBalloonText: 'Mes [[category]]',
+        categoryBalloonText: '[[category]]',
         valueBalloonsEnabled: false,
         cursorAlpha: 1,
         valuePrecision: 1,
@@ -257,24 +257,12 @@ export class AnalyzeComponent implements OnInit {
     sourceComment: LocalDataSource = new LocalDataSource();
 
     initChart(chart: any) {
-      /*let zoomChart = () => {
-        chart.zoomToDates(new Date(2013, 3), new Date(2014, 0));
-      };
-
-      chart.addListener('rendered', zoomChart);
-      zoomChart();
-
-      if (chart.zoomChart) {
-        chart.zoomChart();
-    }*/
       this.lineChart = chart;
-
     }
 
     constructor(private _baConfig: BaThemeConfigProvider, public toastr: ToastsManager,
-      settingsvcr: ViewContainerRef, private _analyzeService: AnalyzeService) {
-    //    this.toastr.setRootViewContainerRef(vcr);
-
+      vcr: ViewContainerRef, private _analyzeService: AnalyzeService) {
+        this.toastr.setRootViewContainerRef(vcr);
     }
 
     private handleError(error: any): Promise<any> {

@@ -231,16 +231,13 @@ export class AnalyzeService {
         while (tmp.result.length > 0) {
             let val = 0;
             let numVals = 0;
-            // console.debug(`tmp.result: ${JSON.stringify(tmp)}`);
             for (const s of tmp.result) {
                 numVals++;
                 if (s.type === 0) {
                    val++;
-                } else {
-                  val--;
                 }
             }
-            value = ((numVals + val) / numVals) * 100;
+            value = (val / numVals) * 100;
             holdDate = tmp.result[0].date;
             resultingData.push( { date: new Date(
               parseInt(holdDate.substring(0, 4)),

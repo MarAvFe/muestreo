@@ -57,7 +57,16 @@ insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)VA
     ('20171010', 1, 5, 2),
     ('20171011', 1, 4, 1),
     ('20171011', 1, 2, 2),
-    ('20171011', 1, 5, 2);
+    ('20171012', 1, 5, 2),
+    ('20171012', 1, 5, 2),
+    ('20171012', 1, 2, 1),
+    ('20171012', 1, 2, 1),
+    ('20171012', 1, 2, 2),
+    ('20171012', 1, 5, 2),
+    ('20171012', 1, 5, 2),
+    ('20171013', 1, 4, 1),
+    ('20171013', 1, 4, 2),
+    ('20171013', 1, 2, 2);
 
 -- Inserción Sampling_has_User
 INSERT INTO sampling.Sampling_has_User(Sampling_idSampling, User_idUser, isAdmin)VALUES
