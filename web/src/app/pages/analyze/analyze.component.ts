@@ -10,15 +10,23 @@ import { SamplingId } from './objects/SamplingId';
 import { Comments } from './objects/Comments';
 import { RenderBitComponent } from './customComponents/renderBit.component';
 
+import { BaThemeConfigProvider, colorHelper, layoutPaths } from '../../theme';
 
 @Component({
     selector: 'analyze',
     templateUrl: './analyze.html',
-    styleUrls: ['./smartTables.scss']
+    styleUrls: [
+      './smartTables.scss',
+      './lineChart/lineChart.scss',
+    ],
 })
 export class AnalyzeComponent implements OnInit {
 
     data: any;
+
+    layoutColors = this._baConfig.get().colors;
+    graphColor = this._baConfig.get().colors.custom.dashboardLineChart;
+    lineChart;
 
     titles: Titles[];
 
@@ -26,6 +34,7 @@ export class AnalyzeComponent implements OnInit {
         this._analyzeService.getTitles().then(titles => this.titles = titles);
     }
 
+    chartData: Object;
     query: string = '';
     activityTypes = [
         { value: 0, title: 'Productiva' },
@@ -34,6 +43,7 @@ export class AnalyzeComponent implements OnInit {
     ];
     cedula: string = '';
     samplings: any;
+    observations: Observation[] = [];
     selectedSampling: any = {
         name: '',
         description: '',
@@ -43,6 +53,120 @@ export class AnalyzeComponent implements OnInit {
         type: '',
         sampled: '',
     };
+
+    dataProvided = [
+      { date: new Date(2012, 4), value: 2.3 },
+      { date: new Date(2012, 6), value: 90.5, comment: 'Se paga bonificación' },
+      { date: new Date('2012-07-25T06:00:00.000Z'), value: 46.67 },
+      { date: new Date(2012, 10), value: 32.1 },
+    ];
+
+    lineChartData = {
+      type: 'serial',
+      theme: 'black',
+      marginTop: 15,
+      marginRight: 15,
+      responsive: {
+        'enabled': false,
+      },
+      dataProvider: this.dataProvided,
+      chartScrollbar: {
+        autoGridCount: true,
+        graph: 'g1',
+        scrollbarHeight: 40,
+        oppositeAxis: false,
+        color: '#000000',
+        offset: 5,
+      },
+      categoryField: 'date',
+      categoryAxis: {
+        parseDates: true,
+        gridAlpha: 0.1,
+        color: '#000',
+        axisColor: '#000',
+        // title: 'Días',
+        minHorizontalGap: 40,
+        tickPosition: 'middle',
+        tickLength: 5,
+      },
+      valueAxes: [
+        {
+          minVerticalGap: 30,
+          gridAlpha: 0.1,
+          color: this.layoutColors.defaultText,
+          axisColor: this.layoutColors.defaultText,
+          title: 'Productividad (%)',
+          precision: 2,
+          guides: [{
+            value: this.dataAverage(),
+            lineAlpha: 100,
+            lineColor: '#a00',
+            inside: true,
+            label: Math.floor(this.dataAverage()),
+            position: 'right',
+            dashLength: 30,
+            tickLength: 0,
+          }],
+        },
+      ],
+      graphs: [
+        {
+          id: 'g1',
+          bullet: 'round',
+          bulletColor: '#00ff99',
+          bulletAlpha: 0.9,
+          bulletSize: 15,
+          useLineColorForBulletBorder: true,
+          lineColor: colorHelper.hexToRgbA(this.graphColor, 0.8),
+          lineThickness: 3,
+          negativeLineColor: this.layoutColors.danger,
+          type: 'smoothedLine',
+          valueField: 'value',
+          fillAlphas: 0,
+          fillColorsField: 'lineColor',
+          balloonText: '[[comment]]',
+        },
+      ],
+      chartCursor: {
+        categoryBalloonDateFormat: 'MMM YYYY',
+        categoryBalloonColor: '#4285F4',
+        categoryBalloonAlpha: 0.8,
+        categoryBalloonText: 'Mes [[category]]',
+        valueBalloonsEnabled: false,
+        cursorAlpha: 1,
+        valuePrecision: 1,
+        valueLineBalloonEnabled: false,
+        valueLineAlpha: 0.1,
+        balloonPointerOrientation: 'vertical',
+      },
+      dataDateFormat: 'MM YYYY',
+      export: {
+        enabled: true,
+      },
+      creditsPosition: 'bottom-right',
+      zoomOutButton: {
+        backgroundColor: '#fff',
+        backgroundAlpha: 0.5,
+        color: '#000000',
+      },
+      zoomOutText: 'Ver todo',
+      pathToImages: layoutPaths.images.amChart,
+    };
+
+    dataAverage() {
+        try {
+          const data = this.lineChart.dataProvider;
+          let tot = 0;
+          for (const v of data) {
+            tot += v.value;
+          }
+          return tot / data.length;
+        } catch (e) {
+          return 0;
+        }
+    }
+
+    productivityData: any = this.lineChartData;
 
     settingsObserv = {
         actions: {
@@ -68,7 +192,7 @@ export class AnalyzeComponent implements OnInit {
                 title: 'Colaborador',
                 type: 'string',
             },
-            cedula:{
+            cedula: {
               title: 'Cédula',
               type: 'string',
             },
@@ -132,15 +256,23 @@ export class AnalyzeComponent implements OnInit {
     sourceObserv: LocalDataSource = new LocalDataSource();
     sourceComment: LocalDataSource = new LocalDataSource();
 
+    initChart(chart: any) {
+      /*let zoomChart = () => {
+        chart.zoomToDates(new Date(2013, 3), new Date(2014, 0));
+      };
 
-    constructor(public toastr: ToastsManager, vcr: ViewContainerRef,private _analyzeService: AnalyzeService) {
+      chart.addListener('rendered', zoomChart);
+      zoomChart();
 
-        this._analyzeService.getData().then((data) => {
-            this.sourceObserv.load(data);
-      });
-      this._analyzeService.getData().then((data) => {
-          this.sourceComment.load(data);
-    });
+      if (chart.zoomChart) {
+        chart.zoomChart();
+    }*/
+      this.lineChart = chart;
+
+    }
+
+    constructor(private _baConfig: BaThemeConfigProvider, public toastr: ToastsManager,
+      settingsvcr: ViewContainerRef, private _analyzeService: AnalyzeService) {
     //    this.toastr.setRootViewContainerRef(vcr);
 
     }
@@ -154,13 +286,10 @@ export class AnalyzeComponent implements OnInit {
         this.cedula = localStorage.getItem('cedula');
         this.data = this._analyzeService.getAll();
         this.getTitles();
-        console.debug('perro');
         this._analyzeService.getMySamplings(this.cedula)
         .then(data => {
             this.samplings = data[0];
             this.selectedSampling = this.samplings[0];
-            console.debug(`selectedSmapling: ${JSON.stringify(this.selectedSampling)}`);
-            console.debug(JSON.stringify(`segfsdsfdgfsdng: ${JSON.stringify(this.selectedSampling.idSampling)}`));
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
         })
@@ -169,35 +298,36 @@ export class AnalyzeComponent implements OnInit {
 
     loadObservations(idSampling): void {
      const samplingId = this.selectedSampling.idSampling;
-     console.debug(`Idsampling: ${JSON.stringify(samplingId)}`);
-     console.debug('kikiikikik');
      this._analyzeService.getObservation(samplingId).then((dataz) => {
-        this.sourceObserv.load(dataz);
-    }).catch(err => console.debug('Error al cargar las observaciones.'));
+        this.observations = dataz;
+        this.sourceObserv.load(this.observations);
+        this.lineChart.dataProvider = this._analyzeService.getLineChartData(this.observations);
+        this.lineChart.valueAxes[0].guides[0].value = this.dataAverage();
+        this.lineChart.valueAxes[0].guides[0].label = Math.floor(this.dataAverage());
+        this.lineChart.validateNow(true);
+    }).catch(err => console.debug(`Error al cargar las observaciones: ${err}`));
   }
 
 
   loadComments(idSampling): void {
    const samplingId = this.selectedSampling.idSampling;
    console.debug(`IdsamplingComment: ${JSON.stringify(samplingId)}`);
-   console.debug('kikiikikik');
    this._analyzeService.getComments(samplingId).then((data) => {
      this.sourceComment.load(data);
-  }).catch(err => console.debug('Error al cargar los comentarios.'));
+  }).catch(err => console.debug(`Error al cargar los comentarios: ${err}`));
 
 }
-    //carga los nombres del muestreo en el picker superior
+    // carga los nombres del muestreo en el picker superior
     loadSamplingInfo(idSampling): void {
         const updatedSampling = this.getSamplingById(idSampling);
         try {
             const modality = updatedSampling.modality.data[0]; // Verifica que la estructura retornada sea correcta
             this.selectedSampling = updatedSampling;
-            console.debug('aaaaaaaaaaa');
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
       // Actualizar datos de observaciones
         } catch (e) {
-            console.debug('Error actualizando muestreo seleccionado.');
+            console.debug(`Error actualizando muestreo seleccionado: ${e} `);
         }
     }
 
@@ -215,7 +345,6 @@ export class AnalyzeComponent implements OnInit {
     }
 
     onEditConfirm(event): void {
-        console.debug('entro a editar');
         const idSamp = this.selectedSampling.idSampling;
         console.debug(this.selectedSampling.idSampling);
         this._analyzeService.editObservation(this._analyzeService.createComposeEditObservation(idSamp, event.newData))

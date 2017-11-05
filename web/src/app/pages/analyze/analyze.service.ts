@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-
-import { BaThemeConfigProvider } from '../../theme';
 
 import { Titles } from './Titles';
 import { BasicSampling } from './objects/BasicSampling';
@@ -57,7 +54,7 @@ export class AnalyzeService {
             ],
         },
         productivityOptions: {
-            color: this._baConfig.get().colors.defaultText,
+            color: '#000',
             fullWidth: true,
             height: '300px',
             chartPadding: {
@@ -81,7 +78,7 @@ export class AnalyzeService {
 
     };
 
-    constructor(private _baConfig: BaThemeConfigProvider, private http: Http) {
+    constructor(private http: Http) {
       this.heads = new Headers();
       this.heads.append('Content-Type', 'application/x-www-form-urlencoded');
       this.heads.append('Access-Control-Allow-Origin', '*');
@@ -215,6 +212,61 @@ export class AnalyzeService {
              pcedula: bodyParams.cedula,
              pdate: bodyParams.date,
          };
+    }
+
+    getLineChartData(observations: Observation[]): Object {
+      return this.getSummarizedObservations(observations);
+    }
+
+    getSummarizedObservations(observations: Observation[]): any {
+        // {"date":"2017-10-31T06:00:00.000Z","username":"Andrea","cedula":"301480674","type":2,
+        //   "activityname":"Sosteniendo escalera"}
+        // { date: new Date(2014, 4), value: 44.92 }
+        const data: { date, value }[] = [];
+        const historicVals = [];
+        const resultingData = [];
+        let value: number;
+        let holdDate: string;
+        let tmp = this.sameDates(observations);
+        while (tmp.result.length > 0) {
+            let val = 0;
+            let numVals = 0;
+            // console.debug(`tmp.result: ${JSON.stringify(tmp)}`);
+            for (const s of tmp.result) {
+                numVals++;
+                if (s.type === 0) {
+                   val++;
+                } else {
+                  val--;
+                }
+            }
+            value = ((numVals + val) / numVals) * 100;
+            holdDate = tmp.result[0].date;
+            resultingData.push( { date: new Date(
+              parseInt(holdDate.substring(0, 4)),
+              parseInt(holdDate.substring(5, 7)) - 1,
+              parseInt(holdDate.substring(8, 10))),
+              value });
+            tmp = this.sameDates(tmp.dif);
+        }
+        console.debug(`summary: ${JSON.stringify(resultingData)}`);
+        return resultingData;
+    }
+
+    private sameDates(obs): { result: Observation[], dif: Observation[] } {
+    // console.debug(`obs: ${JSON.stringify(obs)}`);
+        const result = [];
+        const dif = [];
+        const pivot = obs[0];
+        // console.debug(`pivot: ${JSON.stringify(pivot)}`);
+        for (const d of obs) {
+            if (d.date === pivot.date) {
+              result.push(d);
+            } else {
+              dif.push(d);
+            }
+        }
+        return { result, dif };
     }
 
     private toQueryString(jsonBody: Object) {

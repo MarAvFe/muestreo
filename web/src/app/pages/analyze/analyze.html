@@ -8,7 +8,10 @@
     <div class="row">
         <div class="col-md-12 ">
         <ba-card translate cardTitle="{{'analyze.productivity'}}" baCardClass="with-scroll">
-            <line-chart></line-chart>
+            <ba-am-chart baAmChartClass="dashboard-line-chart"
+                [baAmChartConfiguration]="this.productivityData"
+                (onChartReady)="initChart($event)">
+            </ba-am-chart>
         </ba-card>
         </div>
     </div>
