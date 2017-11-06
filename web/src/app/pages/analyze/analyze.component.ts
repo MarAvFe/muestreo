@@ -15,10 +15,7 @@ import { BaThemeConfigProvider, colorHelper, layoutPaths } from '../../theme';
 @Component({
     selector: 'analyze',
     templateUrl: './analyze.html',
-    styleUrls: [
-      './smartTables.scss',
-      './lineChart/lineChart.scss',
-    ],
+    styleUrls: ['./smartTables.scss'],
 })
 export class AnalyzeComponent implements OnInit {
 
