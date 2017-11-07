@@ -8,6 +8,8 @@ import { SamplingType } from './objects/SamplingType';
 import { Observation } from './objects/Observation';
 import { SamplingId } from './objects/SamplingId';
 import { Comments } from './objects/Comments';
+import { CollaboratorName } from './objects/CollaboratorName';
+import { ActivityName } from './objects/ActivityName';
 import { RenderBitComponent } from './customComponents/renderBit.component';
 
 
@@ -32,6 +34,9 @@ export class AnalyzeComponent implements OnInit {
         { value: 1, title: 'Improductiva' },
         { value: 2, title: 'Colaborativa' },
     ];
+
+    activinames: any ;
+
     cedula: string = '';
     samplings: any;
     selectedSampling: any = {
@@ -67,14 +72,29 @@ export class AnalyzeComponent implements OnInit {
             username: {
                 title: 'Colaborador',
                 type: 'string',
+                filter: {
+                    type: 'list',
+                    config: {
+                        selectText: 'Todos',
+                        list: this.activityTypes,
+                    },
+                  },
+                  editor: {
+                      type: 'list',
+                      config: {
+                          list: this.activityTypes,
+                      },
             },
-            cedula:{
+          },
+            cedula: {
               title: 'Cédula',
               type: 'string',
+              editable: false,
             },
             type: {
                 title: 'Tipo',
                 type: 'custom',
+                editable: false,
                 filter: {
                     type: 'list',
                     config: {
@@ -92,11 +112,24 @@ export class AnalyzeComponent implements OnInit {
             },
             activityname: {
                 title: 'Actividad',
-                type: 'string',
+                type: 'number',
+                filter: {
+                    type: 'list',
+                    config: {
+                        selectText: 'Todos',
+                        list: this.activinames,
+                    },
+                  },
+                  renderComponent: RenderBitComponent,
+                  editor: {
+                      type: 'list',
+                      config: {
+                          list: this.activinames,
+                  },
             },
-        },
-    };
-
+      },
+  },
+};
 
     settingsComment = {
       actions: {
@@ -133,15 +166,7 @@ export class AnalyzeComponent implements OnInit {
     sourceComment: LocalDataSource = new LocalDataSource();
 
 
-    constructor(public toastr: ToastsManager, vcr: ViewContainerRef,private _analyzeService: AnalyzeService) {
-
-        this._analyzeService.getData().then((data) => {
-            this.sourceObserv.load(data);
-      });
-      this._analyzeService.getData().then((data) => {
-          this.sourceComment.load(data);
-    });
-    //    this.toastr.setRootViewContainerRef(vcr);
+    constructor(public toastr: ToastsManager, vcr: ViewContainerRef, private _analyzeService: AnalyzeService) {
 
 
     }
@@ -163,7 +188,6 @@ export class AnalyzeComponent implements OnInit {
             this.selectedSampling = this.samplings[0];
             console.debug(`selectedSmapling: ${JSON.stringify(this.selectedSampling)}`);
             console.debug(JSON.stringify(`segfsdsfdgfsdng: ${JSON.stringify(this.selectedSampling.idSampling)}`));
-
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
@@ -175,12 +199,35 @@ export class AnalyzeComponent implements OnInit {
     loadObservations(idSampling): void {
      const samplingId = this.selectedSampling.idSampling;
      console.debug(`Idsampling: ${JSON.stringify(samplingId)}`);
-     console.debug('kikiikikik');
      this._analyzeService.getObservation(samplingId).then((dataz) => {
+       this._analyzeService.getActivityName().then((data) => {
+         const acts = [];
+         let k = 0;
+         for (let i = 0 ; i < data.length; i++) {
+             k++;
+             acts.push({ value: k, title: data[i].title });
+         }
+
+         this.activinames = acts; // no = data
+        console.debug(JSON.stringify(this.activinames));
         this.sourceObserv.load(dataz);
+       }).catch(err => console.debug('Error al cargar las actividades.'));
     }).catch(err => console.debug('Error al cargar las observaciones.'));
   }
 
+/*  getActivityName(): Promise<void> {
+
+  return this._analyzeService.getActivityName().then((data) => {
+        const acts = [];
+        let k = 0;
+        for (let i = 0 ; i < data.length; i++) {
+            k ++;
+            acts.push({ value: k, title: data[i].title });
+        }
+        this.activinames = acts; // no = data
+
+    }).catch(err => console.debug('Error al cargar las actividades.'));
+  }*/
 
   loadComments(idSampling): void {
    const samplingId = this.selectedSampling.idSampling;
@@ -197,10 +244,8 @@ export class AnalyzeComponent implements OnInit {
         try {
             const modality = updatedSampling.modality.data[0]; // Verifica que la estructura retornada sea correcta
             this.selectedSampling = updatedSampling;
-            console.debug('aaaaaaaaaaa');
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
-
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
       // Actualizar datos de observaciones
         } catch (e) {
