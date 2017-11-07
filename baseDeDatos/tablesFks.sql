@@ -1175,9 +1175,9 @@ DROP procedure IF EXISTS `pUpdateObservation`;
 
 DELIMITER $$
 USE `sampling` $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdateObservation`(pIdSampling int, pDate date, pUsername varchar(45), pCedula varchar(12) , pActivityType int, pActivityName  varchar(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdateObservation`(pIdSampling int, pDate date, pUsername varchar(45), pActivityName  varchar(45))
 BEGIN
-    	UPDATE Observation o
+    UPDATE Observation o 
     inner join Trail t
     on t.idTrail = o.Trail_idTrail
     inner join Sampling s
@@ -1188,8 +1188,6 @@ BEGIN
     on a.idActivity = o.Activity_idActivity
     SET o.date = pDate,
     u.name = pUsername,
-    u.cedula = pCedula,
-    a.type = pActivityType,
     a.name = pActivityName
     where s.idSampling = pIdSampling;
 END $$
@@ -1298,6 +1296,47 @@ END $$
 DELIMITER ;
 SHOW WARNINGS;
 
+-- -----------------------------------------------------
+-- procedure getCollaboratorName
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `getCollaboratorName`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getCollaboratorName`(pIdSampling INT)
+BEGIN
+
+    select u.name as username
+    from User u
+    inner join Sampling_has_User su
+    ON u.idUser = su.User_idUser
+    where su.Sampling_idSampling = pIdSampling;
+
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+
+-- -----------------------------------------------------
+-- procedure getActivityName
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `getActivityName`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getActivityName`()
+BEGIN
+    select a.name as title
+    from Activity a;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
 
 
 

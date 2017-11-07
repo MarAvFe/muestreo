@@ -8,6 +8,8 @@ import { SamplingType } from './objects/SamplingType';
 import { Observation } from './objects/Observation';
 import { SamplingId } from './objects/SamplingId';
 import { Comments } from './objects/Comments';
+import { CollaboratorName } from './objects/CollaboratorName';
+import { ActivityName } from './objects/ActivityName';
 import { RenderBitComponent } from './customComponents/renderBit.component';
 
 import { BaThemeConfigProvider, colorHelper, layoutPaths } from '../../theme';
@@ -41,6 +43,9 @@ export class AnalyzeComponent implements OnInit {
         { value: 1, title: 'Improductiva' },
         { value: 2, title: 'Colaborativa' },
     ];
+
+    activinames: any ;
+
     cedula: string = '';
     samplings: any;
     observations: Observation[] = [];
@@ -191,14 +196,28 @@ export class AnalyzeComponent implements OnInit {
             username: {
                 title: 'Colaborador',
                 type: 'string',
+                filter: {
+                    type: 'list',
+                    config: {
+                        selectText: 'Todos',
+                        list: this.activityTypes,
+                    },
+                  },
+                  editor: {
+                      type: 'list',
+                      config: {
+                          list: this.activityTypes,
+                      },
             },
             cedula: {
               title: 'Cédula',
               type: 'string',
+              editable: false,
             },
             type: {
                 title: 'Tipo',
                 type: 'custom',
+                editable: false,
                 filter: {
                     type: 'list',
                     config: {
@@ -216,11 +235,24 @@ export class AnalyzeComponent implements OnInit {
             },
             activityname: {
                 title: 'Actividad',
-                type: 'string',
+                type: 'number',
+                filter: {
+                    type: 'list',
+                    config: {
+                        selectText: 'Todos',
+                        list: this.activinames,
+                    },
+                  },
+                  renderComponent: RenderBitComponent,
+                  editor: {
+                      type: 'list',
+                      config: {
+                          list: this.activinames,
+                  },
             },
-        },
-    };
-
+      },
+  },
+};
 
     settingsComment = {
       actions: {
@@ -304,8 +336,19 @@ export class AnalyzeComponent implements OnInit {
            dataz[i].date = this.renderDate(b.toLocaleString());
         }
 
+       this._analyzeService.getActivityName().then((data) => {
+         const acts = [];
+         let k = 0;
+         for (let i = 0 ; i < data.length; i++) {
+             k++;
+             acts.push({ value: k, title: data[i].title });
+         }
+
+         this.activinames = acts; // no = data
+        console.debug(JSON.stringify(this.activinames));
         this.sourceObserv.load(dataz);
-    }).catch(err => console.debug(`Error al cargar las observaciones: ${err}`));
+       }).catch(err => console.debug('Error al cargar las actividades.'));
+    }).catch(err => console.debug('Error al cargar las observaciones.'));
   }
 
   // le da formato a la fecha
@@ -319,6 +362,18 @@ export class AnalyzeComponent implements OnInit {
       const secs = (`0${date.getSeconds()}`).slice(-2);
       return `${year}-${month}-${day} ${hours}:${mins}:${secs}`
   }
+
+  return this._analyzeService.getActivityName().then((data) => {
+        const acts = [];
+        let k = 0;
+        for (let i = 0 ; i < data.length; i++) {
+            k ++;
+            acts.push({ value: k, title: data[i].title });
+        }
+        this.activinames = acts; // no = data
+
+    }).catch(err => console.debug('Error al cargar las actividades.'));
+  }*/
 
   loadComments(idSampling): void {
    const samplingId = this.selectedSampling.idSampling;
@@ -336,7 +391,6 @@ export class AnalyzeComponent implements OnInit {
             this.selectedSampling = updatedSampling;
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
-
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
       // Actualizar datos de observaciones
         } catch (e) {

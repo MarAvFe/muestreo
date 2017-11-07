@@ -9,6 +9,8 @@ import { Observation } from './objects/Observation';
 import { SamplingId } from './objects/SamplingId';
 import { Feedback } from './objects/Feedback';
 import { Comments } from './objects/Comments';
+import { CollaboratorName } from './objects/CollaboratorName';
+import { ActivityName } from './objects/ActivityName';
 import { ObservationID } from './objects/ObservationID';
 
 @Injectable()
@@ -117,6 +119,25 @@ export class AnalyzeService {
         .then(response => response.json().data[0] as Observation[])
         .catch(this.handleError);
     }
+
+    //lista las observaciones pertenecientes a un muestreo
+    getCollaboratorName(data): Promise<CollaboratorName[]> {
+        const body = this.toQueryString( { pIdSampling: data });
+        console.debug(JSON.stringify(body));
+        return this.http.post('http://localhost:2828/getCollaboratorName', body, this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as CollaboratorName[])
+        .catch(this.handleError);
+    }
+
+    //lista las observaciones pertenecientes a un muestreo
+    getActivityName(): Promise<ActivityName[]> {
+        return this.http.post('http://localhost:2828/getActivityName', '', this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as ActivityName[])
+        .catch(this.handleError);
+    }
+
     //edita una observacion
     editObservation(data): Promise<Feedback> {
         const body = this.toQueryString(data);
