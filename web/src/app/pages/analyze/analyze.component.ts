@@ -102,7 +102,7 @@ export class AnalyzeComponent implements OnInit {
             lineAlpha: 100,
             lineColor: '#a00',
             inside: true,
-            label: Math.floor(this.dataAverage()),
+            label: `${Math.floor(this.dataAverage())}%`,
             position: 'right',
             dashLength: 30,
             tickLength: 0,
@@ -291,7 +291,7 @@ export class AnalyzeComponent implements OnInit {
         this.sourceObserv.load(this.observations);
         this.lineChart.dataProvider = this._analyzeService.getLineChartData(this.observations);
         this.lineChart.valueAxes[0].guides[0].value = this.dataAverage();
-        this.lineChart.valueAxes[0].guides[0].label = Math.floor(this.dataAverage());
+        this.lineChart.valueAxes[0].guides[0].label = `${Math.floor(this.dataAverage())}%`;
         this.lineChart.validateNow(true);
 
         for (let i = 0; i < dataz.length; i++) {
