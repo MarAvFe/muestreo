@@ -24,10 +24,10 @@ INSERT INTO `sampling`.`SampledProfile`(`name`,`description`)VALUES
     ('Aulas','Del edificio B2');
 
 -- Inserción Sampling
-INSERT INTO sampling.Sampling(description,live,name,SamplingType_idSamplingType,n_preliminar,n_definitive,SampledProfile_idSampledProfile)VALUES
-    ('Ejecutado para muestrear la construcción del segundo piso de la escuela de mantenimiento industrial, en el período de vacaciones 2015-2016, a cargo de la constructora Quirós y Román', 0, 'ManteQR', 1,30,10,1),
-    ('Ejecutado para muestrear la construcción del edificio D3, en el período 2016, a cargo de la constructora Sánchez-Carvajal', 0, 'D3SC', 2,15,20,2),
-    ('Agregado especialmente para Miranda', 1, 'NuNombre',1,15,20,3);
+INSERT INTO sampling.Sampling(description,live,name,SamplingType_idSamplingType,n_preliminar,n_definitive,SampledProfile_idSampledProfile, error_preliminar)VALUES
+    ('Ejecutado para muestrear la construcción del segundo piso de la escuela de mantenimiento industrial, en el período de vacaciones 2015-2016, a cargo de la constructora Quirós y Román', 0, 'ManteQR', 1,30,10,1,6),
+    ('Ejecutado para muestrear la construcción del edificio D3, en el período 2016, a cargo de la constructora Sánchez-Carvajal', 0, 'D3SC', 2,15,20,2,5),
+    ('Agregado especialmente para Miranda', 1, 'NuNombre',1,15,20,3,3);
 
 -- Inserción Comment
 INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification,Sampling_idSampling)VALUES
@@ -49,21 +49,15 @@ INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification,Sampling_id
 
 
 INSERT INTO Trail(hour, Sampling_idSampling, User_idUser)
-VALUES(NOW(),1,1);
+VALUES('2017-11-03 14:05:00',1,1);
 
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW(), 1, 1, 2);
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(NOW()+1, 1, 1, 2);
-
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(NOW()+2, 1, 4, 1);
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(NOW()+3, 1, 4, 2);
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(NOW()+1, 1, 5, 2);
-insert into Observation (date, Trail_idTrail, Activity_idActivity, User_idUser)
-values(NOW()+4, 1, 5, 3);
+insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)VALUES
+    ('2017-11-03 14:05:03', 1, 1, 2),
+    ('2017-11-03 14:05:08', 1, 1, 2),
+    ('2017-11-03 14:05:35', 1, 4, 1),
+    ('2017-11-03 14:06:01', 1, 4, 2),
+    ('2017-11-03 14:06:20', 1, 5, 2),
+    ('2017-11-03 14:06:40', 1, 5, 3);
 
 -- Inserción Sampling_has_User
 INSERT INTO sampling.Sampling_has_User(Sampling_idSampling, User_idUser, isAdmin)VALUES

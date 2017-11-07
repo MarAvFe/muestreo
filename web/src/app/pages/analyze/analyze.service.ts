@@ -143,7 +143,6 @@ export class AnalyzeService {
         .catch(this.handleError);
     }
 
-
     getMySamplings(cedula): Promise<BasicSampling[]> {
         const body = this.toQueryString({ pIdUser: cedula });
         return this.http.post('http://localhost:2828/getMySamplings', body, this.options )

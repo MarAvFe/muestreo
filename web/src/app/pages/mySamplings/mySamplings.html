@@ -4,8 +4,8 @@
         <div class="col-md-12">
             <div class="form-group">
                 <h3>Seleccione un muestreo:</h3>
-                <select (change)="loadSamplingInfo(selectedSampName.value)"  #selectedSampName class="form-control">
-                    <option *ngFor="let SamplingName of sampName" [value]="SamplingName.name" >{{SamplingName.name}} ({{SamplingName.type}})</option>
+                <select (change)="loadSamplingInfo(selectedSamplingDOM.value)"  #selectedSamplingDOM class="form-control">
+                    <option *ngFor="let s of samplings" [value]="s.idSampling" >{{s.name}} ({{s.type}})</option>
                 </select>
             </div>
             <ba-card cardTitle="Colaboradores" baCardClass="with-scroll">
@@ -44,25 +44,25 @@
                 <ba-card cardTitle="Sampling Details" baCardClass="with-scroll">
                     <div class="form-group">
                         <label for="SamplingNameInput" translate>{{'Name'}}</label>
-                        <input type="text" class="form-control" id="SamplingNameInput" [(ngModel)]="samplingName" placeholder="">
+                        <input type="text" class="form-control" id="SamplingNameInput" [(ngModel)]="selectedSampling.name" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="input11" translate>{{'Description'}}</label>
-                        <input type="text" class="form-control" id="input11" [(ngModel)]="samplingDescription" placeholder="">
+                        <textarea type="text" class="form-control" id="input11" [(ngModel)]="selectedSampling.description" placeholder=""></textarea>
                     </div>
                     <div class="form-group">
                         <label for="exampleSelect1">Type</label>
-                        <select class="form-control" id="exampleSelect1" [(ngModel)]="samplingType">
+                        <select class="form-control" id="exampleSelect1" [(ngModel)]="selectedSampling.idSamplingType">
                             <option *ngFor="let type of samplingTypes" [value]="type.idSamplingType" >{{type.name}}</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="input18" translate>Objeto muestreado</label>
-                        <input type="text" class="form-control" id="input18" [(ngModel)]="objectName" placeholder="">
+                        <input type="text" class="form-control" id="input18" [(ngModel)]="selectedSampling.sampled" placeholder="">
                     </div>
                     <div class="form-group">
                         <label for="input19" translate>Descripción del objeto</label>
-                        <input type="text" class="form-control" id="input19" [(ngModel)]="objectDescription" placeholder="">
+                        <input type="text" class="form-control" id="input19" [(ngModel)]="selectedSampling.sampledDescription" placeholder="">
                     </div>
                     <button type="submit" class="btn btn-warning" (click)="onEditSamplingDetails()">Editar</button>
                 </ba-card>
@@ -84,7 +84,7 @@
                         (editConfirm)="onEditConfirmDefParam($event)"
                         ></ng2-smart-table>
                     </ba-card>
-
+                    <button class="btn btn-success" [disabled]="selectedSampling.isDefinitive == 1" (click)="makeDefinitive()">Hacer definitivo</button>
                 </div>
             </div>
         </ba-card>

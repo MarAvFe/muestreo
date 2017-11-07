@@ -40,7 +40,7 @@ export class MySamplingsService {
         return this.http.post('http://localhost:2828/unassignColaborator', body, this.options )
         .toPromise()
         .then(response => response.json())
-        .catch(this.handleError);
+        .catch(err => this.handleError);
     }
 
     // asigna un colaborador a un muestreo
@@ -49,7 +49,7 @@ export class MySamplingsService {
         return this.http.post('http://localhost:2828/assignColaborator', body, this.options )
         .toPromise()
         .then(response => response.json())
-        .catch(this.handleError);
+        .catch(err => this.handleError);
     }
 
    //devuelve el nombre y descripcion del objeto muestreado
@@ -59,7 +59,7 @@ export class MySamplingsService {
        return this.http.post('http://localhost:2828/getSampledObjInfo', body, this.options )
        .toPromise()
        .then(response => response.json().data[0] as SampledObjInfo[])
-       .catch(this.handleError);
+       .catch(err => this.handleError);
    }
 
     // devuelve el id del muestreo seleccionado
@@ -68,7 +68,7 @@ export class MySamplingsService {
         return this.http.post('http://localhost:2828/getColaborators', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as Colaborator[])
-        .catch(this.handleError);
+        .catch(err => this.handleError);
     }
 
     // devuelve el id del muestreo seleccionado
@@ -77,22 +77,22 @@ export class MySamplingsService {
         return this.http.post('http://localhost:2828/getSamplingId', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as SamplingId[])
-        .catch(this.handleError);
+        .catch(err => this.handleError);
     }
 
-    getMySamplings(cedula): Promise<SamplingName[]> {
+    getMySamplings(cedula): Promise<any[]> {
         const body = this.toQueryString({ pIdUser: cedula });
         return this.http.post('http://localhost:2828/getMySamplings', body, this.options )
         .toPromise()
-        .then(response => response.json().data[0] as SamplingName[])
-        .catch(this.handleError);
+        .then(response => response.json().data as any[])
+        .catch(err => this.handleError);
     }
 
     getSamplingName(): Promise<SamplingName[]> {
         return this.http.post('http://localhost:2828/getSamplingName', '', this.options )
         .toPromise()
         .then(response => response.json().data[0] as SamplingName[])
-        .catch(this.handleError);
+        .catch(err => this.handleError);
     }
 
     // carga los parámetros definitivos
@@ -101,33 +101,23 @@ export class MySamplingsService {
         return this.http.post('http://localhost:2828/getDefParam', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as DefParam[])
-        .catch(this.handleError);
-    }
-
-    // devuelve idSampling, description y idSamplingType a partir del nombre del muestreo
-    getIdSampDescIdSampType(data): Promise<SamplingDescIdSamp[]> {
-        const body = this.toQueryString({ pName : data });
-        return this.http.post('http://localhost:2828/getIdSampDescIdSampType', body, this.options )
-        .toPromise()
-        .then(response => response.json().data[0] as SamplingDescIdSamp[])
-        .catch(this.handleError);
+        .catch(err => this.handleError);
     }
 
     getSamplingTypes(): Promise<SamplingType[]> {
         return this.http.post('http://localhost:2828/SamplingType/get', '', this.options )
         .toPromise()
         .then(response => response.json().data as SamplingType[])
-        .catch(this.handleError);
+        .catch(err => this.handleError);
     }
 
     // carga los usuarios no colaboradores
     getUsers(data): Promise<Colaborator[]> {
         const body = this.toQueryString(data);
-        console.debug(`bodUsers: ${body} and ${JSON.stringify(data)}`);
         return this.http.post('http://localhost:2828/getNonColaborators', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as Colaborator[])
-        .catch(this.handleError);
+        .catch(err => this.handleError);
     }
 
     // carga los parámetros preliminares
@@ -136,7 +126,7 @@ export class MySamplingsService {
         return this.http.post('http://localhost:2828/getPreParam', body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as PreParam[])
-        .catch(this.handleError);
+        .catch(err => this.handleError);
     }
 
     //hace un update en la tabla de Sampling y la de SampledProfile
@@ -161,6 +151,13 @@ export class MySamplingsService {
         return this.http.post('http://localhost:2828/pUpPreParamsSampling', body, this.options )
         .toPromise()
         .then(response => response.json());
+    }
+
+    makeDefinitive(data): Promise<Feedback> {
+        const body = this.toQueryString({ pIdSampling: data });
+        return this.http.post('http://localhost:2828/makeDefinitive', body, this.options )
+        .toPromise()
+        .then(response => response.json() as Feedback);
     }
 
     createComposeSampDetails(info, bodyParams): Object {

@@ -14,7 +14,6 @@ echo "OK"
 echo "Reiniciando Base de Datos..."
 cd ../baseDeDatos
 mysql -u root -p123456 -e "source resetDb.sql;" >> lastRun.log
-# mysql -u root -p123456 -e "source populateDb.sql;" >> lastRun.log
 echo "OK"
 
 echo "Eliminando archivos generados (docs/gen)..."

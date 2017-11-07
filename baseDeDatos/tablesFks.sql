@@ -492,6 +492,26 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- procedure makeDefinitive
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `sampling`.`makeDefinitive`;
+SHOW WARNINGS;
+
+DELIMITER $$
+USE `sampling`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `makeDefinitive`(pIdSampling int(11))
+BEGIN
+ UPDATE `Sampling`
+ SET isPreliminarSampling = 1
+ WHERE idSampling = pIdSampling;
+ END$$
+
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- procedure getMySamplings
 -- -----------------------------------------------------
 
@@ -503,7 +523,16 @@ DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getMySamplings`(pIdUser int(11))
 BEGIN
- SELECT idSampling, s.name as `name`, s.description as `description`, live as modality, st.name as `type`, sp.name as `sampled`
+ SELECT
+    idSampling,
+    s.name as `name`,
+    s.description as `description`,
+    live as modality,
+    st.idSamplingType,
+    st.name as `type`,
+    sp.name as `sampled`,
+    sp.description as `sampledDescription`,
+    case when s.isPreliminarSampling = 1 then 1 else 0 end as 'isDefinitive'
  from Sampling s
 	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
     join SamplingType st on st.idSamplingType = s.SamplingType_idSamplingType
