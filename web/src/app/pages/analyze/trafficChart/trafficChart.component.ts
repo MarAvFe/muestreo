@@ -18,16 +18,16 @@ export class TrafficChart {
 
   constructor(private trafficChartService: TrafficChartService) {
     const idSamp = localStorage.getItem('idSampling');
-    console.debug('que pereza');
+    console.debug("hello world");
     console.debug(idSamp);
-  /*  this.trafficChartService.getData(idSamp).then(data => {
+    this.trafficChartService.getData(idSamp).then(data => {
       this.doughnutData = data.samples;
       this.totalActivities = data.totalActivities;
       this._loadDoughnutCharts();
     })
     .catch(this.handleError );
-  }*/
   }
+
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error); // for demo purposes only

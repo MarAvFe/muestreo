@@ -11,6 +11,8 @@ import { Comments } from './objects/Comments';
 import { CollaboratorName } from './objects/CollaboratorName';
 import { ActivityName } from './objects/ActivityName';
 import { RenderBitComponent } from './customComponents/renderBit.component';
+import * as Chart from 'chart.js';
+import { ChartActivity } from './objects/ChartActivity';
 
 import { BaThemeConfigProvider, colorHelper, layoutPaths } from '../../theme';
 
@@ -22,9 +24,13 @@ import { BaThemeConfigProvider, colorHelper, layoutPaths } from '../../theme';
       './analyze.scss',
     ],
 })
+
 export class AnalyzeComponent implements OnInit {
 
     data: any;
+    doughnutData: {};
+    totalActivities;
+    resultado: any;
 
     layoutColors = this._baConfig.get().colors;
     graphColor = this._baConfig.get().colors.custom.dashboardLineChart;
@@ -313,10 +319,29 @@ export class AnalyzeComponent implements OnInit {
             this.selectedSampling = this.samplings[0];
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
+            const tmp = this._analyzeService.getData(this.selectedSampling.idSampling).then(dataz => {
+                this.doughnutData = dataz.samples;
+                this.totalActivities = dataz.totalActivities ;
+                this._loadDoughnutCharts();
+              })
+              .catch(this.handleError );
+            console.debug('aqui guardo el id del sampling');
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
-
         })
         .catch( this.handleError );
+    }
+
+    ngAfterViewInit() {
+      this._loadDoughnutCharts();
+    }
+
+    private _loadDoughnutCharts() {
+      const el = jQuery('.chart-area').get(0) as HTMLCanvasElement;
+      new Chart(el.getContext('2d')).Doughnut(this.doughnutData, {
+        segmentShowStroke: true,
+        percentageInnerCutout : 64,
+        responsive: true,
+      });
     }
 
     loadObservations(idSampling): void {
@@ -351,30 +376,6 @@ export class AnalyzeComponent implements OnInit {
     }).catch(err => console.debug('Error al cargar las observaciones.'));
   }
 
-  // le da formato a la fecha
-  renderDate(pdate) {
-      const date = new Date(pdate);
-      const month = (`0${date.getMonth() + 1}`).slice(-2);
-      const day = (`0${date.getDate()}`).slice(-2);
-      const year = (`${date.getFullYear()}`);
-      const hours = (`0${date.getHours()}`).slice(-2);
-      const mins = (`0${date.getMinutes()}`).slice(-2);
-      const secs = (`0${date.getSeconds()}`).slice(-2);
-      return `${year}-${month}-${day} ${hours}:${mins}:${secs}`
-  }
-
-  return this._analyzeService.getActivityName().then((data) => {
-        const acts = [];
-        let k = 0;
-        for (let i = 0 ; i < data.length; i++) {
-            k ++;
-            acts.push({ value: k, title: data[i].title });
-        }
-        this.activinames = acts; // no = data
-
-    }).catch(err => console.debug('Error al cargar las actividades.'));
-  }*/
-
   loadComments(idSampling): void {
    const samplingId = this.selectedSampling.idSampling;
    console.debug(`IdsamplingComment: ${JSON.stringify(samplingId)}`);
@@ -392,7 +393,7 @@ export class AnalyzeComponent implements OnInit {
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
-      // Actualizar datos de observaciones
+              // Actualizar datos de observaciones
         } catch (e) {
             console.debug(`Error actualizando muestreo seleccionado: ${e} `);
         }
