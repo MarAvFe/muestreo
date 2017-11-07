@@ -11,6 +11,8 @@ import { Comments } from './objects/Comments';
 import { CollaboratorName } from './objects/CollaboratorName';
 import { ActivityName } from './objects/ActivityName';
 import { RenderBitComponent } from './customComponents/renderBit.component';
+import * as Chart from 'chart.js';
+import { ChartActivity } from './objects/ChartActivity';
 
 
 @Component({
@@ -18,9 +20,13 @@ import { RenderBitComponent } from './customComponents/renderBit.component';
     templateUrl: './analyze.html',
     styleUrls: ['./smartTables.scss']
 })
+
 export class AnalyzeComponent implements OnInit {
 
     data: any;
+    doughnutData: {};
+    totalActivities;
+    resultado: any;
 
     titles: Titles[];
 
@@ -181,19 +187,38 @@ export class AnalyzeComponent implements OnInit {
         this.cedula = localStorage.getItem('cedula');
         this.data = this._analyzeService.getAll();
         this.getTitles();
-        console.debug('perro');
         this._analyzeService.getMySamplings(this.cedula)
         .then(data => {
             this.samplings = data[0];
             this.selectedSampling = this.samplings[0];
+
             console.debug(`selectedSmapling: ${JSON.stringify(this.selectedSampling)}`);
             console.debug(JSON.stringify(`segfsdsfdgfsdng: ${JSON.stringify(this.selectedSampling.idSampling)}`));
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
+            const tmp = this._analyzeService.getData(this.selectedSampling.idSampling).then(dataz => {
+                this.doughnutData = dataz.samples;
+                this.totalActivities = dataz.totalActivities ;
+                this._loadDoughnutCharts();
+              })
+              .catch(this.handleError );
+            console.debug('aqui guardo el id del sampling');
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
-
         })
         .catch( this.handleError );
+    }
+
+    ngAfterViewInit() {
+      this._loadDoughnutCharts();
+    }
+
+    private _loadDoughnutCharts() {
+      const el = jQuery('.chart-area').get(0) as HTMLCanvasElement;
+      new Chart(el.getContext('2d')).Doughnut(this.doughnutData, {
+        segmentShowStroke: true,
+        percentageInnerCutout : 64,
+        responsive: true,
+      });
     }
 
     loadObservations(idSampling): void {
@@ -215,20 +240,6 @@ export class AnalyzeComponent implements OnInit {
     }).catch(err => console.debug('Error al cargar las observaciones.'));
   }
 
-/*  getActivityName(): Promise<void> {
-
-  return this._analyzeService.getActivityName().then((data) => {
-        const acts = [];
-        let k = 0;
-        for (let i = 0 ; i < data.length; i++) {
-            k ++;
-            acts.push({ value: k, title: data[i].title });
-        }
-        this.activinames = acts; // no = data
-
-    }).catch(err => console.debug('Error al cargar las actividades.'));
-  }*/
-
   loadComments(idSampling): void {
    const samplingId = this.selectedSampling.idSampling;
    console.debug(`IdsamplingComment: ${JSON.stringify(samplingId)}`);
@@ -247,7 +258,7 @@ export class AnalyzeComponent implements OnInit {
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
-      // Actualizar datos de observaciones
+              // Actualizar datos de observaciones
         } catch (e) {
             console.debug('Error actualizando muestreo seleccionado.');
         }

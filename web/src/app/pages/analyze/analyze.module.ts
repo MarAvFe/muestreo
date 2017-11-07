@@ -9,7 +9,7 @@ import { TrafficChart } from './trafficChart';
 import { AnalyzeComponent } from './analyze.component';
 import { AnalyzeService } from './analyze.service';
 import { LineChartService } from './lineChart/lineChart.service';
-import { TrafficChartService } from './trafficChart/trafficChart.service';
+
 import { routing } from './analyze.routing';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { RenderBitComponent } from './customComponents/renderBit.component';
@@ -23,11 +23,11 @@ import { RenderBitComponent } from './customComponents/renderBit.component';
         AppTranslationModule,
         Ng2SmartTableModule,
         ToastModule.forRoot(),
+
     ],
     declarations: [
         AnalyzeComponent,
         LineChart,
-        TrafficChart,
         RenderBitComponent,
     ],
     entryComponents: [
@@ -36,7 +36,6 @@ import { RenderBitComponent } from './customComponents/renderBit.component';
     providers: [
         AnalyzeService,
         LineChartService,
-        TrafficChartService,
     ],
 })
 export class AnalyzeModule {}

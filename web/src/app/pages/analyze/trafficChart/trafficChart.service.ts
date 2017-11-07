@@ -53,7 +53,6 @@ export class TrafficChartService {
           };
            chartActs.push(tmp as ChartActivity);
        }
-
         return { samples: chartActs, totalActivities: k };
     }).catch(this.handleError);
 

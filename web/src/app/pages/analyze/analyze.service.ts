@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
-import { BaThemeConfigProvider } from '../../theme';
+import { BaThemeConfigProvider , colorHelper} from '../../theme';
 
 import { Titles } from './Titles';
 import { BasicSampling } from './objects/BasicSampling';
@@ -15,6 +15,8 @@ import { Comments } from './objects/Comments';
 import { CollaboratorName } from './objects/CollaboratorName';
 import { ActivityName } from './objects/ActivityName';
 import { ObservationID } from './objects/ObservationID';
+import { ImproductiveAct } from './objects/ImproductiveAct';
+import { ChartActivity } from './objects/ChartActivity';
 
 @Injectable()
 export class AnalyzeService {
@@ -35,6 +37,8 @@ export class AnalyzeService {
       console.error('An error occurred', error); // for demo purposes only
       return Promise.reject(error.message || error);
     }
+
+    
 
     private _data = {
 
@@ -92,6 +96,57 @@ export class AnalyzeService {
       this.options = { headers : this.heads, withCredentials : true };
     }
 
+
+
+    //lista los comentario pertenecientes a un muestreo
+    getImproductiveActs(data): Promise<ImproductiveAct[]> {
+        const body = this.toQueryString( { pIdSampling: data });
+       console.debug(JSON.stringify('body comment'));
+        console.debug(JSON.stringify(body));
+        return this.http.post('http://localhost:2828/getImproductiveAct', body, this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as ImproductiveAct[])
+        .catch(this.handleError);
+    }
+
+  getData(data): Promise<{totalActivities: number, samples: ChartActivity[]}> {
+     const dashboardColors = this._baConfig.get().colors.dashboard;
+     const colors = [dashboardColors.white, dashboardColors.silverTree, dashboardColors.gossip,
+       dashboardColors.surfieGreen, dashboardColors.blueStone, dashboardColors.lightblue1,
+       dashboardColors.darkblue1, dashboardColors.lightblue2,dashboardColors.purple1,
+       dashboardColors.purple2, dashboardColors.green1, dashboardColors.darkblue2,
+       dashboardColors.lightgreen1, dashboardColors.darkgreen1,dashboardColors.darkgreen2,
+       dashboardColors.lightblue3, dashboardColors.lightpurple1, dashboardColors.lightpurple2,
+       dashboardColors.blue1, dashboardColors.darkblue3];
+   return this.getImproductiveActs(data).then( res => {
+      let k = 0;
+       let colr;
+       const chartActs: ChartActivity[] = [];
+      for (let i = 0; i < res.length; i++) {
+           k += res[i].num;
+
+         if (i < colors.length){
+           colr = colors[i];
+         }
+         else if(i < colors.length*2){
+            colr = colorHelper.shade(colors[i], 20)
+         }
+         else if(i < colors.length*3){
+          colr = colorHelper.shade(colors[i], 20)
+         }
+        const tmp: any = {
+          value: res[i].num,
+          color: colors[ i % colors.length],
+          highlight: colors[colr % colors.length],
+          label : res[i].name,
+          percentage: 200,
+          order : 2,
+        };
+         chartActs.push(tmp as ChartActivity);
+     }
+      return { samples: chartActs, totalActivities: k };
+  }).catch(this.handleError);
+}
     // devuelve el id del muestreo seleccionado
     getSamplingId(data): Promise<SamplingId[]> {
         const body = this.toQueryString({ pName : data });
@@ -186,13 +241,13 @@ export class AnalyzeService {
         return this._data;
     }
 
-    getData(): Promise<any> {
+  /*getData(): Promise<any> {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
             //    resolve(this._data.observationsData);
             }, 2000);
         });
-    }
+    }*/
 
     getResponsive(padding, offset) {
         return [
