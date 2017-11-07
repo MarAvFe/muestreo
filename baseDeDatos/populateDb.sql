@@ -11,12 +11,8 @@ INSERT INTO sampling.Activity(name,description,type)VALUES
     ('Comiendo','El trabajador está haciendo uso del tiempo para comer.',0),
     ('WC','El trabajador se encuentra ausento por utilización del servicio sanitario.',0),
     ('Caminando','El trabajador se desplaza de un lado a otro.',2),
-    ('Sosteniendo escalera', 'El trabajador se encuentra ayudando a un compañero a sostener su escalera', 2);
-
-    insert into Activity(name, description, type)
-    values('Sosteniendo escalera', 'El trabajador se encuentra ayudando a un compañero a sostener su escalera', 2);
-
-
+    ('Sosteniendo escalera','El trabajador se encuentra ayudando a un compañero.',2),
+    ('Viendo el celular','El trabajador está usando su celular en tiempo de trabajo.',2);
 -- Inserción SampledProfile
 INSERT INTO `sampling`.`SampledProfile`(`name`,`description`)VALUES
     ('Cuadrilla','Contratados bajo estándares de calidad elevados.'),
@@ -58,6 +54,21 @@ insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)VA
     ('2017-11-03 14:06:01', 1, 4, 2),
     ('2017-11-03 14:06:20', 1, 5, 2),
     ('2017-11-03 14:06:40', 1, 5, 3);
+
+insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
+VALUES(NOW(), 1, 6, 2);
+
+insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
+VALUES(NOW()+1, 1, 4, 2);
+
+insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
+VALUES(NOW()+2, 1, 4, 2);
+
+insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
+VALUES(NOW()+3, 1, 4, 2);
+
+insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
+VALUES(NOW()+4, 1, 5, 2);
 
 -- Inserción Sampling_has_User
 INSERT INTO sampling.Sampling_has_User(Sampling_idSampling, User_idUser, isAdmin)VALUES

@@ -30,6 +30,8 @@ export class AnalyzeComponent implements OnInit {
     data: any;
     doughnutData: {};
     totalActivities;
+    totalCollaboratives;
+    doughnutDataCollab: {};
     resultado: any;
 
     layoutColors = this._baConfig.get().colors;
@@ -325,6 +327,14 @@ export class AnalyzeComponent implements OnInit {
                 this._loadDoughnutCharts();
               })
               .catch(this.handleError );
+
+            const tmpCollab = this._analyzeService.getDataCollab(this.selectedSampling.idSampling).then(datazC => {
+                this.doughnutDataCollab = datazC.samples1;
+
+                this.totalCollaboratives = datazC.totalCollaboratives;
+                this._loadDoughnutChartCollab();
+              })
+              .catch(this.handleError );
             console.debug('aqui guardo el id del sampling');
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
         })
@@ -333,11 +343,21 @@ export class AnalyzeComponent implements OnInit {
 
     ngAfterViewInit() {
       this._loadDoughnutCharts();
+      this._loadDoughnutChartCollab();
     }
 
     private _loadDoughnutCharts() {
       const el = jQuery('.chart-area').get(0) as HTMLCanvasElement;
       new Chart(el.getContext('2d')).Doughnut(this.doughnutData, {
+        segmentShowStroke: true,
+        percentageInnerCutout : 64,
+        responsive: true,
+      });
+    }
+
+    private _loadDoughnutChartCollab() {
+      const ele = jQuery('.chart-area').get(1) as HTMLCanvasElement;
+      new Chart(ele.getContext('2d')).Doughnut(this.doughnutDataCollab, {
         segmentShowStroke: true,
         percentageInnerCutout : 64,
         responsive: true,
