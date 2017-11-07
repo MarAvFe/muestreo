@@ -16,7 +16,9 @@ import { CollaboratorName } from './objects/CollaboratorName';
 import { ActivityName } from './objects/ActivityName';
 import { ObservationID } from './objects/ObservationID';
 import { ImproductiveAct } from './objects/ImproductiveAct';
+import { CollaborativeAct } from './objects/CollaborativeAct';
 import { ChartActivity } from './objects/ChartActivity';
+import { ChartCollab } from './objects/ChartCollab';
 
 @Injectable()
 export class AnalyzeService {
@@ -38,7 +40,7 @@ export class AnalyzeService {
       return Promise.reject(error.message || error);
     }
 
-    
+
 
     private _data = {
 
@@ -97,8 +99,6 @@ export class AnalyzeService {
     }
 
 
-
-    //lista los comentario pertenecientes a un muestreo
     getImproductiveActs(data): Promise<ImproductiveAct[]> {
         const body = this.toQueryString( { pIdSampling: data });
        console.debug(JSON.stringify('body comment'));
@@ -108,6 +108,16 @@ export class AnalyzeService {
         .then(response => response.json().data[0] as ImproductiveAct[])
         .catch(this.handleError);
     }
+
+    getCollaborativeActs(data): Promise<CollaborativeAct[]> {
+        const body = this.toQueryString( { pIdSampling: data });
+        console.debug(JSON.stringify(body));
+        return this.http.post('http://localhost:2828/getCollaborativeAct', body, this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as CollaborativeAct[])
+        .catch(this.handleError);
+    }
+
 
   getData(data): Promise<{totalActivities: number, samples: ChartActivity[]}> {
      const dashboardColors = this._baConfig.get().colors.dashboard;
@@ -147,6 +157,46 @@ export class AnalyzeService {
       return { samples: chartActs, totalActivities: k };
   }).catch(this.handleError);
 }
+
+getDataCollab(data): Promise<{totalCollaboratives: number, samples1: ChartCollab[]}> {
+   const dashboardColors = this._baConfig.get().colors.dashboard;
+   const colorsColl = [dashboardColors.white, dashboardColors.silverTree, dashboardColors.gossip,
+     dashboardColors.surfieGreen, dashboardColors.blueStone, dashboardColors.lightblue1,
+     dashboardColors.darkblue1, dashboardColors.lightblue2,dashboardColors.purple1,
+     dashboardColors.purple2, dashboardColors.green1, dashboardColors.darkblue2,
+     dashboardColors.lightgreen1, dashboardColors.darkgreen1,dashboardColors.darkgreen2,
+     dashboardColors.lightblue3, dashboardColors.lightpurple1, dashboardColors.lightpurple2,
+     dashboardColors.blue1, dashboardColors.darkblue3];
+ return this.getCollaborativeActs(data).then( res => {
+    let k = 0;
+     let colr;
+     const chartColl: ChartCollab[] = [];
+    for (let i = 0; i < res.length; i++) {
+         k += res[i].num;
+
+       if (i < colorsColl.length){
+         colr = colorsColl[i];
+       }
+       else if(i < colorsColl.length*2){
+          colr = colorHelper.shade(colorsColl[i], 20)
+       }
+       else if(i < colorsColl.length*3){
+        colr = colorHelper.shade(colorsColl[i], 20)
+       }
+      const tmp1: any = {
+        value: res[i].num,
+        color: colorsColl[ i % colorsColl.length],
+        highlight: colorsColl[colr % colorsColl.length],
+        label : res[i].name,
+        percentage: 200,
+        order : 2,
+      };
+       chartColl.push(tmp1 as ChartCollab);
+   }
+    return { samples1: chartColl, totalCollaboratives: k };
+}).catch(this.handleError);
+}
+
     // devuelve el id del muestreo seleccionado
     getSamplingId(data): Promise<SamplingId[]> {
         const body = this.toQueryString({ pName : data });

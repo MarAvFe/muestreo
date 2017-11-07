@@ -86,6 +86,7 @@
     "analyze": {
         "productivity" : "Productividad",
         "improductivities": "Actividades Improductivas",
+        "collaboratives": "Actividades Colaborativas",
         "observations": "Observaciones",
         "details": "Detalles",
         "selectSampling": "Seleccionar Muestreo"

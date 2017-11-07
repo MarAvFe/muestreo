@@ -1143,7 +1143,7 @@ DELIMITER $$
 USE `sampling` $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdateObservation`(pIdSampling int, pDate date, pUsername varchar(45), pActivityName  varchar(45))
 BEGIN
-    UPDATE Observation o 
+    UPDATE Observation o
     inner join Trail t
     on t.idTrail = o.Trail_idTrail
     inner join Sampling s
@@ -1172,7 +1172,7 @@ DELIMITER $$
 USE `sampling` $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getObservationId`(pIdSampling int, pDate date)
 BEGIN
-    select o.idObservation 
+    select o.idObservation
     from Observation o inner join Trail t
     on t.idTrail = o.Trail_idTrail
     inner join Sampling s
@@ -1233,6 +1233,31 @@ DELIMITER ;
 SHOW WARNINGS;
 
 -- -----------------------------------------------------
+-- procedure getCollaborativeAct
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `getCollaborativeAct`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getCollaborativeAct`(pIdSampling int)
+BEGIN
+    select count(*) as num, act.name
+    from Sampling s inner join Trail t
+    on s.idSampling = t.Sampling_idSampling
+    inner join Observation o
+    on t.idTrail = o.Trail_idTrail
+    inner join Activity act
+    on act.idActivity = o.Activity_idActivity
+    where s.idSampling = pIdSampling and act.type = 2
+    GROUP BY act.name;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
+-- -----------------------------------------------------
 -- procedure pDeleteObservation
 -- -----------------------------------------------------
 
@@ -1249,13 +1274,13 @@ set @idObs = (select idObservation
 from Observation o
 inner join Trail t
 on t.idTrail = o.Trail_idTrail
-inner join Sampling s 
+inner join Sampling s
 on s.idSampling = t.Sampling_idSampling
 inner join User u
 on u.idUser = o.User_idUser
 where s.idSampling = pIdSampling and u.cedula = pcedula and o.date = pdate);
 
-delete from Observation  
+delete from Observation
 where idObservation = @idObs;
 
 END $$
