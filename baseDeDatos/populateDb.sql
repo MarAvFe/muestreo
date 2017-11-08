@@ -27,7 +27,7 @@ INSERT INTO sampling.Sampling(description,live,name,SamplingType_idSamplingType,
 
 -- Inserción Comment
 INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification,Sampling_idSampling)VALUES
-    ('Feriado Anexión de Guanacaste','2015-07-25',1,1,1),
+    ('Feriado Anexión de Guanacaste','2017-11-04',1,1,1),
     ('Feriado 02 de Agosto','2016-08-02',3,0,2);
 
 

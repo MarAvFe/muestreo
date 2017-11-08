@@ -57,6 +57,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     cedula: string = '';
     samplings: any;
     observations: Observation[] = [];
+    comments: Comments[] = [];
     selectedSampling: any = {
         name: '',
         description: '',
@@ -137,6 +138,8 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
                 negativeLineColor: this.layoutColors.danger,
                 type: 'smoothedLine',
                 valueField: 'value',
+                colorField: 'color',
+                bulletField: 'bullet',
                 fillAlphas: 0,
                 fillColorsField: 'lineColor',
                 balloonText: '[[comment]]',
@@ -302,6 +305,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
         this.lineChart = chart;
     }
 
+
     constructor(private _baConfig: BaThemeConfigProvider, public toastr: ToastsManager,
         vcr: ViewContainerRef, private _analyzeService: AnalyzeService,
     ) {
@@ -314,7 +318,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-
+        //AmCharts.addInitHandler(this.productivityChartHandler, ['serial']);
         this.cedula = localStorage.getItem('cedula');
         this.data = this._analyzeService.getAll();
         this.getTitles();
@@ -322,7 +326,6 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
         .then(data => {
             this.samplings = data[0];
             this.selectedSampling = this.samplings[0];
-            this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
             const tmp = this._analyzeService.getData(this.selectedSampling.idSampling).then(dataz => {
                 this.doughnutData = dataz.samples;
@@ -372,7 +375,13 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
         this._analyzeService.getObservation(samplingId).then((dataz) => {
             this.observations = dataz;
             this.sourceObserv.load(this.observations);
-            this.lineChart.dataProvider = this._analyzeService.getLineChartData(this.observations);
+            this.lineChart.dataProvider = this._analyzeService.getLineChartData(this.observations, this.comments);
+            for (const item of this.lineChart.dataProvider) {
+              if (item.value && item.comment) {
+                item.color = '#b30047';
+              }
+            }
+
             this.lineChart.valueAxes[0].guides[0].value = this.dataAverage();
             this.lineChart.valueAxes[0].guides[0].label = `${Math.floor(this.dataAverage())}%`;
             this.lineChart.validateNow(true);
@@ -413,13 +422,15 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     loadComments(idSampling): void {
         const samplingId = this.selectedSampling.idSampling;
         this._analyzeService.getComments(samplingId).then((data) => {
-          for (const i of data) {
-              const n = i.date;
-              const timeZoneOffset = new Date().getTimezoneOffset();
-              const b = new Date(n);
-              i.date = this.renderDate(b.toLocaleString());
-          }
-            this.sourceComment.load(data);
+            for (const i of data) {
+                const n = i.date;
+                const timeZoneOffset = new Date().getTimezoneOffset();
+                const b = new Date(n);
+                i.date = this.renderDate(b.toLocaleString());
+            }
+            this.comments = data;
+            this.sourceComment.load(this.comments);
+            this.loadObservations(this.selectedSampling.idSampling);
         }).catch(err => console.debug(`Error al cargar los comentarios: ${err}`));
 
     }
@@ -430,7 +441,6 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
             // Verifica que la estructura retornada sea correcta
             const modality = updatedSampling.modality.data[0];
             this.selectedSampling = updatedSampling;
-            this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
             // Actualizar datos de observaciones

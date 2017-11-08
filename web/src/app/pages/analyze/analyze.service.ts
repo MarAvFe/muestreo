@@ -324,18 +324,17 @@ createComposeDeleteObservation(info, bodyParams, bodyParams1): Object {
     };
 }
 
-getLineChartData(observations: Observation[]): Object {
-    return this.getSummarizedObservations(observations);
+getLineChartData(observations: Observation[], comments: Comments[]): Object {
+    return this.getSummarizedObservations(observations, comments);
 }
 
-getSummarizedObservations(observations: Observation[]): any {
+getSummarizedObservations(observations: Observation[], comments: Comments[]): any {
     // {"date":"2017-10-31T06:00:00.000Z","username":"Andrea","cedula":"301480674","type":2,
     //   "activityname":"Sosteniendo escalera"}
     // { date: new Date(2014, 4), value: 44.92 }
     const data: { date, value }[] = [];
     const historicVals = [];
     const resultingData = [];
-    let value: number;
     let holdDate: string;
     let tmp = this.sameDates(observations);
     while (tmp.result.length > 0) {
@@ -347,16 +346,32 @@ getSummarizedObservations(observations: Observation[]): any {
                 val++;
             }
         }
-        value = (val / numVals) * 100;
         holdDate = tmp.result[0].date;
-        resultingData.push( { date: new Date(
-            parseInt(holdDate.substring(0, 4)),
-            parseInt(holdDate.substring(5, 7)) - 1,
-            parseInt(holdDate.substring(8, 10))),
-            value });
+        const prepObj: any = {
+            date: new Date(
+                parseInt(holdDate.substring(0, 4)),
+                parseInt(holdDate.substring(5, 7)) - 1,
+                parseInt(holdDate.substring(8, 10)),
+            ),
+            value: (val / numVals) * 100,
+        };
+        prepObj.comment = this.getDayComments(holdDate, comments);
+        resultingData.push(prepObj);
             tmp = this.sameDates(tmp.dif);
         }
         return resultingData;
+    }
+
+    private getDayComments(date, comments) {
+        let res = '';
+        for (const c of comments) {
+            if (c.date.substring(0, 10) === date.substring(0, 10)) {
+                res += c.comment;
+            }
+        }
+        if (res !== '') {
+            return res;
+        }
     }
 
     private sameDates(obs): { result: Observation[], dif: Observation[] } {
