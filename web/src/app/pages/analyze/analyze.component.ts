@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewContainerRef, ContentChildren, QueryList} from '@angular/core';
 import { AnalyzeService } from './analyze.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { ToastsManager, Toast } from 'ng2-toastr';
@@ -10,6 +10,8 @@ import { SamplingId } from './objects/SamplingId';
 import { Comments } from './objects/Comments';
 import { CollaboratorName } from './objects/CollaboratorName';
 import { ActivityName } from './objects/ActivityName';
+import { TabsComponent } from './tabs';
+import { TabComponent } from './tab';
 import { RenderBitComponent } from './customComponents/renderBit.component';
 import * as Chart from 'chart.js';
 import { ChartActivity } from './objects/ChartActivity';
@@ -29,20 +31,16 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
 
     data: any;
     doughnutData: {};
+    doughnutDataProduct: {};
     totalActivities;
     totalCollaboratives;
+    totalProductives;
     doughnutDataCollab: {};
     resultado: any;
 
     layoutColors = this._baConfig.get().colors;
     graphColor = this._baConfig.get().colors.custom.dashboardLineChart;
     lineChart;
-
-    titles: Titles[];
-
-    getTitles(): void {
-        this._analyzeService.getTitles().then(titles => this.titles = titles);
-    }
 
     chartData: Object;
     query: string = '';
@@ -310,6 +308,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
         vcr: ViewContainerRef, private _analyzeService: AnalyzeService,
     ) {
         this.toastr.setRootViewContainerRef(vcr);
+
     }
 
     private handleError(error: any): Promise<any> {
@@ -321,27 +320,14 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
         //AmCharts.addInitHandler(this.productivityChartHandler, ['serial']);
         this.cedula = localStorage.getItem('cedula');
         this.data = this._analyzeService.getAll();
-        this.getTitles();
+        //carga los muestreos en el select principal
         this._analyzeService.getMySamplings(this.cedula)
         .then(data => {
             this.samplings = data[0];
             this.selectedSampling = this.samplings[0];
             this.loadComments(this.selectedSampling.idSampling);
-            const tmp = this._analyzeService.getData(this.selectedSampling.idSampling).then(dataz => {
-                this.doughnutData = dataz.samples;
-                this.totalActivities = dataz.totalActivities ;
-                this._loadDoughnutCharts();
-            })
-            .catch(this.handleError );
-
-            const tmpCollab = this._analyzeService.getDataCollab(this.selectedSampling.idSampling)
-            .then(datazC => {
-                this.doughnutDataCollab = datazC.samples1;
-
-                this.totalCollaboratives = datazC.totalCollaboratives;
-                this._loadDoughnutChartCollab();
-            })
-            .catch(this.handleError );
+            //carga los comentarios
+            this.InitCharts();
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
         })
         .catch( this.handleError );
@@ -350,9 +336,39 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         this._loadDoughnutCharts();
         this._loadDoughnutChartCollab();
+        this._loadDoughnutChartProduct();
     }
 
-    private _loadDoughnutCharts() {
+
+    InitCharts() {
+      //carga gráfico pastel de actividades improductivas
+      const tmp = this._analyzeService.getData(this.selectedSampling.idSampling).then(dataz => {
+          this.doughnutData = dataz.samples;
+          this.totalActivities = dataz.totalActivities ;
+          this._loadDoughnutCharts();
+      })
+      .catch(this.handleError );
+      //carga gráfico pastel de actividades colaborativas
+      const tmpCollab = this._analyzeService.getDataCollab(this.selectedSampling.idSampling)
+      .then(datazC => {
+          this.doughnutDataCollab = datazC.samples1;
+          this.totalCollaboratives = datazC.totalCollaboratives;
+          this._loadDoughnutChartCollab();
+      })
+      .catch(this.handleError );
+      //carga gráfico pastel de actividades productivas
+      const tmpProduct = this._analyzeService.getDataProduct(this.selectedSampling.idSampling)
+      .then(datazP => {
+          this.doughnutDataProduct = datazP.samples2;
+          this.totalProductives = datazP.totalProductives;
+
+          this._loadDoughnutChartProduct();
+      })
+      .catch(this.handleError );
+    }
+
+
+    _loadDoughnutCharts() {
         const el = jQuery('.chart-area').get(0) as HTMLCanvasElement;
         new Chart(el.getContext('2d')).Doughnut(this.doughnutData, {
             segmentShowStroke: false,
@@ -361,9 +377,19 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
         });
     }
 
-    private _loadDoughnutChartCollab() {
+    _loadDoughnutChartCollab() {
         const ele = jQuery('.chart-area').get(1) as HTMLCanvasElement;
         new Chart(ele.getContext('2d')).Doughnut(this.doughnutDataCollab, {
+            segmentShowStroke: false,
+            percentageInnerCutout : 64,
+            responsive: true,
+        });
+    }
+
+
+   _loadDoughnutChartProduct() {
+        const elem = jQuery('.chart-area').get(2) as HTMLCanvasElement;
+        new Chart(elem.getContext('2d')).Doughnut(this.doughnutDataProduct, {
             segmentShowStroke: false,
             percentageInnerCutout : 64,
             responsive: true,
@@ -442,8 +468,11 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
             const modality = updatedSampling.modality.data[0];
             this.selectedSampling = updatedSampling;
             this.loadComments(this.selectedSampling.idSampling);
+            //carga gráficos pastel de actividades improductivas
+           this.InitCharts();
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
             // Actualizar datos de observaciones
+
         } catch (e) {
             console.debug(`Error actualizando muestreo seleccionado: ${e} `);
         }

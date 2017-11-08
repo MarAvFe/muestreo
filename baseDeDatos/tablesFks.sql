@@ -1176,7 +1176,7 @@ DROP procedure IF EXISTS `pUpdateObservation`;
 
 DELIMITER $$
 USE `sampling` $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdateObservation`(pIdSampling int, pDate date, pUsername varchar(45), pActivityName  varchar(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpdateObservation`(pIdSampling int, pDate date, pUsername varchar(45), pActivityName varchar(45))
 BEGIN
     UPDATE Observation o
     inner join Trail t
@@ -1266,6 +1266,33 @@ BEGIN
 END $$
 DELIMITER ;
 SHOW WARNINGS;
+
+
+-- -----------------------------------------------------
+-- procedure getProductiveAct
+-- -----------------------------------------------------
+
+USE `sampling`;
+DROP procedure IF EXISTS `getProductiveAct`;
+
+
+DELIMITER $$
+USE `sampling` $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getProductiveAct`(pIdSampling int)
+BEGIN
+    select count(*) as num, act.name
+    from Sampling s inner join Trail t
+    on s.idSampling = t.Sampling_idSampling
+    inner join Observation o
+    on t.idTrail = o.Trail_idTrail
+    inner join Activity act
+    on act.idActivity = o.Activity_idActivity
+    where s.idSampling = pIdSampling and act.type = 0
+    GROUP BY act.name;
+END $$
+DELIMITER ;
+SHOW WARNINGS;
+
 
 -- -----------------------------------------------------
 -- procedure getCollaborativeAct

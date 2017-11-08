@@ -6,7 +6,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { AppTranslationModule } from '../../app.translation.module';
 import { AnalyzeComponent } from './analyze.component';
 import { AnalyzeService } from './analyze.service';
-
+import { TabComponent } from './tab';
+import { TabsComponent } from './tabs';
 import { routing } from './analyze.routing';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { RenderBitComponent } from './customComponents/renderBit.component';
@@ -25,10 +26,12 @@ import { RenderBitComponent } from './customComponents/renderBit.component';
     declarations: [
         AnalyzeComponent,
         RenderBitComponent,
+        TabComponent,
+        TabsComponent,
     ],
     entryComponents: [
         RenderBitComponent,
-    ],
+    ],    
     providers: [
         AnalyzeService,
     ],

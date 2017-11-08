@@ -16,6 +16,7 @@ import { ActivityName } from './objects/ActivityName';
 import { ObservationID } from './objects/ObservationID';
 import { ImproductiveAct } from './objects/ImproductiveAct';
 import { CollaborativeAct } from './objects/CollaborativeAct';
+import { ProductiveAct } from './objects/ProductiveAct';
 import { ChartActivity } from './objects/ChartActivity';
 import { ChartCollab } from './objects/ChartCollab';
 
@@ -99,6 +100,13 @@ export class AnalyzeService {
         this.options = { headers : this.heads, withCredentials : true };
     }
 
+    getProductiveActs(data): Promise<ProductiveAct[]> {
+        const body = this.toQueryString( { pIdSampling: data });
+        return this.http.post('http://localhost:2828/getProductiveAct', body, this.options )
+        .toPromise()
+        .then(response => response.json().data[0] as ProductiveAct[])
+        .catch(this.handleError);
+    }
 
     getImproductiveActs(data): Promise<ImproductiveAct[]> {
         const body = this.toQueryString( { pIdSampling: data });
@@ -128,6 +136,7 @@ export class AnalyzeService {
         this.dashboardColors.blue1, this.dashboardColors.darkblue3,
     ];
 
+
     getData(data): Promise<{totalActivities: number, samples: ChartActivity[]}> {
         return this.getImproductiveActs(data).then( res => {
             let k = 0;
@@ -152,6 +161,9 @@ export class AnalyzeService {
                 };
                 chartActs.push(tmp as ChartActivity);
             }
+              console.debug(JSON.stringify('IMPRODUCTIVAS'));
+            console.debug(JSON.stringify(chartActs));
+
             return { samples: chartActs, totalActivities: k };
         }).catch(this.handleError);
     }
@@ -181,7 +193,40 @@ export class AnalyzeService {
                 };
                 chartColl.push(tmp1 as ChartCollab);
             }
+                console.debug(JSON.stringify('COLABORATIVAS'));
+              console.debug(JSON.stringify(chartColl));
             return { samples1: chartColl, totalCollaboratives: k };
+        }).catch(this.handleError);
+    }
+
+    getDataProduct(data): Promise<{totalProductives: number, samples2: ChartActivity[]}> {
+        return this.getProductiveActs(data).then( res => {
+            let k = 0;
+            let colr;
+            const chartProduct: ChartActivity[] = [];
+            for (let i = 0; i < res.length; i++) {
+                k += res[i].num;
+                if (i < this.colors.length) {
+                    colr = this.colors[i];
+                } else if (i < this.colors.length * 2) {
+                    colr = colorHelper.shade(this.colors[i], 20);
+                } else if (i < this.colors.length * 3) {
+                    colr = colorHelper.shade(this.colors[i], 20);
+                }
+                const tmp2: any = {
+                    value: res[i].num,
+                    color: this.colors[ i % this.colors.length],
+                    highlight: this.colors[colr % this.colors.length],
+                    label : res[i].name,
+                    percentage: 200,
+                    order : 2,
+                };
+                chartProduct.push(tmp2 as ChartActivity);
+            }
+            console.debug(JSON.stringify('PRODUCTIVAS'));
+
+            console.debug(JSON.stringify(chartProduct));
+            return { samples2: chartProduct, totalProductives: k };
         }).catch(this.handleError);
     }
 
