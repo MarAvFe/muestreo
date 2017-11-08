@@ -214,12 +214,13 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
                         list: this.activityTypes,
                     },
                 },
-                cedula: {
+              },
+            cedula: {
                     title: 'Cédula',
                     type: 'string',
                     editable: false,
-                },
-                type: {
+            },
+            type: {
                     title: 'Tipo',
                     type: 'custom',
                     editable: false,
@@ -237,8 +238,8 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
                             list: this.activityTypes,
                         },
                     },
-                },
-                activityname: {
+              },
+              activityname: {
                     title: 'Actividad',
                     type: 'number',
                     filter: {
@@ -257,7 +258,6 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
                     },
                 },
             },
-        },
     };
 
     settingsComment = {
@@ -439,6 +439,12 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     loadComments(idSampling): void {
         const samplingId = this.selectedSampling.idSampling;
         this._analyzeService.getComments(samplingId).then((data) => {
+          for (const i of data) {
+              const n = i.date;
+              const timeZoneOffset = new Date().getTimezoneOffset();
+              const b = new Date(n);
+              i.date = this.renderDate(b.toLocaleString());
+          }
             this.sourceComment.load(data);
         }).catch(err => console.debug(`Error al cargar los comentarios: ${err}`));
 
@@ -494,7 +500,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
         const idSamp = this.selectedSampling.idSampling;
 
         this._analyzeService.deleteObservation(
-            this._analyzeService.createComposeDeleteObservation(idSamp, '301480674', '2017-10-30'),
+            this._analyzeService.createComposeDeleteObservation(idSamp, event.data.cedula, event.data.date),
         ).then(res => {
             if (res.error === 'none') {
                 event.confirm.resolve();
