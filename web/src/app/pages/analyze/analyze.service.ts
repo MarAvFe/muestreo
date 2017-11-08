@@ -313,8 +313,6 @@ createComposeEditObservation(info, bodyParams): Object {
     return {pIdSampling: info,
         pDate: bodyParams.date,
         pUsername: bodyParams.username,
-        pCedula: bodyParams.cedula,
-        pActivityType: bodyParams.type,
         pActivityName: bodyParams.activityname,
     };
 }
