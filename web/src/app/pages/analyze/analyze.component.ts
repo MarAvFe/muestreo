@@ -350,7 +350,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     private _loadDoughnutCharts() {
         const el = jQuery('.chart-area').get(0) as HTMLCanvasElement;
         new Chart(el.getContext('2d')).Doughnut(this.doughnutData, {
-            segmentShowStroke: true,
+            segmentShowStroke: false,
             percentageInnerCutout : 64,
             responsive: true,
         });
@@ -359,7 +359,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     private _loadDoughnutChartCollab() {
         const ele = jQuery('.chart-area').get(1) as HTMLCanvasElement;
         new Chart(ele.getContext('2d')).Doughnut(this.doughnutDataCollab, {
-            segmentShowStroke: true,
+            segmentShowStroke: false,
             percentageInnerCutout : 64,
             responsive: true,
         });

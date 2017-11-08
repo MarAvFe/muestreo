@@ -119,9 +119,9 @@ export class AnalyzeService {
     dashboardColors = this._baConfig.get().colors.dashboard;
 
     colors = [
-        this.dashboardColors.white, this.dashboardColors.silverTree, this.dashboardColors.gossip,
-        this.dashboardColors.surfieGreen, this.dashboardColors.blueStone, this.dashboardColors.lightblue1,
-        this.dashboardColors.darkblue1, this.dashboardColors.lightblue2, this.dashboardColors.purple1,
+        this.dashboardColors.lightblue1, this.dashboardColors.silverTree, this.dashboardColors.gossip,
+        this.dashboardColors.surfieGreen, this.dashboardColors.blueStone, this.dashboardColors.darkblue1,
+        this.dashboardColors.white, this.dashboardColors.lightblue2, this.dashboardColors.purple1,
         this.dashboardColors.purple2, this.dashboardColors.green1, this.dashboardColors.darkblue2,
         this.dashboardColors.lightgreen1, this.dashboardColors.darkgreen1, this.dashboardColors.darkgreen2,
         this.dashboardColors.lightblue3, this.dashboardColors.lightpurple1, this.dashboardColors.lightpurple2,
