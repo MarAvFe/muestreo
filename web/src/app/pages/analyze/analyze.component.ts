@@ -65,6 +65,8 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
         },
         type: '',
         sampled: '',
+        sampledDescription: '',
+        n: -1,
     };
 
     dataProvided = [

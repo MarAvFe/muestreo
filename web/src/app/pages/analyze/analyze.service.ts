@@ -125,7 +125,7 @@ export class AnalyzeService {
         this.dashboardColors.purple2, this.dashboardColors.green1, this.dashboardColors.darkblue2,
         this.dashboardColors.lightgreen1, this.dashboardColors.darkgreen1, this.dashboardColors.darkgreen2,
         this.dashboardColors.lightblue3, this.dashboardColors.lightpurple1, this.dashboardColors.lightpurple2,
-        this.dashboardColors.blue1, this.dashboardColors.darkblue3
+        this.dashboardColors.blue1, this.dashboardColors.darkblue3,
     ];
 
     getData(data): Promise<{totalActivities: number, samples: ChartActivity[]}> {
@@ -254,7 +254,7 @@ export class AnalyzeService {
         .catch(this.handleError);
     }
 
-    getMySamplings(cedula): Promise<BasicSampling[]> {
+    getMySamplings(cedula): Promise<any[]> {
         const body = this.toQueryString({ pIdUser: cedula });
         return this.http.post('http://localhost:2828/getMySamplings', body, this.options )
         .toPromise()

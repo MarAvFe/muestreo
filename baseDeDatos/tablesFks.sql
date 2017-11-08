@@ -532,7 +532,8 @@ BEGIN
     st.name as `type`,
     sp.name as `sampled`,
     sp.description as `sampledDescription`,
-    case when s.isPreliminarSampling = 1 then 1 else 0 end as 'isDefinitive'
+    case when s.isPreliminarSampling = 1 then 1 else 0 end as 'isDefinitive',
+    case when s.isPreliminarSampling = 1 then n_definitive else n_preliminar end as 'n'
  from Sampling s
 	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
     join SamplingType st on st.idSamplingType = s.SamplingType_idSamplingType
