@@ -30,45 +30,34 @@ INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification,Sampling_id
     ('Feriado Anexión de Guanacaste','2015-07-25',1,1,1),
     ('Feriado 02 de Agosto','2016-08-02',3,0,2);
 
--- -- Insercion en catalogo trail
--- INSERT INTO sampling.Trail(hour, Sampling_idSampling)VALUES
---     ('8:00:00', 1),
---     ('10:20:00', 1),
---     ('12:45:00', 2),
---     ('3:15:00', 2);
---
--- -- Inserción Observation
--- INSERT INTO sampling.Observation(date, hasData, isProductive, isCancelled, Activity_idActivity, User_idUser, Trail_idTrail)VALUES
---     ('2015-05-21',0,0,0,1,3,1),
---     ('2015-10-09',1,0,0,2,1,3),
---     ('2016-07-15',0,0,0,3,2,3);
-
 
 INSERT INTO Trail(hour, Sampling_idSampling, User_idUser)
 VALUES('2017-11-03 14:05:00',1,1);
 
 insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)VALUES
     ('2017-11-03 14:05:03', 1, 1, 2),
-    ('2017-11-03 14:05:08', 1, 1, 2),
-    ('2017-11-03 14:05:35', 1, 4, 1),
-    ('2017-11-03 14:06:01', 1, 4, 2),
-    ('2017-11-03 14:06:20', 1, 5, 2),
-    ('2017-11-03 14:06:40', 1, 5, 3);
-
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW(), 1, 6, 2);
-
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW()+1, 1, 4, 2);
-
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW()+2, 1, 4, 2);
-
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW()+3, 1, 4, 2);
-
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW()+4, 1, 5, 2);
+    ('2017-11-03 14:05:08', 1, 4, 2),
+    ('2017-11-03 14:05:35', 1, 2, 1),
+    ('2017-11-03 14:05:35', 1, 1, 1),
+    ('2017-11-03 14:05:35', 1, 1, 1),
+    ('2017-11-03 14:06:01', 1, 1, 2),
+    ('2017-11-04 14:06:20', 1, 2, 2),
+    ('2017-11-04 14:06:20', 1, 2, 2),
+    ('2017-11-04 14:06:20', 1, 2, 2),
+    ('2017-11-04 14:06:20', 1, 2, 2),
+    ('2017-11-04 14:06:20', 1, 4, 2),
+    ('2017-11-04 14:06:20', 1, 4, 2),
+    ('2017-11-04 14:06:20', 1, 2, 2),
+    ('2017-11-04 14:06:40', 1, 5, 3),
+    ('2017-11-05 14:06:20', 1, 2, 2),
+    ('2017-11-05 14:06:20', 1, 2, 2),
+    ('2017-11-05 14:06:20', 1, 4, 2),
+    ('2017-11-05 14:06:20', 1, 4, 2),
+    ('2017-11-05 14:06:20', 1, 2, 2),
+    ('2017-11-05 14:06:20', 1, 4, 2),
+    ('2017-11-05 14:06:20', 1, 4, 2),
+    ('2017-11-05 14:06:20', 1, 2, 2),
+    ('2017-11-05 14:06:40', 1, 5, 3);
 
 -- Inserción Sampling_has_User
 INSERT INTO sampling.Sampling_has_User(Sampling_idSampling, User_idUser, isAdmin)VALUES

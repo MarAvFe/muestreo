@@ -4,10 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NgaModule } from '../../theme/nga.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { AppTranslationModule } from '../../app.translation.module';
-import { TrafficChart } from './trafficChart';
 import { AnalyzeComponent } from './analyze.component';
 import { AnalyzeService } from './analyze.service';
-import { LineChartService } from './lineChart/lineChart.service';
 
 import { routing } from './analyze.routing';
 import { ToastModule } from 'ng2-toastr/ng2-toastr';
@@ -26,7 +24,6 @@ import { RenderBitComponent } from './customComponents/renderBit.component';
     ],
     declarations: [
         AnalyzeComponent,
-        LineChart,
         RenderBitComponent,
     ],
     entryComponents: [
@@ -34,7 +31,6 @@ import { RenderBitComponent } from './customComponents/renderBit.component';
     ],
     providers: [
         AnalyzeService,
-        LineChartService,
     ],
 })
 export class AnalyzeModule {}
