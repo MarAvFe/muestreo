@@ -18,8 +18,6 @@
     <br>
     <div class="row">
         <div class="col-md-12 ">
-          <tabs>
-          <tab tabTitle="Actividades Improductivas"  >
             <ba-card translate cardTitle="{{'analyze.improductivities'}}" baCardClass="with-scroll">
               <!--traffic-chart><!/traffic-chart>-->
               <div class="channels-block">
@@ -57,11 +55,15 @@
                   </div>
                 </div>
               </div>
+
+
+
+
+
+
             </ba-card>
-          </tab>
-          <tab tabTitle="Actividades Colaborativas">
+
             <ba-card translate cardTitle="{{'analyze.collaboratives'}}" baCardClass="with-scroll">
-              <!--traffic-chart><!/traffic-chart>-->
               <div class="channels-block">
                 <div class="chart-bg"></div>
                 <div class="traffic-chart" id="trafficChart">
@@ -99,49 +101,46 @@
               </div>
             </ba-card>
 
-          </tab>
-          <tab tabTitle="Actividades Productivas">
-              <p><ba-card translate cardTitle="{{'analyze.productives'}}" baCardClass="with-scroll">
-                <!--traffic-chart><!/traffic-chart>-->
-                <div class="channels-block">
-                  <div class="chart-bg"></div>
-                  <div class="traffic-chart" id="trafficChart">
-                    <div class="canvas-holder">
-                      <canvas class="chart-area" width="300px" height="300px"></canvas>
-                      <div class="traffic-text">
-                        {{totalProductives}}
-                        <span translate>{{'dashboard.traffic_chart.view_total'}}</span>
-                      </div>
-                    </div>
-                    <div class="traffic-legend"></div>
-                  </div>
 
-                  <div class="channels-info">
-                    <div>
-                      <div class="channels-info-item" *ngFor="let item of doughnutDataProduct">
-                        <div class="legend-color" [ngStyle]="{'background-color': item.color }"></div>
-                        <p>{{ item.label }}
-                            <span class="channel-number">
-                                <!-- To display integer value -->
-                                {{ ((item.value / totalProductives) * 100) - (((item.value / totalProductives) * 100) % 1) }}%
-                            </span>
-                        </p>
-                        <div class="progress progress-sm channel-progress">
-                          <div class="progress-bar" role="progressbar"
-                               [attr.aria-valuenow]="(item.value / totalProductives)"
-                               aria-valuemin="0"
-                               aria-valuemax="100"
-                               [ngStyle]="{width: (item.value / totalProductives) * 100 + '%' }">
-                          </div>
+            <ba-card translate cardTitle="{{'analyze.productives'}}" baCardClass="with-scroll">
+              <div class="channels-block">
+                <div class="chart-bg"></div>
+                <div class="traffic-chart" id="trafficChart">
+                  <div class="canvas-holder">
+                    <canvas class="chart-area" width="300px" height="300px"></canvas>
+                    <div class="traffic-text">
+                      {{totalProductives}}
+                      <span translate>{{'dashboard.traffic_chart.view_total'}}</span>
+                    </div>
+                  </div>
+                  <div class="traffic-legend"></div>
+                </div>
+
+                <div class="channels-info">
+                  <div>
+                    <div class="channels-info-item" *ngFor="let item of doughnutDataProduct">
+                      <div class="legend-color" [ngStyle]="{'background-color': item.color }"></div>
+                      <p>{{ item.label }}
+                          <span class="channel-number">
+                              <!-- To display integer value -->
+                              {{ ((item.value / totalProductives) * 100) - (((item.value / totalProductives) * 100) % 1) }}%
+                          </span>
+                      </p>
+                      <div class="progress progress-sm channel-progress">
+                        <div class="progress-bar" role="progressbar"
+                             [attr.aria-valuenow]="(item.value / totalProductives)"
+                             aria-valuemin="0"
+                             aria-valuemax="100"
+                             [ngStyle]="{width: (item.value / totalProductives) * 100 + '%' }">
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </ba-card></p>
+              </div>
 
-          </tab>
-          </tabs>
+              </ba-card>
+
 
 
 
