@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewContainerRef } from '@angular/core';
 import { AnalyzeService } from './analyze.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { ToastsManager, Toast } from 'ng2-toastr';
@@ -20,12 +20,12 @@ import { BaThemeConfigProvider, colorHelper, layoutPaths } from '../../theme';
     selector: 'analyze',
     templateUrl: './analyze.html',
     styleUrls: [
-      './smartTables.scss',
-      './analyze.scss',
+        './smartTables.scss',
+        './analyze.scss',
     ],
 })
 
-export class AnalyzeComponent implements OnInit {
+export class AnalyzeComponent implements OnInit, AfterViewInit {
 
     data: any;
     doughnutData: {};
@@ -68,114 +68,114 @@ export class AnalyzeComponent implements OnInit {
     };
 
     dataProvided = [
-      { date: new Date(2012, 4), value: 2.3 },
-      { date: new Date(2012, 6), value: 90.5, comment: 'Se paga bonificación' },
-      { date: new Date('2012-07-25T06:00:00.000Z'), value: 46.67 },
-      { date: new Date(2012, 10), value: 32.1 },
+        { date: new Date(2012, 4), value: 2.3 },
+        { date: new Date(2012, 6), value: 90.5, comment: 'Se paga bonificación' },
+        { date: new Date('2012-07-25T06:00:00.000Z'), value: 46.67 },
+        { date: new Date(2012, 10), value: 32.1 },
     ];
 
     lineChartData = {
-      type: 'serial',
-      theme: 'black',
-      marginTop: 15,
-      marginRight: 15,
-      responsive: {
-        'enabled': false,
-      },
-      dataProvider: this.dataProvided,
-      chartScrollbar: {
-        autoGridCount: true,
-        graph: 'g1',
-        scrollbarHeight: 40,
-        oppositeAxis: false,
-        color: '#000000',
-        offset: 5,
-      },
-      categoryField: 'date',
-      categoryAxis: {
-        parseDates: true,
-        gridAlpha: 0.1,
-        color: '#000',
-        axisColor: '#000',
-        // title: 'Días',
-        minHorizontalGap: 40,
-        tickPosition: 'middle',
-        tickLength: 5,
-      },
-      valueAxes: [
-        {
-          minVerticalGap: 30,
-          gridAlpha: 0.1,
-          color: this.layoutColors.defaultText,
-          axisColor: this.layoutColors.defaultText,
-          title: 'Productividad (%)',
-          precision: 0,
-          guides: [{
-            value: this.dataAverage(),
-            lineAlpha: 100,
-            lineColor: '#a00',
-            inside: true,
-            label: `${Math.floor(this.dataAverage())}%`,
-            position: 'right',
-            dashLength: 30,
-            tickLength: 0,
-          }],
+        type: 'serial',
+        theme: 'black',
+        marginTop: 15,
+        marginRight: 15,
+        responsive: {
+            'enabled': false,
         },
-      ],
-      graphs: [
-        {
-          id: 'g1',
-          bullet: 'round',
-          bulletColor: '#00ff99',
-          bulletAlpha: 0.9,
-          bulletSize: 15,
-          useLineColorForBulletBorder: true,
-          lineColor: colorHelper.hexToRgbA(this.graphColor, 0.8),
-          lineThickness: 3,
-          negativeLineColor: this.layoutColors.danger,
-          type: 'smoothedLine',
-          valueField: 'value',
-          fillAlphas: 0,
-          fillColorsField: 'lineColor',
-          balloonText: '[[comment]]',
+        dataProvider: this.dataProvided,
+        chartScrollbar: {
+            autoGridCount: true,
+            graph: 'g1',
+            scrollbarHeight: 40,
+            oppositeAxis: false,
+            color: '#000000',
+            offset: 5,
         },
-      ],
-      chartCursor: {
-        categoryBalloonDateFormat: 'DD MMM YYYY',
-        categoryBalloonColor: '#4285F4',
-        categoryBalloonAlpha: 0.8,
-        categoryBalloonText: '[[category]]',
-        valueBalloonsEnabled: false,
-        cursorAlpha: 1,
-        valuePrecision: 1,
-        valueLineBalloonEnabled: false,
-        valueLineAlpha: 0.1,
-        balloonPointerOrientation: 'vertical',
-      },
-      dataDateFormat: 'MM YYYY',
-      export: {
-        enabled: true,
-      },
-      creditsPosition: 'bottom-right',
-      zoomOutButton: {
-        backgroundColor: '#fff',
-        backgroundAlpha: 0.5,
-        color: '#000000',
-      },
-      zoomOutText: 'Ver todo',
-      pathToImages: layoutPaths.images.amChart,
+        categoryField: 'date',
+        categoryAxis: {
+            parseDates: true,
+            gridAlpha: 0.1,
+            color: '#000',
+            axisColor: '#000',
+            // title: 'Días',
+            minHorizontalGap: 40,
+            tickPosition: 'middle',
+            tickLength: 5,
+        },
+        valueAxes: [
+            {
+                minVerticalGap: 30,
+                gridAlpha: 0.1,
+                color: this.layoutColors.defaultText,
+                axisColor: this.layoutColors.defaultText,
+                title: 'Productividad (%)',
+                precision: 0,
+                guides: [{
+                    value: this.dataAverage(),
+                    lineAlpha: 100,
+                    lineColor: '#a00',
+                    inside: true,
+                    label: `${Math.floor(this.dataAverage())}%`,
+                    position: 'right',
+                    dashLength: 30,
+                    tickLength: 0,
+                }],
+            },
+        ],
+        graphs: [
+            {
+                id: 'g1',
+                bullet: 'round',
+                bulletColor: '#00ff99',
+                bulletAlpha: 0.9,
+                bulletSize: 15,
+                useLineColorForBulletBorder: true,
+                lineColor: colorHelper.hexToRgbA(this.graphColor, 0.8),
+                lineThickness: 3,
+                negativeLineColor: this.layoutColors.danger,
+                type: 'smoothedLine',
+                valueField: 'value',
+                fillAlphas: 0,
+                fillColorsField: 'lineColor',
+                balloonText: '[[comment]]',
+            },
+        ],
+        chartCursor: {
+            categoryBalloonDateFormat: 'DD MMM YYYY',
+            categoryBalloonColor: '#4285F4',
+            categoryBalloonAlpha: 0.8,
+            categoryBalloonText: '[[category]]',
+            valueBalloonsEnabled: false,
+            cursorAlpha: 1,
+            valuePrecision: 1,
+            valueLineBalloonEnabled: false,
+            valueLineAlpha: 0.1,
+            balloonPointerOrientation: 'vertical',
+        },
+        dataDateFormat: 'MM YYYY',
+        export: {
+            enabled: true,
+        },
+        creditsPosition: 'bottom-right',
+        zoomOutButton: {
+            backgroundColor: '#fff',
+            backgroundAlpha: 0.5,
+            color: '#000000',
+        },
+        zoomOutText: 'Ver todo',
+        pathToImages: layoutPaths.images.amChart,
     };
 
     dataAverage() {
         try {
-          const data = this.lineChart.dataProvider;
-          let tot = 0;
-          for (const v of data) {
-            tot += v.value;
-          }
-          return tot / data.length;
+            const data = this.lineChart.dataProvider;
+            let tot = 0;
+            for (const v of data) {
+                tot += v.value;
+            }
+            return tot / data.length;
         } catch (e) {
-          return 0;
+            return 0;
         }
     }
 
@@ -203,29 +203,6 @@ export class AnalyzeComponent implements OnInit {
             },
             username: {
                 title: 'Colaborador',
-                type: 'string',
-                filter: {
-                    type: 'list',
-                    config: {
-                        selectText: 'Todos',
-                        list: this.activityTypes,
-                    },
-                  },
-                  editor: {
-                      type: 'list',
-                      config: {
-                          list: this.activityTypes,
-                      },
-            },
-            cedula: {
-              title: 'Cédula',
-              type: 'string',
-              editable: false,
-            },
-            type: {
-                title: 'Tipo',
-                type: 'custom',
-                editable: false,
                 filter: {
                     type: 'list',
                     config: {
@@ -233,63 +210,86 @@ export class AnalyzeComponent implements OnInit {
                         list: this.activityTypes,
                     },
                 },
-                renderComponent: RenderBitComponent,
                 editor: {
                     type: 'list',
                     config: {
                         list: this.activityTypes,
                     },
                 },
-            },
-            activityname: {
-                title: 'Actividad',
-                type: 'number',
-                filter: {
-                    type: 'list',
-                    config: {
-                        selectText: 'Todos',
-                        list: this.activinames,
+                cedula: {
+                    title: 'Cédula',
+                    type: 'string',
+                    editable: false,
+                },
+                type: {
+                    title: 'Tipo',
+                    type: 'custom',
+                    editable: false,
+                    filter: {
+                        type: 'list',
+                        config: {
+                            selectText: 'Todos',
+                            list: this.activityTypes,
+                        },
                     },
-                  },
-                  renderComponent: RenderBitComponent,
-                  editor: {
-                      type: 'list',
-                      config: {
-                          list: this.activinames,
-                  },
+                    renderComponent: RenderBitComponent,
+                    editor: {
+                        type: 'list',
+                        config: {
+                            list: this.activityTypes,
+                        },
+                    },
+                },
+                activityname: {
+                    title: 'Actividad',
+                    type: 'number',
+                    filter: {
+                        type: 'list',
+                        config: {
+                            selectText: 'Todos',
+                            list: this.activinames,
+                        },
+                    },
+                    renderComponent: RenderBitComponent,
+                    editor: {
+                        type: 'list',
+                        config: {
+                            list: this.activinames,
+                        },
+                    },
+                },
             },
-      },
-  },
-};
+        },
+    };
 
     settingsComment = {
-      actions: {
-          add: false,
-      },
-      edit: {
-          editButtonContent: '<i class="ion-edit"></i>',
-          saveButtonContent: '<i class="ion-checkmark"></i>',
-          cancelButtonContent: '<i class="ion-close"></i>',
-          confirmSave: true,
-      },
-      delete: {
-          deleteButtonContent: '<i class="ion-trash-a"></i>',
-          confirmDelete: true,
-      },
-      columns: {
-          date: {
-              title: 'Fecha',
-              type: 'string',
-          },
-          comment: {
-            title: 'Comentario',
-            type: 'string',
-          },
+        actions: {
+            add: false,
+        },
+        edit: {
+            editButtonContent: '<i class="ion-edit"></i>',
+            saveButtonContent: '<i class="ion-checkmark"></i>',
+            cancelButtonContent: '<i class="ion-close"></i>',
+            confirmSave: true,
+        },
+        delete: {
+            deleteButtonContent: '<i class="ion-trash-a"></i>',
+            confirmDelete: true,
+        },
+        columns: {
+            date: {
+                title: 'Fecha',
+                type: 'string',
+            },
+            comment: {
+                title: 'Comentario',
+                type: 'string',
+            },
 
-          username: {
-              title: 'Autor',
-              type: 'string',
-          },
+            username: {
+                title: 'Autor',
+                type: 'string',
+            },
         },
     };
 
@@ -297,11 +297,12 @@ export class AnalyzeComponent implements OnInit {
     sourceComment: LocalDataSource = new LocalDataSource();
 
     initChart(chart: any) {
-      this.lineChart = chart;
+        this.lineChart = chart;
     }
 
     constructor(private _baConfig: BaThemeConfigProvider, public toastr: ToastsManager,
-      vcr: ViewContainerRef, private _analyzeService: AnalyzeService) {
+        vcr: ViewContainerRef, private _analyzeService: AnalyzeService,
+    ) {
         this.toastr.setRootViewContainerRef(vcr);
     }
 
@@ -325,95 +326,106 @@ export class AnalyzeComponent implements OnInit {
                 this.doughnutData = dataz.samples;
                 this.totalActivities = dataz.totalActivities ;
                 this._loadDoughnutCharts();
-              })
-              .catch(this.handleError );
+            })
+            .catch(this.handleError );
 
-            const tmpCollab = this._analyzeService.getDataCollab(this.selectedSampling.idSampling).then(datazC => {
+            const tmpCollab = this._analyzeService.getDataCollab(this.selectedSampling.idSampling)
+            .then(datazC => {
                 this.doughnutDataCollab = datazC.samples1;
 
                 this.totalCollaboratives = datazC.totalCollaboratives;
                 this._loadDoughnutChartCollab();
-              })
-              .catch(this.handleError );
-            console.debug('aqui guardo el id del sampling');
+            })
+            .catch(this.handleError );
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
         })
         .catch( this.handleError );
     }
 
     ngAfterViewInit() {
-      this._loadDoughnutCharts();
-      this._loadDoughnutChartCollab();
+        this._loadDoughnutCharts();
+        this._loadDoughnutChartCollab();
     }
 
     private _loadDoughnutCharts() {
-      const el = jQuery('.chart-area').get(0) as HTMLCanvasElement;
-      new Chart(el.getContext('2d')).Doughnut(this.doughnutData, {
-        segmentShowStroke: true,
-        percentageInnerCutout : 64,
-        responsive: true,
-      });
+        const el = jQuery('.chart-area').get(0) as HTMLCanvasElement;
+        new Chart(el.getContext('2d')).Doughnut(this.doughnutData, {
+            segmentShowStroke: true,
+            percentageInnerCutout : 64,
+            responsive: true,
+        });
     }
 
     private _loadDoughnutChartCollab() {
-      const ele = jQuery('.chart-area').get(1) as HTMLCanvasElement;
-      new Chart(ele.getContext('2d')).Doughnut(this.doughnutDataCollab, {
-        segmentShowStroke: true,
-        percentageInnerCutout : 64,
-        responsive: true,
-      });
+        const ele = jQuery('.chart-area').get(1) as HTMLCanvasElement;
+        new Chart(ele.getContext('2d')).Doughnut(this.doughnutDataCollab, {
+            segmentShowStroke: true,
+            percentageInnerCutout : 64,
+            responsive: true,
+        });
     }
 
     loadObservations(idSampling): void {
-     const samplingId = this.selectedSampling.idSampling;
-     this._analyzeService.getObservation(samplingId).then((dataz) => {
-        this.observations = dataz;
-        this.sourceObserv.load(this.observations);
-        this.lineChart.dataProvider = this._analyzeService.getLineChartData(this.observations);
-        this.lineChart.valueAxes[0].guides[0].value = this.dataAverage();
-        this.lineChart.valueAxes[0].guides[0].label = `${Math.floor(this.dataAverage())}%`;
-        this.lineChart.validateNow(true);
+        const samplingId = this.selectedSampling.idSampling;
+        this._analyzeService.getObservation(samplingId).then((dataz) => {
+            this.observations = dataz;
+            this.sourceObserv.load(this.observations);
+            this.lineChart.dataProvider = this._analyzeService.getLineChartData(this.observations);
+            this.lineChart.valueAxes[0].guides[0].value = this.dataAverage();
+            this.lineChart.valueAxes[0].guides[0].label = `${Math.floor(this.dataAverage())}%`;
+            this.lineChart.validateNow(true);
 
-        for (let i = 0; i < dataz.length; i++) {
-            const n = dataz[i].date;
-            const timeZoneOffset = new Date().getTimezoneOffset();
-            const b = new Date(n);
-           dataz[i].date = this.renderDate(b.toLocaleString());
-        }
+            for (const i of dataz) {
+                const n = i.date;
+                const timeZoneOffset = new Date().getTimezoneOffset();
+                const b = new Date(n);
+                i.date = this.renderDate(b.toLocaleString());
+            }
 
-       this._analyzeService.getActivityName().then((data) => {
-         const acts = [];
-         let k = 0;
-         for (let i = 0 ; i < data.length; i++) {
-             k++;
-             acts.push({ value: k, title: data[i].title });
-         }
+            this._analyzeService.getActivityName().then((data) => {
+                const acts = [];
+                let k = 0;
+                for (const i of data) {
+                    k++;
+                    acts.push({ value: k, title: i.title });
+                }
 
-         this.activinames = acts; // no = data
-        console.debug(JSON.stringify(this.activinames));
-        this.sourceObserv.load(dataz);
-       }).catch(err => console.debug('Error al cargar las actividades.'));
-    }).catch(err => console.debug('Error al cargar las observaciones.'));
-  }
+                this.activinames = acts;
+                this.sourceObserv.load(dataz);
+            }).catch(err => console.debug('Error al cargar las actividades.'));
+        }).catch(err => console.debug('Error al cargar las observaciones.'));
+    }
 
-  loadComments(idSampling): void {
-   const samplingId = this.selectedSampling.idSampling;
-   console.debug(`IdsamplingComment: ${JSON.stringify(samplingId)}`);
-   this._analyzeService.getComments(samplingId).then((data) => {
-     this.sourceComment.load(data);
-  }).catch(err => console.debug(`Error al cargar los comentarios: ${err}`));
+    // le da formato a la fecha
+    renderDate(pdate) {
+        const date = new Date(pdate);
+        const month = (`0${date.getMonth() + 1}`).slice(-2);
+        const day = (`0${date.getDate()}`).slice(-2);
+        const year = (`${date.getFullYear()}`);
+        const hours = (`0${date.getHours()}`).slice(-2);
+        const mins = (`0${date.getMinutes()}`).slice(-2);
+        const secs = (`0${date.getSeconds()}`).slice(-2);
+        return `${year}-${month}-${day} ${hours}:${mins}:${secs}`;
+    }
 
-}
+    loadComments(idSampling): void {
+        const samplingId = this.selectedSampling.idSampling;
+        this._analyzeService.getComments(samplingId).then((data) => {
+            this.sourceComment.load(data);
+        }).catch(err => console.debug(`Error al cargar los comentarios: ${err}`));
+
+    }
     // carga los nombres del muestreo en el picker superior
     loadSamplingInfo(idSampling): void {
         const updatedSampling = this.getSamplingById(idSampling);
         try {
-            const modality = updatedSampling.modality.data[0]; // Verifica que la estructura retornada sea correcta
+            // Verifica que la estructura retornada sea correcta
+            const modality = updatedSampling.modality.data[0];
             this.selectedSampling = updatedSampling;
             this.loadObservations(this.selectedSampling.idSampling);
             this.loadComments(this.selectedSampling.idSampling);
             localStorage.setItem('idSampling', this.selectedSampling.idSampling);
-              // Actualizar datos de observaciones
+            // Actualizar datos de observaciones
         } catch (e) {
             console.debug(`Error actualizando muestreo seleccionado: ${e} `);
         }
@@ -434,32 +446,31 @@ export class AnalyzeComponent implements OnInit {
 
     onEditConfirm(event): void {
         const idSamp = this.selectedSampling.idSampling;
-        console.debug(this.selectedSampling.idSampling);
-        this._analyzeService.editObservation(this._analyzeService.createComposeEditObservation(idSamp, event.newData))
+        this._analyzeService.editObservation(
+            this._analyzeService.createComposeEditObservation(idSamp, event.newData),
+        )
         .then(res => {
             if (res.error === 'none') {
                 event.confirm.resolve();
             }else {
                 this.toastr.error('Por favor, compruebe los parámetros.');
-                console.debug(`: ${JSON.stringify(res)}`);
                 event.confirm.reject();
             }
         }).catch(this.handleError);
     }
 
     onDeleteConfirm(event): void {
-      const idSamp = this.selectedSampling.idSampling;
+        const idSamp = this.selectedSampling.idSampling;
 
-      this._analyzeService.deleteObservation(this._analyzeService.createComposeDeleteObservation(idSamp, '301480674',
-      '2017-10-30'))
-      .then(res => {
-          if (res.error === 'none') {
-              event.confirm.resolve();
-          }else {
-              this.toastr.error('Por favor, compruebe los parámetros.');
-              console.debug(`: ${JSON.stringify(res)}`);
-              event.confirm.reject();
-          }
-      }).catch(this.handleError);
+        this._analyzeService.deleteObservation(
+            this._analyzeService.createComposeDeleteObservation(idSamp, '301480674', '2017-10-30'),
+        ).then(res => {
+            if (res.error === 'none') {
+                event.confirm.resolve();
+            }else {
+                this.toastr.error('Por favor, compruebe los parámetros.');
+                event.confirm.reject();
+            }
+        }).catch(this.handleError);
     }
 }
