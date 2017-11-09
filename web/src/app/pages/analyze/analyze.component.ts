@@ -35,6 +35,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     totalActivities;
     totalCollaboratives;
     totalProductives;
+    doughnutSummary;
     doughnutDataCollab: {};
     resultado: any;
 
@@ -346,30 +347,58 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
           this.doughnutData = dataz.samples;
           this.totalActivities = dataz.totalActivities ;
           this._loadDoughnutCharts();
-      })
-      .catch(this.handleError );
-      //carga gráfico pastel de actividades colaborativas
-      const tmpCollab = this._analyzeService.getDataCollab(this.selectedSampling.idSampling)
-      .then(datazC => {
-          this.doughnutDataCollab = datazC.samples1;
-          this.totalCollaboratives = datazC.totalCollaboratives;
-          this._loadDoughnutChartCollab();
-      })
-      .catch(this.handleError );
-      //carga gráfico pastel de actividades productivas
-      const tmpProduct = this._analyzeService.getDataProduct(this.selectedSampling.idSampling)
-      .then(datazP => {
-          this.doughnutDataProduct = datazP.samples2;
-          this.totalProductives = datazP.totalProductives;
 
-          this._loadDoughnutChartProduct();
+          this._analyzeService.getDataCollab(this.selectedSampling.idSampling)
+          .then(datazC => {
+              this.doughnutDataCollab = datazC.samples1;
+              this.totalCollaboratives = datazC.totalCollaboratives;
+              this._loadDoughnutChartCollab();
+
+              this._analyzeService.getDataProduct(this.selectedSampling.idSampling)
+              .then(datazP => {
+                  this.doughnutDataProduct = datazP.samples2;
+                  console.debug(`obss: ${this.doughnutDataProduct}`);
+                  this.totalProductives = datazP.totalProductives;
+
+                  this._loadDoughnutChartProduct();
+                  this.doughnutSummary = [
+                    // {"value":1,"color":"#1b70ef","label":"Viendo el celular","percentage":200,"order":2}
+                      {
+                        label: 'Productivas',
+                        value: this.totalProductives,
+                        color: '#1b70ef',
+                        percentage: 200,
+                        order: 2,
+                      },
+                      {
+                        label: 'Improductivas',
+                        value: this.totalActivities,
+                        color: '#099',
+                        percentage: 200,
+                        order: 2,
+                      },
+                      {
+                        label: 'Colaborativas',
+                        value: this.totalCollaboratives,
+                        color: '#31acbe',
+                        percentage: 200,
+                        order: 2,
+                      },
+                  ];
+                  this._loadDoughnutChartSummary();
+              })
+              .catch(this.handleError );
+          })
+          .catch(this.handleError );
       })
       .catch(this.handleError );
+
     }
 
 
     _loadDoughnutCharts() {
         const el = jQuery('.chart-area').get(0) as HTMLCanvasElement;
+        console.debug(`productss: ${JSON.stringify(this.doughnutData)}`);
         new Chart(el.getContext('2d')).Doughnut(this.doughnutData, {
             segmentShowStroke: false,
             percentageInnerCutout : 64,
@@ -390,6 +419,17 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
    _loadDoughnutChartProduct() {
         const elem = jQuery('.chart-area').get(2) as HTMLCanvasElement;
         new Chart(elem.getContext('2d')).Doughnut(this.doughnutDataProduct, {
+            segmentShowStroke: false,
+            percentageInnerCutout : 64,
+            responsive: true,
+        });
+    }
+
+
+   _loadDoughnutChartSummary() {
+        const elem = jQuery('.chart-area').get(3) as HTMLCanvasElement;
+        console.debug(`productss: ${JSON.stringify(this.doughnutSummary)}`);
+        new Chart(elem.getContext('2d')).Doughnut(this.doughnutSummary, {
             segmentShowStroke: false,
             percentageInnerCutout : 64,
             responsive: true,

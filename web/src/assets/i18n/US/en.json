@@ -90,7 +90,8 @@
         "productives": "Actividades Productivas",
         "observations": "Observaciones",
         "details": "Detalles",
-        "selectSampling": "Seleccionar Muestreo"
+        "selectSampling": "Seleccionar Muestreo",
+        "summary": "Resumen de Actividades"
     },
     "dashboard": {
         "acquisition_channels": "Acquisition Channels",
