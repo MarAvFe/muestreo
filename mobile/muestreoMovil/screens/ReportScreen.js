@@ -193,7 +193,7 @@ InsertReport(){
             onValueChange={ (samplings) => ( this.setState({sampling:samplings}) ) } >
             {srvItems}
             </Picker>
-
+            </View>
             <RkText rkType="large">Mensaje:</RkText>
              <RkTextInput
                         style={UtilStyles.picker}
@@ -205,7 +205,7 @@ InsertReport(){
               accepted
               ? goBack(null)
               : Alert.alert('Agregar reporte ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
-  </View>
+
           </View>
             </View>
 
