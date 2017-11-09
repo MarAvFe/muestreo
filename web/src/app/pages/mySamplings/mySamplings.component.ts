@@ -98,7 +98,6 @@ export class MySamplingsComponent implements OnInit {
             error_preliminar: {
                 title: 'Error',
                 type: 'number',
-                editable: false,
             },
         },
     };
