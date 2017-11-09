@@ -141,7 +141,6 @@ export class CommentScreen extends Component {
         ref={'scrollView'}
         automaticallyAdjustContentInsets={true}
         style={UtilStyles.container}>
-        <MyAvoidKeyboard>
         <View style={UtilStyles.section}>
           <RkText rkType='header'>Agregar Comentario</RkText>
           <View style={UtilStyles.rowContainer}>
@@ -171,7 +170,6 @@ export class CommentScreen extends Component {
             </View>
               </View>
         </View>
-          </MyAvoidKeyboard>
       </ScrollView>
     );
   }

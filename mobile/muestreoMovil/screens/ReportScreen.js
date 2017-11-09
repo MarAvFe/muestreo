@@ -181,7 +181,6 @@ InsertReport(){
         ref={'scrollView'}
         automaticallyAdjustContentInsets={true}
         style={UtilStyles.container}>
-        <MyAvoidKeyboard>
         <View style={UtilStyles.section}>
           <RkText rkType='header'>Agregar Reporte</RkText>
           <View style={UtilStyles.rowContainer}>
@@ -211,7 +210,6 @@ InsertReport(){
 
 
         </View>
-        </MyAvoidKeyboard>
       </ScrollView>
     );
   }
