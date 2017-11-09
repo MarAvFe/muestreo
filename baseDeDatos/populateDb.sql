@@ -62,8 +62,6 @@ insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)VA
 insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
 VALUES(NOW(), 1, 6, 2);
 
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW()+1, 1, 4, 2);
 
 insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
 VALUES(NOW()+2, 1, 4, 2);
