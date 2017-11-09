@@ -128,7 +128,7 @@ export class CommentScreen extends Component {
 
 
   render() {
-    const { navigate } = this.props.navigation;
+    const { goBack, navigate } = this.props.navigation;
 
     const srvItems = [];
     for (var i = 0; i < this.state.samplings.length; i++) {
@@ -165,7 +165,7 @@ export class CommentScreen extends Component {
                <RkButton rkType='stretch success' onPress={()=>
                        this.InsertComment().then((accepted) =>
                        accepted
-                       ? navigate('Menu', { error: this.state.error })
+                       ? goBack(null)
                        : Alert.alert('Agregar comentario ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
 
             </View>

@@ -169,7 +169,7 @@ InsertReport(){
 
 
   render() {
-      const { navigate } = this.props.navigation;
+      const { goBack, navigate } = this.props.navigation;
       const srvItems = [];
       for (var i = 0; i < this.state.samplings.length; i++) {
           s = this.state.samplings[i].idSampling;
@@ -203,7 +203,7 @@ InsertReport(){
             <RkButton rkType='stretch success' onPress={() =>
               this.InsertReport().then((accepted) =>
               accepted
-              ? navigate('Menu', { error: this.state.error })
+              ? goBack(null)
               : Alert.alert('Agregar reporte ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
   </View>
           </View>
