@@ -34,7 +34,7 @@ INSERT INTO sampling.Comment(comment,date,User_idUser,isNotification,Sampling_id
 INSERT INTO Trail(hour, Sampling_idSampling, User_idUser)
 VALUES('2017-11-03 14:05:00',1,1);
 
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)VALUES
+insert into Observation(DATE, Trail_idTrail, Activity_idActivity, User_idUser)VALUES
     ('2017-11-03 14:05:03', 1, 1, 2),
     ('2017-11-03 14:05:08', 1, 4, 2),
     ('2017-11-03 14:05:37', 1, 2, 1),
@@ -59,18 +59,6 @@ insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)VA
     ('2017-11-05 14:06:34', 1, 2, 2),
     ('2017-11-05 14:06:30', 1, 5, 3);
 
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW(), 1, 6, 2);
-
-
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW()+2, 1, 4, 2);
-
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW()+3, 1, 4, 2);
-
-insert into Observation(date, Trail_idTrail, Activity_idActivity, User_idUser)
-VALUES(NOW()+4, 1, 5, 2);
 
 -- Inserción Sampling_has_User
 INSERT INTO sampling.Sampling_has_User(Sampling_idSampling, User_idUser, isAdmin)VALUES

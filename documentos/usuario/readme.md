@@ -9,7 +9,8 @@ Este documento pretende prestar al lector una guía de consulta rápida sobre c�
 - [Colaborador](#colaborador)
   - [Agregar una observación](#agregar-una-observación)
   - [Crear recorridos](#crear-recorridos)
-  - [etc](#etc)
+  - [Agregar Comentario](#agregar-comentario)
+  - [Agregar Anomalía](#agregar-anomalía)
 - [Administrador](#administrador)
   - [Crear un muestreo](#crear-un-muestreo)
 - [Glosario](#glosario)
@@ -29,8 +30,20 @@ Describe las acciones que puede ejecutar un colaborador sobre un muestreo.
 5. ... etc
 
 #### Crear recorridos
-1. Paso1
-2. Paso2
+1. Seleccionar el rango de horas en el que se hará el recorrido.
+2. Seleccinar el muestreo al que se agregará la observación.
+3. Ingresar el tiempo que durará cada recorrido(en minutos).
+4. Presionar botón de "Generar horarios".
+
+#### Agregar Comentario
+1. Seleccionar el muestreo al que se agregará el comentario.
+2. Ingresar el comentario dentro del campo provisto.
+3. Presionar botón de "Continuar".
+
+#### Agregar Anomalía
+1. Seleccionar el muestreo al que se agregará la anomalía.
+2. Ingresar la anomalía y especificar la fecha dentro del campo provisto.
+3. Presionar botón de "Continuar".
 
 ## Administrador
 Describe las acciones que puede ejecutar un administrador sobre su muestreo.
