@@ -5,10 +5,10 @@ Muestreo del Trabajo
 Este documento pretende prestar al lector una guía de consulta rápida sobre cómo ejecutar algún proceso o bien el significado de algún concepto.
 
 ## Índice
-- [Colaborador](#Colaborador)
+- [Colaborador](#colaborador)
   - [Agregar una observación](#agregar-una-observación)
   - [etc](#etc)
-- [Administrador](#Administrador)
+- [Administrador](#administrador)
   - [Crear un muestreo](#crear-un-muestreo)
 - [Glosario](#Glosario)
 
