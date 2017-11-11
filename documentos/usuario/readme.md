@@ -1,16 +1,18 @@
-Muestreo del Trabajo
+Muestreo del Trabajo - Manual de Usuario
 ===
 
-# Manual de Usuario
 Este documento pretende prestar al lector una guía de consulta rápida sobre cómo ejecutar algún proceso o bien el significado de algún concepto.
 
 ## Índice
+<!-- Los links, deben ir en minúscula y los espacios se sustituyen por guiones -->
+<!-- La anidación de hace con separaciones de 2 espacios -->
 - [Colaborador](#colaborador)
   - [Agregar una observación](#agregar-una-observación)
+  - [Crear recorridos](#crear-recorridos)
   - [etc](#etc)
 - [Administrador](#administrador)
   - [Crear un muestreo](#crear-un-muestreo)
-- [Glosario](#Glosario)
+- [Glosario](#glosario)
 
 
 ## Colaborador
@@ -21,10 +23,14 @@ Describe las acciones que puede ejecutar un colaborador sobre un muestreo.
 #### Agregar una observación
 1. Iniciar sesión en la aplicación móvil.
 2. Debe haber creado un recorrido, como se detalla [aquí](#crear-recorridos)
+<!-- Ojo que los números no importan. Solo el 1 debe ir de primero. -->
 3. En el menú principal, click sobre "Crear observación"
-4. Seleccionar un Muestreo
+7. Seleccionar un Muestreo
 5. ... etc
 
+#### Crear recorridos
+1. Paso1
+2. Paso2
 
 ## Administrador
 Describe las acciones que puede ejecutar un administrador sobre su muestreo.
@@ -43,13 +49,14 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 
 
 ## Glosario
- - __Administrador__: Aquí va la definición
- - __Colaborador__:
- - __Muestreo__:
-   - __Muestreo preliminar__:
-   - __Muestreo definitivo__:
- - __Observación__:
- - __Actividad__:
+- __Administrador__: Aquí va la definición
+- __Colaborador__:
+- __Muestreo__:
+  - __Muestreo preliminar__:
+  - __Muestreo definitivo__:
+- __Observación__:
+- __Actividad__:
+- __Recorrido__:
 
 ## Consejos
 1. Recuerde mantener segura su contraseña (?)
