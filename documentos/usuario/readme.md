@@ -22,7 +22,7 @@ Describe las acciones que puede ejecutar un colaborador sobre un muestreo.
 
 #### Agregar una observación
 1. Iniciar sesión en la aplicación móvil.
-2. Debe haber creado un recorrido, como se detalla [aquí](#crear-recorridos)
+2. Debe haber [creado un recorrido](#crear-recorridos).
 <!-- Ojo que los números no importan. Solo el 1 debe ir de primero. -->
 3. En el menú principal, click sobre "Crear observación"
 7. Seleccionar un Muestreo
@@ -52,8 +52,8 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 - __Administrador__: Aquí va la definición
 - __Colaborador__:
 - __Muestreo__:
-  - __Muestreo preliminar__:
-  - __Muestreo definitivo__:
+  - _Muestreo preliminar_:
+  - _Muestreo definitivo_:
 - __Observación__:
 - __Actividad__:
 - __Recorrido__:
