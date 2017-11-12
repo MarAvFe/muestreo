@@ -579,11 +579,11 @@ DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getNonColaborators`(pIdSampling int(11))
 BEGIN
-	SELECT concat(u.name, ' ', u.lastname) as `name`, u.cedula as `cedula`
+	SELECT distinct concat(u.name, ' ', u.lastname) as `name`, u.cedula as `cedula`
 	from User u
-	inner join Sampling_has_User su
+	left join Sampling_has_User su
 	on su.User_idUser = u.idUser
-	where su.Sampling_idSampling <> pIdSampling;
+    where su.Sampling_idSampling <> pIdSampling or su.User_idUser is null;
  END$$
 
 DELIMITER ;
