@@ -72,13 +72,32 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 4. Presionar botón de "OK".
 
 #### Editar detalles del muestreo
-1. Ingresar el nuevo nombre para el muestreo.
-2. Ingresar la nueva descripción para el muestreo.
-3. Seleccionar de la lista el tipo de muestreo.
-4. Ingresar el nuevo objecto que se va a muestrear.
-5. Ingresar la nueva descripción del objeto a muestrear.
-6. Presionar el botón amarillo para editar los detalles del muestreo.
+1. Ir a "Mis Muestreos".
+2. Moverse a la sección de "Detalles del muestreo".
+3. Ingresar el nuevo nombre para el muestreo.
+4. Ingresar la nueva descripción para el muestreo.
+5. Seleccionar de la lista el tipo de muestreo.
+6. Ingresar el nuevo objecto que se va a muestrear.
+7. Ingresar la nueva descripción del objeto a muestrear.
+8. Presionar el botón amarillo para editar los detalles del muestreo.
   ![botonCrearMuestreo](./img/editDetails.png)
+
+#### Editar parámetros preliminares
+
+
+#### Editar parámetros definitivos
+
+
+#### Hacer muestreo definitivo
+
+#### Agregar Actividad
+1.Presionar botón para agregar una nueva Actividad.
+   ![botonCrearMuestreo](./img/addActivity.png)
+2. Ingresar el nombre de la actividad.
+3. Ingresar la descripción de la actividad.
+4. Seleccionar el tipo de actividad(Productiva, Improductiva, Colaborativa).
+5. Presionar botón para confirmar la adición de la actividad.
+   ![botonCrearMuestreo](./img/confirmNewActivity.png)
 
 
 
