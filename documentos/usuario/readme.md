@@ -19,6 +19,9 @@ Este documento pretende prestar al lector una guía de consulta rápida sobre c�
   - [Editar parámetros definitivos](#editar-parámetros-definitivos)
   - [Hacer muestreo definitivo](#hacer-muestreo-definitivo)
   - [Agregar Actividad](#agregar-actividad)
+  - [Consultar Productividad](#consultar-productividad)
+  - [Consultar Actividades](#consultar-actividades)
+  - [Resumen de Actividades](#resumen-actividades)
 - [Glosario](#glosario)
 
 
@@ -87,13 +90,27 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
   ![botonCrearMuestreo](./img/editDetails.png)
 
 #### Editar parámetros preliminares
-
+1. Ir a "Mis Muestreos".
+2. Moverse a la sección de "Parámetros" en el cuadro "Preliminares".
+3. Presionar el botón de editar.
+4. Ingresar el nuevo valor de n.
+5. Ingresar el nuevo valor del error.
+6. Presionar el icono de check para guardar o el icono X para cancelar.
+  ![botonCrearMuestreo](./img/editPrelim.png)
 
 #### Editar parámetros definitivos
-
-
+1. Ir a "Mis Muestreos".
+2. Moverse a la sección de "Parámetros" en el cuadro "Definitivos".
+3. Presionar el botón de editar.
+4. Ingresar el nuevo valor de n.
+5. Ingresar el nuevo valor del error E.
+6. Presionar el icono de check para guardar o el icono X para cancelar.
+  ![botonCrearMuestreo](./img/editDef.png)
 #### Hacer muestreo definitivo
-
+1. Ir a "Mis Muestreos".
+2. Moverse a la sección de "Parámetros".
+3. Presionar el botón verde "Hacer definitivo".
+  ![botonCrearMuestreo](./img/defBtn.png)
 #### Agregar Actividad
 1. Presionar botón para agregar una nueva Actividad.
    ![botonCrearMuestreo](./img/addActivity.png)
@@ -104,26 +121,42 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
    ![botonCrearMuestreo](./img/confirmNewActivity.png)
 
 #### Consultar Productividad
-1.
-2. 
-3.
+1. Ir a "Analizar".
+2. Seleccionar muestreo que desea consultar.
+  ![botonCrearMuestreo](./img/selectmuest.png)
+3. El gráfico "Productividad" muestra el promedio de productividad por dia y los comentarios registrados se denotan con un punto rojo.
+  ![botonCrearMuestreo](./img/product.png)
+4. Para ver el comentario, poner el cursor sobre el punto rojo.
+  ![botonCrearMuestreo](./img/product2.png)
+#### Consultar Actividades
+1. Ir a "Analizar".
+2. Seleccionar muestreo que desea consultar.
+3. Se presentan tres gráficos, uno para actividades improductivas, colaborativas y productivas. Cada uno muestra el nombre de las actividades y el porcentaje en que se presenta para ese muestreo.
+4. Si desea conocer la cantidad específica de observaciones tomadas con esa actividad, poner el cursor sobre el grafico en el color correspondiente a la actividad.
+  ![botonCrearMuestreo](./img/actimprod.png)
 
-#### Consultar Actividades Improductivas
+    ![botonCrearMuestreo](./img/actcol.png)
 
-
-
-
-
+    ![botonCrearMuestreo](./img/actprod.png)
+#### Resumen de Actividades
+1. Ir a "Analizar".
+2. Seleccionar muestreo que desea consultar.
+3. El gráfico "Resumen de actividades" las actividades por tipo.
+  ![botonCrearMuestreo](./img/resumenact.png)
 
 ## Glosario
-- __Administrador__: Aquí va la definición
-- __Colaborador__:
-- __Muestreo__:
-  - _Muestreo preliminar_:
-  - _Muestreo definitivo_:
-- __Observación__: Es un conjunto de datos sobre alguna entidad donde se determina si la entidad está ejecutando su tarea asignada o si está haciendo algo que no aporte valor al proceso muestreado.
-- __Actividad__:
-- __Recorrido__:
+- __Administrador__: Usuario que puede realizar la administración absoluta de datos desde la aplicación web, puede realizar todas las funciones que se presentan en este manual y tambien el manejo de aplicación móvil.
+- __Colaborador__: Usuario que puede realizar el manejo de la aplicación móvil para el registro de observaciones y actividades.
+- __Muestreo__: Proceso a medir en el sistema. Se trata de un conjunto de observaciones sobre un determinado proceso donde se tienen unidades con responsabilidades definidas y luego se analizan las mismas para concluir si un proceso es productivo o no y cuáles serían las razones para las improductividades; esto para poder tomar medidas y aumentar la productividad del proceso.
 
-## Consejos
-1. Recuerde mantener segura su contraseña (?)
+  - _Muestreo preliminar_: muestreo que se realiza para tomar datos necesarios antes del muestreo definitivo, como tamaño de la muestra y definicion de actividades.
+  - _Muestreo definitivo_: muestreo que se realiza con el tamaño total de la muestra tomando en cuenta los valores obtenidos en el preliminar.
+
+- __Observación__: Es un conjunto de datos sobre alguna entidad donde se determina si la entidad está ejecutando su tarea asignada o si está haciendo algo que no aporte valor al proceso muestreado.
+- __Actividad__: cualquier acción o estado que puede tener el objeto muestreado.
+  - _Actividad Productiva_: Actividad que se considera que genera un resultado favorable en la productividad y corresponde a un trabajo asignado.
+  - _Actividad Improdcutiva_:  Cualquiera de aquellas actividades alternativas que pueda estar siendo ejecutada por un trabajador observado, que no sea hacer su trabajo asignado.
+  - _Actividad Colaborativa_:
+Actividad que no aporta ningún valor para el proceso muestreado, sin embargo es necesaria para que otra actividad productiva se ejecute. Como por ejemplo, sostener una escalera.
+
+- __Recorrido__: Trayecto en el cual se realizan las observaciones a un muestreo en un rango de tiempo determinado.
