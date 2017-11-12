@@ -13,6 +13,8 @@ Este documento pretende prestar al lector una guía de consulta rápida sobre c�
   - [Agregar Anomalía](#agregar-anomalía)
 - [Administrador](#administrador)
   - [Crear un muestreo](#crear-un-muestreo)
+  - [Agregar Colaborador](#agregar-colaborador)
+  - [Editar detalles del muestreo](#editar-detalles-del-muestreo)
 - [Glosario](#glosario)
 
 
@@ -51,7 +53,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 ### Acciones
 
 #### Crear un muestreo
-1. Iniciar sesión en la aplicación web
+1. Iniciar sesión en la aplicación web.
 2. Click sobre el botón verde que aparece en su perfil donde dice "Crear".
     <!-- Ojo que lleva 4 espacios, para mantener la jerarquía -->
     ![botonCrearMuestreo](./img/crearMuestreo2.png)
@@ -59,6 +61,26 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 3. Rellenar el formulario con los datos respectivos.
 4. Enviar el formulario
 5. Al refrescar su página, deberá aparecer listado bajo "Mis muestreos".
+
+#### Agregar Colaborador
+1. Ir a "Mis Muestreos".
+2. Click sobre el botón de la izquierda para agregar colaborador.
+    <!-- Ojo que lleva 4 espacios, para mantener la jerarquía -->
+    ![botonCrearMuestreo](./img/addCollaborators.png)
+3. Elegir si se asigna como administrador o solo colaborador.
+    ![botonCrearMuestreo](./img/selectAsAdmin.png)
+4. Presionar botón de "OK".
+
+#### Editar detalles del muestreo
+1. Ingresar el nuevo nombre para el muestreo.
+2. Ingresar la nueva descripción para el muestreo.
+3. Seleccionar de la lista el tipo de muestreo.
+4. Ingresar el nuevo objecto que se va a muestrear.
+5. Ingresar la nueva descripción del objeto a muestrear.
+6. Presionar el botón amarillo para editar los detalles del muestreo.
+  ![botonCrearMuestreo](./img/editDetails.png)
+
+
 
 
 ## Glosario
