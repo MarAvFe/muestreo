@@ -15,6 +15,10 @@ Este documento pretende prestar al lector una guía de consulta rápida sobre c�
   - [Crear un muestreo](#crear-un-muestreo)
   - [Agregar Colaborador](#agregar-colaborador)
   - [Editar detalles del muestreo](#editar-detalles-del-muestreo)
+  - [Editar parámetros preliminares](#editar-parámetros-preliminares)
+  - [Editar parámetros definitivos](#editar-parámetros-definitivos)
+  - [Hacer muestreo definitivo](#hacer-muestreo-definitivo)
+  - [Agregar Actividad](#agregar-actividad)
 - [Glosario](#glosario)
 
 
@@ -98,6 +102,15 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 4. Seleccionar el tipo de actividad(Productiva, Improductiva, Colaborativa).
 5. Presionar botón para confirmar la adición de la actividad.
    ![botonCrearMuestreo](./img/confirmNewActivity.png)
+
+#### Consultar Productividad
+1.
+2.
+3.
+
+#### Consultar Actividades Improductivas
+
+
 
 
 
