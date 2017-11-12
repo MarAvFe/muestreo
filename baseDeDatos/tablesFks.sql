@@ -847,7 +847,7 @@ DELIMITER $$
 USE `sampling`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `pUpDefParamsSampling`(pId_Sampling int, pDescription varchar(255),
 	pIdSamplingType int,
-	pp_defitive double,
+	pp_definitive double,
 	pq_definitive double,
 	perror_definitive double,
 	pn_definitive int,
