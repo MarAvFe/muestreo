@@ -66,7 +66,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 1. Ir a "Mis Muestreos".
 2. Click sobre el botón de la izquierda para agregar colaborador.
     <!-- Ojo que lleva 4 espacios, para mantener la jerarquía -->
-    ![botonCrearMuestreo](./img/addCollaborators.png)
+    ![botonCrearMuestreo](./img/addCollaborators1.png)
 3. Elegir si se asigna como administrador o solo colaborador.
     ![botonCrearMuestreo](./img/selectAsAdmin.png)
 4. Presionar botón de "OK".
@@ -91,7 +91,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 #### Hacer muestreo definitivo
 
 #### Agregar Actividad
-1.Presionar botón para agregar una nueva Actividad.
+1. Presionar botón para agregar una nueva Actividad.
    ![botonCrearMuestreo](./img/addActivity.png)
 2. Ingresar el nombre de la actividad.
 3. Ingresar la descripción de la actividad.
