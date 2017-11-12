@@ -9,6 +9,7 @@ Este documento pretende prestar al lector una guía de consulta rápida sobre c�
 - [Colaborador](#colaborador)
   - [Agregar una observación](#agregar-una-observación)
   - [Crear recorridos](#crear-recorridos)
+  - [Agregar Actividad](#agregar-actividad)
   - [Agregar Comentario](#agregar-comentario)
   - [Agregar Anomalía](#agregar-anomalía)
 - [Administrador](#administrador)
@@ -32,11 +33,20 @@ Describe las acciones que puede ejecutar un colaborador sobre un muestreo.
 
 #### Agregar una observación
 1. Iniciar sesión en la aplicación móvil.
+
 2. Debe haber [creado un recorrido](#crear-recorridos).
 <!-- Ojo que los números no importan. Solo el 1 debe ir de primero. -->
-3. En el menú principal, click sobre "Crear observación"
-7. Seleccionar un Muestreo
-5. ... etc
+3. En el menú principal, click sobre "Muestrear"
+![botonCrearMuestreo](./img/menuAddAct.jpg)
+
+4. Seleccionar un muestreo de la lista brindada.
+
+5. Seleccionar un recorrido de la lista.
+
+6. Elegir la actividad que será observada.
+
+7. Presionar botón de "Crear observación".
+  ![botonCrearMuestreo](./img/AddObserv.jpg)
 
 #### Crear recorridos
 1. Seleccionar el rango de horas en el que se hará el recorrido.
@@ -44,15 +54,33 @@ Describe las acciones que puede ejecutar un colaborador sobre un muestreo.
 3. Ingresar el tiempo que durará cada recorrido(en minutos).
 4. Presionar botón de "Generar horarios".
 
+#### Agregar Actividad
+1. En el menú principal presionar el botón de "Muestrear".
+![botonCrearMuestreo](./img/menuAddAct.jpg)
+
+2. Seleccionar un muestreo de la lista brindada.
+3. Seleccionar un recorrido de la lista.
+4. Presionar el botón con el símbolo de "+" para agregar la actividad.
+![botonCrearMuestreo](./img/AddAct2.jpg)
+5. Ingresar nombre de la actividad.
+6. Ingresar descripción de la actividad.
+7. Ingresar tipo de actividad(improductiva, colaborativa , productiva).
+8. Presionar el botón de "Agregar Actividad".
+![botonCrearMuestreo](./img/AddAct1.jpg)
+
 #### Agregar Comentario
 1. Seleccionar el muestreo al que se agregará el comentario.
-2. Ingresar el comentario dentro del campo provisto.
-3. Presionar botón de "Continuar".
 
-#### Agregar Anomalía
-1. Seleccionar el muestreo al que se agregará la anomalía.
+2. Ingresar el comentario dentro del campo provisto.
+3. Presionar botón de "Agregar comentario".
+  ![botonCrearMuestreo](./img/AddComment.jpg)
+
+#### Agregar Reporte
+1. Seleccionar el muestreo al que se agregará el reporte.
+
 2. Ingresar la anomalía y especificar la fecha dentro del campo provisto.
-3. Presionar botón de "Continuar".
+3. Presionar botón de "Agregar Reporte".
+  ![botonCrearMuestreo](./img/AddReport.jpg)
 
 ## Administrador
 Describe las acciones que puede ejecutar un administrador sobre su muestreo.
@@ -61,6 +89,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 
 #### Crear un muestreo
 1. Iniciar sesión en la aplicación web.
+
 2. Click sobre el botón verde que aparece en su perfil donde dice "Crear".
     <!-- Ojo que lleva 4 espacios, para mantener la jerarquía -->
     ![botonCrearMuestreo](./img/crearMuestreo2.png)
@@ -71,6 +100,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 
 #### Agregar Colaborador
 1. Ir a "Mis Muestreos".
+
 2. Click sobre el botón de la izquierda para agregar colaborador.
     <!-- Ojo que lleva 4 espacios, para mantener la jerarquía -->
     ![botonCrearMuestreo](./img/addCollaborators1.png)
@@ -80,6 +110,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 
 #### Editar detalles del muestreo
 1. Ir a "Mis Muestreos".
+
 2. Moverse a la sección de "Detalles del muestreo".
 3. Ingresar el nuevo nombre para el muestreo.
 4. Ingresar la nueva descripción para el muestreo.
@@ -91,6 +122,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 
 #### Editar parámetros preliminares
 1. Ir a "Mis Muestreos".
+
 2. Moverse a la sección de "Parámetros" en el cuadro "Preliminares".
 3. Presionar el botón de editar.
 4. Ingresar el nuevo valor de n.
@@ -100,6 +132,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 
 #### Editar parámetros definitivos
 1. Ir a "Mis Muestreos".
+
 2. Moverse a la sección de "Parámetros" en el cuadro "Definitivos".
 3. Presionar el botón de editar.
 4. Ingresar el nuevo valor de n.
@@ -108,11 +141,13 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
   ![botonCrearMuestreo](./img/editDef.png)
 #### Hacer muestreo definitivo
 1. Ir a "Mis Muestreos".
+
 2. Moverse a la sección de "Parámetros".
 3. Presionar el botón verde "Hacer definitivo".
   ![botonCrearMuestreo](./img/defBtn.png)
 #### Agregar Actividad
 1. Presionar botón para agregar una nueva Actividad.
+
    ![botonCrearMuestreo](./img/addActivity.png)
 2. Ingresar el nombre de la actividad.
 3. Ingresar la descripción de la actividad.
@@ -122,6 +157,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 
 #### Consultar Productividad
 1. Ir a "Analizar".
+
 2. Seleccionar muestreo que desea consultar.
   ![botonCrearMuestreo](./img/selectmuest.png)
 3. El gráfico "Productividad" muestra el promedio de productividad por dia y los comentarios registrados se denotan con un punto rojo.
@@ -130,6 +166,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
   ![botonCrearMuestreo](./img/product2.png)
 #### Consultar Actividades
 1. Ir a "Analizar".
+
 2. Seleccionar muestreo que desea consultar.
 3. Se presentan tres gráficos, uno para actividades improductivas, colaborativas y productivas. Cada uno muestra el nombre de las actividades y el porcentaje en que se presenta para ese muestreo.
 4. Si desea conocer la cantidad específica de observaciones tomadas con esa actividad, poner el cursor sobre el grafico en el color correspondiente a la actividad.
@@ -140,6 +177,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
     ![botonCrearMuestreo](./img/actprod.png)
 #### Resumen de Actividades
 1. Ir a "Analizar".
+
 2. Seleccionar muestreo que desea consultar.
 3. El gráfico "Resumen de actividades" las actividades por tipo.
   ![botonCrearMuestreo](./img/resumenact.png)

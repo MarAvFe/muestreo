@@ -203,7 +203,7 @@ InsertReport(){
               this.InsertReport().then((accepted) =>
               accepted
               ? goBack(null)
-              : Alert.alert('Agregar reporte ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
+              : Alert.alert('Agregar reporte ha fallado','Los datos ingresados no son válidos.'))}>Agregar Reporte</RkButton>
 
           </View>
             </View>

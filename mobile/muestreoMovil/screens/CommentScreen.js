@@ -165,7 +165,7 @@ export class CommentScreen extends Component {
                        this.InsertComment().then((accepted) =>
                        accepted
                        ? goBack(null)
-                       : Alert.alert('Agregar comentario ha fallado','Los datos ingresados no son válidos.'))}>Continuar</RkButton>
+                       : Alert.alert('Agregar comentario ha fallado','Los datos ingresados no son válidos.'))}>Agregar Comentario</RkButton>
 
             </View>
               </View>
