@@ -105,7 +105,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 
 #### Consultar Productividad
 1.
-2.
+2. 
 3.
 
 #### Consultar Actividades Improductivas
@@ -121,7 +121,7 @@ Describe las acciones que puede ejecutar un administrador sobre su muestreo.
 - __Muestreo__:
   - _Muestreo preliminar_:
   - _Muestreo definitivo_:
-- __Observación__:
+- __Observación__: Es un conjunto de datos sobre alguna entidad donde se determina si la entidad está ejecutando su tarea asignada o si está haciendo algo que no aporte valor al proceso muestreado.
 - __Actividad__:
 - __Recorrido__:
 
