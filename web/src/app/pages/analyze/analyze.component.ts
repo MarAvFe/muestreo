@@ -188,6 +188,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     settingsObserv = {
         actions: {
             add: false,
+            edit: false,
         },
         edit: {
             editButtonContent: '<i class="ion-edit"></i>',
@@ -269,6 +270,8 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
     settingsComment = {
         actions: {
             add: false,
+            edit: false,
+            delete: false,
         },
         edit: {
             editButtonContent: '<i class="ion-edit"></i>',
