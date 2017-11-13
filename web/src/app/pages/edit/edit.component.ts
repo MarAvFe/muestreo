@@ -21,6 +21,9 @@ export class EditComponent {
     ];
 
     settings = {
+        actions: {
+            columnTitle: 'Acciones',    
+        },
         add: {
             addButtonContent: '<i class="ion-ios-plus-outline"></i>',
             createButtonContent: '<i class="ion-checkmark"></i>',

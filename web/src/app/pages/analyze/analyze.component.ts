@@ -187,6 +187,7 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
 
     settingsObserv = {
         actions: {
+            columnTitle: 'Acciones',
             add: false,
         },
         edit: {

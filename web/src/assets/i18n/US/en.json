@@ -83,6 +83,13 @@
         },
         "created_with": "Creado con"
     },
+    "my_samplings": {
+        "name": "Nombre",
+        "description": "Descripción",
+        "type": "Tipo",
+        "sampledObject": "Objeto Muestreado",
+        "sampledDescription": "Descripción del Objeto"
+    },
     "analyze": {
         "productivity" : "Productividad",
         "improductivities": "Actividades Improductivas",

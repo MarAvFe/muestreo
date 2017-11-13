@@ -41,27 +41,27 @@
         </ba-card>
         <div class="row">
             <div class="col-md-12">
-                <ba-card cardTitle="Sampling Details" baCardClass="with-scroll">
+                <ba-card cardTitle="Detalles del Muestreo" baCardClass="with-scroll">
                     <div class="form-group">
-                        <label for="SamplingNameInput" translate>{{'Name'}}</label>
+                        <label for="SamplingNameInput" translate>{{'my_samplings.name'}}</label>
                         <input type="text" class="form-control" id="SamplingNameInput" [(ngModel)]="selectedSampling.name" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label for="input11" translate>{{'Description'}}</label>
+                        <label for="input11" translate>{{'my_samplings.description'}}</label>
                         <textarea type="text" class="form-control" id="input11" [(ngModel)]="selectedSampling.description" placeholder=""></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="exampleSelect1">Type</label>
+                        <label for="exampleSelect1" translate>{{'my_samplings.type'}}</label>
                         <select class="form-control" id="exampleSelect1" [(ngModel)]="selectedSampling.idSamplingType">
                             <option *ngFor="let type of samplingTypes" [value]="type.idSamplingType" >{{type.name}}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="input18" translate>Objeto muestreado</label>
+                        <label for="input18" translate>{{'my_samplings.sampledObject'}}</label>
                         <input type="text" class="form-control" id="input18" [(ngModel)]="selectedSampling.sampled" placeholder="">
                     </div>
                     <div class="form-group">
-                        <label for="input19" translate>Descripción del objeto</label>
+                        <label for="input19" translate>{{'my_samplings.sampledDescription'}}</label>
                         <input type="text" class="form-control" id="input19" [(ngModel)]="selectedSampling.sampledDescription" placeholder="">
                     </div>
                     <button type="submit" class="btn btn-warning" (click)="onEditSamplingDetails()">Editar</button>

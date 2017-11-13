@@ -103,6 +103,7 @@ export class MySamplingsComponent implements OnInit {
     };
     settingsUsers = {
         actions: {
+            columnTitle: 'Acciones',
             edit: false,
             create: false,
         },
