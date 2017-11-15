@@ -8,6 +8,7 @@ import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { Login } from './login.component';
 import { LoginService } from './login.service';
 import { routing } from './login.routing';
+import { Network } from '../Network';
 
 @NgModule({
     imports: [
@@ -24,6 +25,7 @@ import { routing } from './login.routing';
     ],
     providers: [
         LoginService,
+        Network,
     ],
 })
 export class LoginModule {}

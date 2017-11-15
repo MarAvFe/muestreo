@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import { Network } from '../Network';
+
+
+
 
 @Injectable()
 export class LoginService {
@@ -8,7 +12,8 @@ export class LoginService {
     options: any;
     heads: any;
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private network: Network) {
+
     }
 
     private handleError(error: any): Promise<any> {
@@ -24,8 +29,7 @@ export class LoginService {
         jsonHeads.append('Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
         this.options = { headers : jsonHeads, withCredentials: true };
-
-        return this.http.post('http://localhost:2828/auth/login', body, this.options )
+        return this.http.post(`http://${this.network.wsIp}:${this.network.wsPort}/auth/login`, body, this.options )
         .toPromise()
         .then(response => response.json())
         .catch(this.handleError);
