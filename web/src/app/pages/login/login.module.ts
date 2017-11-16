@@ -8,7 +8,7 @@ import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { Login } from './login.component';
 import { LoginService } from './login.service';
 import { routing } from './login.routing';
-import { Network } from '../Network';
+import { Globals } from '../Globals';
 
 @NgModule({
     imports: [
@@ -25,7 +25,7 @@ import { Network } from '../Network';
     ],
     providers: [
         LoginService,
-        Network,
+        Globals,
     ],
 })
 export class LoginModule {}

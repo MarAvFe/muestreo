@@ -5,7 +5,7 @@
             <div class="form-group">
                 <h3>Seleccione un muestreo:</h3>
                 <select (change)="loadSamplingInfo(selectedSamplingDOM.value)"  #selectedSamplingDOM class="form-control">
-                    <option *ngFor="let s of samplings" [value]="s.idSampling" >{{s.name}} ({{s.type}})</option>
+                    <option *ngFor="let s of samplings" [value]="s.idSampling" >{{s.name}}</option>
                 </select>
             </div>
             <ba-card cardTitle="Colaboradores" baCardClass="with-scroll">

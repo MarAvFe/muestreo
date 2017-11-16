@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import { Globals } from '../Globals';
 
 @Injectable()
 export class RegisterService {
@@ -8,7 +9,7 @@ export class RegisterService {
     options: any;
     heads: any;
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private glb: Globals) {
     }
 
     private handleError(error: any): Promise<any> {
@@ -32,28 +33,11 @@ export class RegisterService {
         'Origin, X-Requested-With, Content-Type, Accept, access-control-allow-origin');
         this.options = { headers : jsonHeads, withCredentials: true };
 
-        return this.http.post('http://localhost:2828/auth/register', interfaceUser, { headers : jsonHeads } )
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/auth/register`, interfaceUser, {
+            headers : jsonHeads,
+        })
         .toPromise()
         .then(response => response.json())
         .catch(this.handleError);
-    }
-
-
-    private toQueryString(jsonBody: Object) {
-        // Receives some json and returns it in ws query format:
-        // {"name": "nombre","description": "descrip."} -> name=nombre&description=descrip
-        const keys = Object.keys(jsonBody).map(key => {
-            /* If boolean */
-            if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
-                jsonBody[key] = jsonBody[key] === 'true' ? 1 : 0;
-            }
-            /* If bit {"type": "Buffer","data": [1]} */
-            if (jsonBody[key].type ) {
-                jsonBody[key] = jsonBody[key].data[0];
-            }
-            return [key, jsonBody[key]].join('=');
-        });
-        const str = keys.join('&');
-        return str;
     }
 }

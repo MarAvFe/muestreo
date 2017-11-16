@@ -37,7 +37,7 @@
         "menu": {
             "profile":"Perfil",
             "mySamplings":"Mis Muestreos",
-            "adminData": "Administrar datos",
+            "manageData": "Administrar datos",
             "create": "Crear",
             "edit": "Editar",
             "delete": "Borrar",

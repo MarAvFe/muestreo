@@ -9,6 +9,7 @@ import { ToastModule } from 'ng2-toastr/ng2-toastr';
 import { MySamplingsComponent } from './mySamplings.component';
 import { MySamplingsService } from './mySamplings.service';
 import { routing } from './mySamplings.routing';
+import { Globals } from '../Globals';
 
 @NgModule({
     imports: [
@@ -25,6 +26,7 @@ import { routing } from './mySamplings.routing';
     ],
     providers: [
         MySamplingsService,
+        Globals,
     ],
 })
 export class MySamplingsModule {}

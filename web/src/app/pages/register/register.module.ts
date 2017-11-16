@@ -7,6 +7,7 @@ import { ToastModule } from 'ng2-toastr/ng2-toastr';
 
 import { Register } from './register.component';
 import { RegisterService } from './register.service';
+import { Globals } from '../Globals';
 import { routing } from './register.routing';
 
 @NgModule({
@@ -24,6 +25,7 @@ import { routing } from './register.routing';
     ],
     providers: [
         RegisterService,
+        Globals,
     ],
 })
 export class RegisterModule {}

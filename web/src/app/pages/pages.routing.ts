@@ -33,11 +33,6 @@ export const routes: Routes = [
             {
                 path: 'about',
                 loadChildren: './about/about.module#AboutModule',
-                canActivate: [IsLoggedInGuard],
-            },
-            {
-                path: 'dashboard',
-                loadChildren: './dashboard/dashboard.module#DashboardModule',
             },
             {
                 path: 'profile',
@@ -48,41 +43,12 @@ export const routes: Routes = [
                 loadChildren: './mySamplings/mySamplings.module#MySamplingsModule',
             },
             {
-                path: 'admin',
-                loadChildren: './edit/edit.module#EditModule',
+                path: 'manageData',
+                loadChildren: './manageData/manageData.module#ManageDataModule',
             },
             {
                 path: 'analyze',
                 loadChildren: './analyze/analyze.module#AnalyzeModule',
-            },
-
-            {
-                path: 'editors',
-                loadChildren: './editors/editors.module#EditorsModule',
-            },
-            {
-                path: 'components',
-                loadChildren: './components/components.module#ComponentsModule',
-            },
-            {
-                path: 'charts',
-                loadChildren: './charts/charts.module#ChartsModule',
-            },
-            {
-                path: 'ui',
-                loadChildren: './ui/ui.module#UiModule',
-            },
-            {
-                path: 'forms',
-                loadChildren: './forms/forms.module#FormsModule',
-            },
-            {
-                path: 'tables',
-                loadChildren: './tables/tables.module#TablesModule',
-            },
-            {
-                path: 'maps',
-                loadChildren: './maps/maps.module#MapsModule',
             },
         ],
     },

@@ -11,6 +11,7 @@ import { CreateSamplingModal } from './components/create-sampling-modal.componen
 
 import { ProfileComponent } from './profile.component';
 import { ProfileService } from './profile.service';
+import { Globals } from '../Globals';
 import { routing } from './profile.routing';
 
 @NgModule({
@@ -33,6 +34,7 @@ import { routing } from './profile.routing';
     ],
     providers: [
         ProfileService,
+        Globals,
     ],
 })
 export class ProfileModule {}
