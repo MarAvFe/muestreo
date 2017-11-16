@@ -533,7 +533,11 @@ BEGIN
     sp.name as `sampled`,
     sp.description as `sampledDescription`,
     case when s.isPreliminarSampling = 1 then 1 else 0 end as 'isDefinitive',
-    case when s.isPreliminarSampling = 1 then n_definitive else n_preliminar end as 'n'
+    case when s.isPreliminarSampling = 1 then n_definitive else n_preliminar end as 'n',
+    case when s.isPreliminarSampling = 1 then z_definitive else z_preliminar end as 'z',
+    case when s.isPreliminarSampling = 1 then p_definitive else p_preliminar end as 'p',
+    case when s.isPreliminarSampling = 1 then q_definitive else q_preliminar end as 'q',
+    case when s.isPreliminarSampling = 1 then error_definitive else error_preliminar end as 'error',
  from Sampling s
 	join Sampling_has_User su on s.idSampling = su.Sampling_idSampling
     join SamplingType st on st.idSamplingType = s.SamplingType_idSamplingType
