@@ -12,6 +12,7 @@ import { SamplingId } from './objects/SamplingId';
 import { SamplingDescIdSamp } from './objects/SamplingDescIdSamp';
 import { SampledObjInfo } from './objects/SampledObjInfo';
 import { BaThemeConfigProvider } from '../../theme';
+import { Globals } from '../Globals';
 
 @Injectable()
 export class MySamplingsService {
@@ -20,7 +21,7 @@ export class MySamplingsService {
     heads: any;
     requestOptionsArgs: any;
 
-    constructor(private _baConfig: BaThemeConfigProvider, private http: Http) {
+    constructor(private _baConfig: BaThemeConfigProvider, private http: Http, private glb: Globals) {
         this.heads = new Headers();
         this.heads.append('Content-Type', 'application/x-www-form-urlencoded');
         this.heads.append('Access-Control-Allow-Origin', '*');
@@ -36,8 +37,8 @@ export class MySamplingsService {
 
     // desasigna un colaborador de un muestreo
     unassignColaborator(data): Promise<Feedback> {
-        const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/unassignColaborator', body, this.options )
+        const body = this.glb.toQueryString(data);
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/unassignColaborator`, body, this.options)
         .toPromise()
         .then(response => response.json())
         .catch(err => this.handleError);
@@ -45,18 +46,18 @@ export class MySamplingsService {
 
     // asigna un colaborador a un muestreo
     assignColaborator(data): Promise<Feedback> {
-        const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/assignColaborator', body, this.options )
+        const body = this.glb.toQueryString(data);
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/assignColaborator`, body, this.options)
         .toPromise()
         .then(response => response.json())
         .catch(err => this.handleError);
     }
 
-   //devuelve el nombre y descripcion del objeto muestreado
+   // devuelve el nombre y descripcion del objeto muestreado
    getSampledObjInfo(data): Promise<SampledObjInfo[]> {
-       const body = this.toQueryString({ pIdSampling : data });
-       console.log(JSON.stringify(body));
-       return this.http.post('http://localhost:2828/getSampledObjInfo', body, this.options )
+       const body = this.glb.toQueryString({ pIdSampling : data });
+       console.debug(JSON.stringify(body));
+       return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getSampledObjInfo`, body, this.options)
        .toPromise()
        .then(response => response.json().data[0] as SampledObjInfo[])
        .catch(err => this.handleError);
@@ -64,8 +65,8 @@ export class MySamplingsService {
 
     // devuelve el id del muestreo seleccionado
     getColaborators(data): Promise<Colaborator[]> {
-        const body = this.toQueryString({ pNameSampling : data });
-        return this.http.post('http://localhost:2828/getColaborators', body, this.options )
+        const body = this.glb.toQueryString({ pNameSampling : data });
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getColaborators`, body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as Colaborator[])
         .catch(err => this.handleError);
@@ -73,23 +74,23 @@ export class MySamplingsService {
 
     // devuelve el id del muestreo seleccionado
     getSamplingId(data): Promise<SamplingId[]> {
-        const body = this.toQueryString({ pName : data });
-        return this.http.post('http://localhost:2828/getSamplingId', body, this.options )
+        const body = this.glb.toQueryString({ pName : data });
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getSamplingId`, body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as SamplingId[])
         .catch(err => this.handleError);
     }
 
     getMySamplings(cedula): Promise<any[]> {
-        const body = this.toQueryString({ pIdUser: cedula });
-        return this.http.post('http://localhost:2828/getMySamplings', body, this.options )
+        const body = this.glb.toQueryString({ pIdUser: cedula });
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getMySamplings`, body, this.options )
         .toPromise()
         .then(response => response.json().data as any[])
         .catch(err => this.handleError);
     }
 
     getSamplingName(): Promise<SamplingName[]> {
-        return this.http.post('http://localhost:2828/getSamplingName', '', this.options )
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getSamplingName`, '', this.options )
         .toPromise()
         .then(response => response.json().data[0] as SamplingName[])
         .catch(err => this.handleError);
@@ -97,15 +98,15 @@ export class MySamplingsService {
 
     // carga los parámetros definitivos
     getDefParam(data): Promise<DefParam[]> {
-        const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/getDefParam', body, this.options )
+        const body = this.glb.toQueryString(data);
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getDefParam`, body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as DefParam[])
         .catch(err => this.handleError);
     }
 
     getSamplingTypes(): Promise<SamplingType[]> {
-        return this.http.post('http://localhost:2828/SamplingType/get', '', this.options )
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/SamplingType/get`, '', this.options )
         .toPromise()
         .then(response => response.json().data as SamplingType[])
         .catch(err => this.handleError);
@@ -113,8 +114,8 @@ export class MySamplingsService {
 
     // carga los usuarios no colaboradores
     getUsers(data): Promise<Colaborator[]> {
-        const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/getNonColaborators', body, this.options )
+        const body = this.glb.toQueryString(data);
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getNonColaborators`, body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as Colaborator[])
         .catch(err => this.handleError);
@@ -122,40 +123,40 @@ export class MySamplingsService {
 
     // carga los parámetros preliminares
     getPreParam(data): Promise<PreParam[]> {
-        const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/getPreParam', body, this.options )
+        const body = this.glb.toQueryString(data);
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getPreParam`, body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as PreParam[])
         .catch(err => this.handleError);
     }
 
-    //hace un update en la tabla de Sampling y la de SampledProfile
+    // hace un update en la tabla de Sampling y la de SampledProfile
     editSamplingDetails(data): Promise<Feedback> {
-        const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/pUpdate_SamplingDetails', body, this.options )
+        const body = this.glb.toQueryString(data);
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/pUpdate_SamplingDetails`, body, this.options )
         .toPromise()
         .then(response => response.json());
     }
 
     // hace un update de los parámetros definitivos
     editDefParam(data): Promise<Feedback> {
-        const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/pUpDefParamsSampling', body, this.options )
+        const body = this.glb.toQueryString(data);
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/pUpDefParamsSampling`, body, this.options )
         .toPromise()
         .then(response => response.json());
     }
 
     // hace un update de los parámetros preliminares
     editPreParam(data): Promise<Feedback> {
-        const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/pUpPreParamsSampling', body, this.options )
+        const body = this.glb.toQueryString(data);
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/pUpPreParamsSampling`, body, this.options )
         .toPromise()
         .then(response => response.json());
     }
 
     makeDefinitive(data): Promise<Feedback> {
-        const body = this.toQueryString({ pIdSampling: data });
-        return this.http.post('http://localhost:2828/makeDefinitive', body, this.options )
+        const body = this.glb.toQueryString({ pIdSampling: data });
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/makeDefinitive`, body, this.options )
         .toPromise()
         .then(response => response.json() as Feedback);
     }
@@ -191,28 +192,6 @@ export class MySamplingsService {
             perror_preliminar: bodyParams.error_preliminar,
             pn_preliminar: bodyParams.n_preliminar,
         };
-    }
-
-    private toQueryString(jsonBody: Object) {
-        // Receives some json and returns it in ws query format:
-        // {"name": "nombre","description": "descrip."} -> name=nombre&description=
-        const keys = Object.keys(jsonBody).map(key => {
-            /* If null */
-            if (!jsonBody[key]) {
-                return '';
-            }
-            /* If boolean */
-            if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
-                jsonBody[key] = jsonBody[key] === 'true' ? 1 : 0;
-            }
-            /* If bit {"type": "Buffer","data": [1]} */
-            if (jsonBody[key].type ) {
-                jsonBody[key] = jsonBody[key].data[0];
-            }
-            return [key, jsonBody[key]].join('=');
-        });
-        const str = keys.join('&');
-        return str;
     }
 
     selectFilters(bef: Object, aft: Object) {

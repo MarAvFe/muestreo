@@ -7,6 +7,7 @@ import { Feedback } from './Feedback';
 import { BasicSampling } from './BasicSampling';
 import { User } from './objects/User';
 import { FormatService } from '../../services/FormatService';
+import { Globals } from '../Globals';
 
 @Injectable()
 export class ProfileService {
@@ -14,7 +15,7 @@ export class ProfileService {
     options: any;
     heads: any;
 
-    constructor(private _baConfig: BaThemeConfigProvider, private http: Http) {
+    constructor(private _baConfig: BaThemeConfigProvider, private http: Http, private glb: Globals) {
         this.heads = new Headers();
         this.heads.append('Content-Type', 'application/x-www-form-urlencoded');
         this.heads.append('Access-Control-Allow-Origin', '*');
@@ -30,39 +31,39 @@ export class ProfileService {
 
     createBasicSampling(cedula, data): Promise<Feedback> {
         data.pCedula = cedula;
-        const body = this.toQueryString(data);
-        return this.http.post('http://localhost:2828/createBasicSampling', body, this.options )
+        const body = this.glb.toQueryString(data);
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/createBasicSampling`, body, this.options )
         .toPromise()
         .then(response => response.json())
         .catch(this.handleError);
     }
 
     getUser(cedula: string): Promise<User> {
-        const body = this.toQueryString({ cedula });
-        return this.http.post('http://localhost:2828/User/get', body, this.options )
+        const body = this.glb.toQueryString({ cedula });
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/User/get`, body, this.options )
         .toPromise()
         .then(response => response.json().data[0] as User)
         .catch(this.handleError);
     }
 
     getMySamplings(cedula): Promise<BasicSampling[]> {
-        const body = this.toQueryString({ pIdUser: cedula });
-        return this.http.post('http://localhost:2828/getMySamplings', body, this.options )
+        const body = this.glb.toQueryString({ pIdUser: cedula });
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getMySamplings`, body, this.options )
         .toPromise()
         .then(response => response.json().data as BasicSampling[])
         .catch(this.handleError);
     }
 
     getThemSamplings(cedula): Promise<BasicSampling[]> {
-        const body = this.toQueryString({ pIdUser: cedula });
-        return this.http.post('http://localhost:2828/getThemSamplings', body, this.options )
+        const body = this.glb.toQueryString({ pIdUser: cedula });
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/getThemSamplings`, body, this.options )
         .toPromise()
         .then(response => response.json().data as BasicSampling[])
         .catch(this.handleError);
     }
 
     getSamplingTypes(): Promise<SamplingType[]> {
-        return this.http.post('http://localhost:2828/SamplingType/get', '', this.options )
+        return this.http.post(`http://${this.glb.ip}:${this.glb.port}/SamplingType/get`, '', this.options )
         .toPromise()
         .then(response => response.json().data as SamplingType[])
         .catch(this.handleError);
@@ -94,23 +95,5 @@ export class ProfileService {
                 },
             }],
         ];
-    }
-
-    private toQueryString(jsonBody: Object) {
-        // Receives some json and returns it in ws query format:
-        // {"name": "nombre","description": "descrip."} -> name=nombre&description=descrip
-        const keys = Object.keys(jsonBody).map(key => {
-            /* If boolean */
-            if (jsonBody[key] === 'false' || jsonBody[key] === 'true' ) {
-                jsonBody[key] = jsonBody[key] === 'true' ? 1 : 0;
-            }
-            /* If bit {"type": "Buffer","data": [1]} */
-            if (jsonBody[key].type ) {
-                jsonBody[key] = jsonBody[key].data[0];
-            }
-            return [key, jsonBody[key]].join('=');
-        });
-        const str = keys.join('&');
-        return str;
     }
 }

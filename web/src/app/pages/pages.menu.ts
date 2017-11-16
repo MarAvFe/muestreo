@@ -27,37 +27,16 @@ export const PAGES_MENU = [
                 }
             },
             {
-                path: 'admin',
+                path: 'manageData',
                 data: {
                     menu: {
-                        title: 'general.menu.adminData',
+                        title: 'general.menu.manageData',
                         icon: 'ion-android-apps',
                         selected: false,
                         expanded: false,
                         order: 100,
                     }
                 },
-                // children: [
-                //     {
-                //         path: 'edit',
-                //         data: {
-                //             menu: {
-                //                 title: 'general.menu.edit',
-                //                 icon: 'ion-android-create'
-                //             }
-                //         }
-                //     },
-                //
-                //     {
-                //         path: 'consult',
-                //         data: {
-                //             menu: {
-                //                 title: 'general.menu.consult',
-                //                 icon: 'ion-ios-eye'
-                //             }
-                //         }
-                //     },
-                // ]
             },
             {
                 path: 'analyze',
