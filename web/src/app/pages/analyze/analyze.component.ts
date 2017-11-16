@@ -84,6 +84,8 @@ export class AnalyzeComponent implements OnInit, AfterViewInit {
         responsive: {
             'enabled': false,
         },
+        bezierX: 100,
+        bezierY: 100,
         dataProvider: this.dataProvided,
         chartScrollbar: {
             autoGridCount: true,
