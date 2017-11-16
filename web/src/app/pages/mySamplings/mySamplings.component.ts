@@ -35,11 +35,6 @@ export class MySamplingsComponent implements OnInit {
         sampled: '',
         sampledDescription: '',
         isPreliminarSampling: -1,
-        n: -1,
-        z: -1,
-        p: -1,
-        q: -1,
-        error: -1,
     };
 
     campostabladefi = {
@@ -240,13 +235,7 @@ export class MySamplingsComponent implements OnInit {
     }
 
     makeDefinitive() {
-        const t = this.selectedSampling;
-        const resN = (t.z * t.z * t.p * t.q) / t.error;
-        const pars = {
-            idSampling: this.selectedSampling,
-            n: resN,
-        };
-        this.service.makeDefinitive(pars).then((dataz) => {
+        this.service.makeDefinitive(this.selectedSampling.idSampling).then((dataz) => {
             if (dataz.error === 'none') {
                 this.toastr.success('El muestreo es definitivo');
                 this.selectedSampling.isDefinitive = 1;

@@ -154,10 +154,7 @@ export class MySamplingsService {
     }
 
     makeDefinitive(data): Promise<Feedback> {
-        const body = this.toQueryString({
-            pIdSampling: data.idSampling,
-            pN: data.n, 
-        });
+        const body = this.toQueryString({ pIdSampling: data });
         return this.http.post('http://localhost:2828/makeDefinitive', body, this.options )
         .toPromise()
         .then(response => response.json() as Feedback);
